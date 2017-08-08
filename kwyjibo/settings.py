@@ -25,12 +25,20 @@ SECRET_KEY = '7!o9x^aj=-y4*c3145f&l40@-r%yg8=i($&*p@atzw7dd@f=1u'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost', 'tps.algoritmos7540mendez.tk']
 
 # Application definition
 
 INSTALLED_APPS = [
+    # Application modules
+    'teachers.apps.TeachersConfig',
+    'undergraduates.apps.UndergraduatesConfig',
+
+    # Third-party utilities
+    'captcha',
+    'kronos',
+    'django_nose', ## for coverage
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,7 +62,9 @@ ROOT_URLCONF = 'kwyjibo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,8 +85,10 @@ WSGI_APPLICATION = 'kwyjibo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'kwyjibo',
+        'USER': 'kwyjibo',
+        'PASSWORD': 'kwyjibo321',
     }
 }
 
@@ -118,3 +130,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+
+
+# Particular settings
+MAIL_REPLY_ADDRESS    = "support@kwyjibo.org"
+MAIL_NO_REPLY_ADDRESS = "no-reply@kwyjibo.org"
+
+# Path customizables
+WORKSPACE_PATH = "media/"
+DELIVERY_FILES_PATH = WORKSPACE_PATH + "deliveries/%Y"
+ASSIGNMENT_FILES_PATH = WORKSPACE_PATH + "assignments/%Y"
+SCRIPT_FILES_PATH = WORKSPACE_PATH + "scripts/%Y"
+
+###############################################################################
+
+
