@@ -1,3 +1,4 @@
+## Instalación de un ambiente de desarrollo para el proyecto
 
 # Dependencias de python previas a la instalación
 $ sudo apt-get install build-essential checkinstall
