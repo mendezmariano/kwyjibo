@@ -134,16 +134,25 @@ STATIC_URL = '/static/'
 
 
 
+###############################################################################
 # Particular settings
 MAIL_REPLY_ADDRESS    = "support@kwyjibo.org"
 MAIL_NO_REPLY_ADDRESS = "no-reply@kwyjibo.org"
 
 # Path customizables
-WORKSPACE_PATH = "media/"
-DELIVERY_FILES_PATH = WORKSPACE_PATH + "deliveries/%Y"
-ASSIGNMENT_FILES_PATH = WORKSPACE_PATH + "assignments/%Y"
-SCRIPT_FILES_PATH = WORKSPACE_PATH + "scripts/%Y"
-
-###############################################################################
+DELIVERY_FILES_PATH = "media/deliveries/%Y"
+ASSIGNMENT_FILES_PATH = "media/assignments/%Y"
+SCRIPT_FILES_PATH = "media/scripts/%Y"
+BROWSE_DELIVERIES_PATH = "media/browse/"
 
 
+# Deliveries mime-type
+ZIP_MIMETYPE = "application/zip"
+ZIP_X_MIMETYPE = "application/x-zip-compressed"
+OCTET_STREAM_MIMETYPE = "application/octet-stream"
+
+DELIVERY_ACCEPTED_MIMETYPE = ZIP_MIMETYPE
+DELIVERY_ACCEPTED_MIMETYPES = [ZIP_MIMETYPE, ZIP_X_MIMETYPE, OCTET_STREAM_MIMETYPE]
+DELIVERY_ACCEPTED_EXTENTION = "zip"
+
+MAX_PAGINATOR_SIZE = 10

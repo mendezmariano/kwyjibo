@@ -32,7 +32,6 @@ class Teacher(models.Model):
     
     """
     
-    uid = models.CharField(_('UID'), unique=True, max_length = 32)
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
     
     rank = models.CharField(_('Rank'), max_length = 50)
@@ -86,8 +85,8 @@ class Course(models.Model):
     def remove_student(self, student):
         self.student_set.remove(student)
     
-    def get_practices(self):
-        return self.practice_set.all()
+    def get_assignments(self):
+        return self.assignment_set.all()
     
     class Meta:
         """
@@ -159,19 +158,19 @@ class Assignment(models.Model):
             return False
 
     def get_successfull_deliveries_count(self):
-        return self.delivery_set.filter(revision__status = 1, practice = self).count()
+        return self.delivery_set.filter(revision__status = 1, assignment = self).count()
 
     def get_failed_deliveries_count(self):
-        return self.delivery_set.filter(~Q(revision__status = 1), practice = self).count()
+        return self.delivery_set.filter(~Q(revision__status = 1), assignment = self).count()
 
     def get_students_pending_deliveries_count(self):
         students = Student.objects.filter(shifts__course = self.course).count()
-        students_delivery_succesfull = Student.objects.filter(delivery__revision__status = 1, delivery__practice = self).distinct().count()
+        students_delivery_succesfull = Student.objects.filter(delivery__revision__status = 1, delivery__assignment = self).distinct().count()
         return students - students_delivery_succesfull
         
     # for the dashboard view
     def get_completion_percentage(self):
-        deliveries_queryset = self.delivery_set.filter(revision__status = 1, practice = self).all()
+        deliveries_queryset = self.delivery_set.filter(revision__status = 1, assignment = self).all()
         students = []
         for delivery in deliveries_queryset:
             if delivery.student not in students:
@@ -300,13 +299,13 @@ class Delivery(models.Model):
     """
     file = models.FileField( upload_to = DELIVERY_FILES_PATH)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    practice = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     date = models.DateTimeField(default = timezone.now)
     corrector = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
         """Stringify the Delivery"""
-        return (str(self.practice) + " - " + str(self.student) + " - " + str(self.deliverDate))
+        return (str(self.assignment) + " - " + str(self.student) + " - " + str(self.deliverDate))
     
     def full_date(self):
         return self.deliverDate.strftime('%Y-%m-%d') + " " + self.deliverTime.strftime('%H:%M:%S')
@@ -379,7 +378,7 @@ class Revision(models.Model):
         return self.delivery.file.path
     
     def get_correction_script(self):
-        script = self.delivery.practice.get_script()
+        script = self.delivery.assignment.get_script()
         if script is not None:
             return script.file.path
         else:

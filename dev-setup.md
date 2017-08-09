@@ -3,6 +3,8 @@
 # Dependencias de python previas a la instalación
 $ sudo apt-get install build-essential checkinstall
 $ sudo apt-get install libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
+$ sudo apt-get install gettext libz-dev libjpeg-dev libfreetype6-dev libmysqlclient-dev
+$ sudo apt-get install apache2-dev libapache2-mod-wsgi-py3
 
 # Instalación de Python 3.6.2
 $ mkdir /tmp/py-install
@@ -18,10 +20,14 @@ $ sudo make install
 $ echo "" >> ~/.bashrc
 $ echo "export PATH=/usr/local/lib/python3.6.2/bin:$PATH" >> ~/.bashrc
 $ echo "" >> ~/.bashrc
-$ . ~/.bash_profile
+$ . ~/.bashrc
 
 # Instalar pip para python 3
 $ sudo apt-get install python3-pip
+
+$ sudo apt-get install language-pack-en-base
+$ sudo dpkg-reconfigure locales
+$ sudo pip3 install --upgrade pip
 
 # Instala virtualenv
 $ sudo pip3 install virtualenv
@@ -41,7 +47,7 @@ $ git clone git@github.com:pelgoros/kwyjibo.git
 
 # Instalar dependencias con pip (OJO: SIN 'sudo')
 $ cd ~/workspace/python/kwyjibo/kwyjibo
-$ pip -r pip-dependencies
+$ pip install -r pip-dependencies
 
 # Desactivar ambiente virtual
 $ deactivate
