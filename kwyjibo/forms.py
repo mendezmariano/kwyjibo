@@ -19,7 +19,7 @@ class LoginForm(forms.Form):
     Registrtion form for new Student
     """
     name = forms.CharField(max_length=100)
-    passwd = forms.CharField(widget=forms.PasswordInput(render_value=True))
+    password = forms.CharField(widget=forms.PasswordInput(render_value=True))
     
 
 
@@ -39,8 +39,8 @@ class RegistrationForm(forms.Form):
     Registrtion form for new Student
     """
     username = forms.CharField(max_length=32, label=_("Username"))
-    passwd = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("Password"))
-    passwd_again = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("Repeat password"))
+    password = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("Password"))
+    password_again = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("Repeat password"))
 
     first_name = forms.CharField(max_length=100, label=_("First Name"))
     last_name = forms.CharField(max_length=100, label=_("Last Name"))
@@ -55,19 +55,19 @@ class RegistrationForm(forms.Form):
         if(User.objects.filter(username=username)):
             raise forms.forms.ValidationError(_('The username is not available'))
     
-    def clean_passwd_again(self):
-        passwd = self.cleaned_data.get('passwd', None)
-        passwd_again = self.cleaned_data.get('passwd_again', None)
-        if(not (passwd == passwd_again)):
+    def clean_password_again(self):
+        password = self.cleaned_data.get('password', None)
+        password_again = self.cleaned_data.get('password_again', None)
+        if(not (password == password_again)):
             raise forms.forms.ValidationError(_('Passwords do not match'))
 
 
 class ChangePasswordForm(forms.Form):
 
     uid = forms.CharField(max_length=32, label=_("uidChangePassword"))
-    oldpasswd = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("oldPassword"))
-    passwd = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("newPassword"))
-    passwd_again = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("repeatPassword"))
+    current_password = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("Current password"))
+    password = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("New password"))
+    password_again = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("Repeat password"))
     
     def clean_uid(self):
         uid = self.cleaned_data['uid']
@@ -75,12 +75,12 @@ class ChangePasswordForm(forms.Form):
             raise forms.ValidationError(ERRORUIDVALIDATION)
         else:
             user = User.objects.get(username=uid)
-            if (not user.check_password(self.data['oldpasswd'])):
+            if (not user.check_password(self.data['current_password'])):
                 raise forms.ValidationError(ERRORUIDVALIDATION)
     
-    def clean_passwd_again(self):
-        passwd = self.cleaned_data.get('passwd', None)
-        passwd_again = self.cleaned_data.get('passwd_again', None)
-        if(not (passwd == passwd_again)):
+    def clean_password_again(self):
+        password = self.cleaned_data.get('password', None)
+        password_again = self.cleaned_data.get('password_again', None)
+        if(not (password == password_again)):
             raise forms.ValidationError(ERRORPASSWDNOTMATCH)
 

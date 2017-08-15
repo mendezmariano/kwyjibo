@@ -38,7 +38,7 @@ class CourseDetailView(LoginRequiredMixin, UserIsStudentMixin, View):
     def get(request, course_id):
         user = request.user
         course = Course.objects.get(pk=course_id)
-        practices = course.get_practices().order_by('deadline')
+        practices = course.assignments.all().order_by('deadline')
         shift = Student.objects.get(user=user).shifts.filter(course = course)[0]
         return render(request, 'students/assignments.html', {
             'practices': practices,

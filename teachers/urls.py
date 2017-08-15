@@ -9,14 +9,14 @@ urlpatterns = [
     #url(r'^new/$', views.NewOrganizationView.as_view(), name='new'),
     #url(r'^(?P<pk>[0-9]+)/$', views.DashboardView.as_view(), name='dashboard'),
 
-    url(r'^(?P<pk>[0-9]+)/$', views.DashboardView.as_view(), name='dashboard'),
+    url(r'^(?P<course_id>[0-9]+)/$', views.DashboardView.as_view(), name='dashboard'),
     # DEPRECATED
     # url(r'^(?P<course_id>\d+)$', 'index'),
 
-    url(r'^course/?$', views.CoursesView.as_view(), name='index'),
-    url(r'^course/newcourse/$', views.NewCourseView.as_view(), name = 'newcourse'),
-    url(r'^course/newcourse/(?P<course_id>\d+)$', views.NewCourseView.as_view(), name = 'newcourse'),
-    url(r'^course/editcourse/(?P<course_id>\d+)$', views.EditCourseView.as_view(), name='editcourse'),
+    url(r'^course/list/?$', views.CoursesView.as_view(), name='index'),
+    url(r'^course/first/$', views.NewCourseView.as_view(), name = 'first_course'),
+    url(r'^course/(?P<course_id>\d+)/new/$', views.NewCourseView.as_view(), name = 'new_course'),
+    url(r'^course/(?P<course_id>\d+)/edit/$', views.EditCourseView.as_view(), name='edit_course'),
     # DEPRECATED
     # url(r'^course/detailcourse/(?P<course_id>\d+)$', views..as_view(), name = 'detailcourse'),
     

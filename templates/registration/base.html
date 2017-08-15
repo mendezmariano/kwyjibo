@@ -1,0 +1,106 @@
+{% load i18n static %}<!DOCTYPE html>
+{% comment %}
+This is the main template for all teacher pages.
+{% endcomment %}
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    {% block addl_styles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-responsive.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+        <style type="text/css">
+        
+          /* Sticky footer styles
+          -------------------------------------------------- */
+        
+          html,
+          body {
+            height: 100%;
+            /* The html and body elements cannot have any padding or margin. */
+          }
+        
+          /* Wrapper for page content to push down footer */
+          #wrap {
+            min-height: 100%;
+            height: auto !important;
+            height: 100%;
+            /* Negative indent footer by it's height */
+            margin: 0 auto -60px;
+          }
+        
+          /* Set the fixed height of the footer here */
+          #push,
+          #footer {
+            height: 60px;
+          }
+          #footer {
+            background-color: #f5f5f5;
+          }
+        
+          /* Lastly, apply responsive CSS fixes as necessary */
+          @media (max-width: 767px) {
+            #footer {
+              margin-left: -20px;
+              margin-right: -20px;
+              padding-left: 20px;
+              padding-right: 20px;
+            }
+          }
+
+          /* Custom page CSS
+          -------------------------------------------------- */
+          /* Not required for template or sticky footer method. */
+    
+          #wrap > .container {
+            padding-top: 60px;
+          }
+          .container .credit {
+            margin: 20px 0;
+          }
+    
+          code {
+            font-size: 80%;
+          }
+            
+        </style>
+    {% endblock %}
+    <title>{% trans 'Kwyjibo' %}</title>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div id="wrap">
+        {% load i18n %}
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <span class="brand muted">{% trans 'Kwyjibo' %}</span>
+                    <ul class="nav">
+                        <li class="divider-vertical"></li>
+                        {% block nav_opts %}{% endblock %}
+                    </ul>
+                    <ul class="nav pull-right">
+                        {% block action_opts %}{% endblock %}
+                    </ul>
+                </div>
+            </div>
+        </div><!-- /.navbar -->
+        <div class="container main-container">
+            {% block body %}{% endblock %}
+        </div><!-- /container -->
+        <div id="push"></div>
+    </div>
+    <div id="footer">
+        <div class="container main-container">
+            <p class="muted credit">
+                {% trans 'Kwyjibo' %} <i>beta</i> - © FIUBA 2017
+            </p>
+        </div>
+    </div>
+    {% block addl_script %}
+        <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+        <script type="text/javascript" src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap-dropdown.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

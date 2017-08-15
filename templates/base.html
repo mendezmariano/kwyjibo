@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+{% load i18n static %}<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	{% block addl_styles %}
-	<link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+	    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}" />
 		<style type="text/css">
 		
 		  /* Sticky footer styles
@@ -59,15 +59,14 @@
 	      }
 			
 		</style>
-    	<link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-		<link href="{{ STATIC_URL }}css/style.css" rel="stylesheet" />
-		{% endblock %}
-		{% block addl_script %}
-		<script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/jquery.min.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap-dropdown.js"></script>
-		{% endblock %}
-		{% block head %}{% endblock %}
+
+	    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-responsive.css' %}" />
+	    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+	    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/legacy.css' %}" /> -->
+
+
+	{% endblock %}
+	{% block head %}{% endblock %}
 	</head>
 	<body>
 	    <div id="wrap">
@@ -75,7 +74,7 @@
 			<div class="navbar navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container-fluid">
-						<span class="brand muted">{% trans 'brand' %}</span>
+						<span class="brand muted">{% trans 'Kwyjibo' %}</span>
 						<ul class="nav">
 							<li class="divider-vertical"></li>
 							{% block nav_opts %}{% endblock %}
@@ -94,9 +93,14 @@
 	    <div id="footer">
 			<div class="container main-container">
 				<p class="muted credit">
-					{% trans 'brand' %} <i>beta</i> - © FIUBA 2012
+					{% trans 'Kwyjibo' %} <i>beta</i> - © FIUBA 2017
 				</p>
 			</div>
 	    </div>
+	{% block addl_script %}
+		<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+		<script type="text/javascript" src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap-dropdown.js' %}"></script>
+	{% endblock %}
 	</body>
 </html>

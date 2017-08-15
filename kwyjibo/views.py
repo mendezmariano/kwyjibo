@@ -14,7 +14,6 @@ from .forms import *
 
 LENGTHPASSWORD = 8
 REDIRECTADMIN = "/admin"
-REDIRECTLOGOUT = "/"
 
 SUBJECTMAIL = _("New SignUp at Kwyjibo")
 BODYMAIL = _("Welcome to Kwyjibo! You have signed up successfully. You can now acces to the platform with the user: {username}.")
@@ -32,7 +31,10 @@ class IndexView(LoginRequiredMixin, View):
     def get(self, request, course_id = None):
         user = request.user
         if(Teacher.objects.filter(user_id=user.id)):
-            return redirect('teachers:dashboard', course_id = course_id)
+            if course_id:
+                return redirect('teachers:dashboard', course_id = course_id)
+            else: 
+                return redirect('teachers:index')
         elif(user.is_superuser):
             return HttpResponseRedirect(REDIRECTADMIN)
         elif(Student.objects.filter(user_id=user.id).exists()):
@@ -60,7 +62,7 @@ class SignUpView(View):
             user.username = form.data['username']
             user.first_name = form.data['first_name']
             user.last_name = form.data['last_name']
-            user.set_password(form.data['passwd'])
+            user.set_password(form.data['password'])
             user.email = form.data['email']
             user.save()
             student = Student()
@@ -74,15 +76,8 @@ class SignUpView(View):
             
             mail = Mail()
             mail.save_mail(SUBJECTMAIL, BODYMAIL % (user.username), user.email)
-            return render(request, 'registration/registration-success.html', context_instance=RequestContext(request))
-        else:
-            return render_to_response('registration/register.html',
-                                      {'form': form, 'captcha_publick': settings.RECAPTCHA_PUB_KEY,
-                                       'captcha_response': ERRORCAPTCHA},
-                                      context_instance=RequestContext(request))  
-        return render(request, 'registration/register.html', {
-            'form': form,
-        })
+            return render(request, 'registration/registration-success.html')
+        return render(request, 'registration/register.html', {'form': form,})
 
 
 class ChangePasswordView(View):
@@ -91,7 +86,7 @@ class ChangePasswordView(View):
         if not request.user.is_authenticated():
             redirect('index')
         form = ChangePasswordForm()
-        return render(request, 'registration/change_pass.html', {'form': form})
+        return render(request, 'registration/change_pass.html', {'form': form, })
 
     def post(self, request):
         if not request.user.is_authenticated():
@@ -100,15 +95,19 @@ class ChangePasswordView(View):
         form = ChangePasswordForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
+            user = User.objects.get(pk = request.user.pk)
             if user.check_password(data['current_password']):
-                user.set_password(data['new_password'])
+                user.set_password(data['password'])
                 user.save()
             else:
                 bad_password = True
-                return render(request, 'registration/change_password.html', {'form': form, 'bad_password': bad_password})
+                return render(request, 'registration/change_password.html', {
+                    'form': form,
+                    'bad_password': bad_password
+                })
             login(request, user)
             return redirect('index')
-        return render(request, 'registration/change_password.html', {'form': form})
+        return render(request, 'registration/change_password.html', {'form': form, })
 
 
 def logout_page(request):
@@ -116,4 +115,4 @@ def logout_page(request):
     Log users out and re-direct them to the main page.
     """
     logout(request)
-    return HttpResponseRedirect(REDIRECTLOGOUT)
+    return redirect('index')

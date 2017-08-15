@@ -1,32 +1,19 @@
-{% load bootstrap_toolkit %}
-{% load i18n %}
-
-{% block extrastyle %}
-<link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
-<link href="{{ STATIC_URL }}css/login.css" rel="stylesheet" />
-<link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-{% endblock %}
-
+{% extends "base.html" %}
+{% load i18n static %}
 
 {% block head %}
-<title>{% trans 'brand' %} | {% trans 'registrate' %}</title>
+<title>{% trans 'Kwyjibo' %} | {% trans 'Signup' %}</title>
 {% endblock %}
 
 {% block body %}
     <div class="container">
 		<form class="form-signin" action="" method="post" >
-			<h2 class="form-signin-heading">{% trans "registrateOn" %} {% trans 'brand' %}</h2>
+			<h2 class="form-signin-heading">{% trans "Sign up on" %} {% trans 'Kwyjibo' %}</h2>
 			{% csrf_token %}
-			{{ form|as_bootstrap  }}
-			<span class="validation_error">{{ captcha_response }}</span><script type="text/javascript" src="http://api.recaptcha.net/challenge?k={{captcha_publick}}"></script>
-			<noscript>
-				<iframe src="http://api.recaptcha.net/noscript?k={{captcha_publick}}" height="300" width="500" frameborder="0">&nbsp;</iframe>
-				<input type="hidden" name="recaptcha_response_field" value="manual_challenge">
-			</noscript>
-			<br>
+			{{ form.as_table  }}
 			<div>
 				<button  class="btn btn-large btn-primary" type="submit">
-					{% trans "registrate" %}
+					{% trans "Signup" %}
 				</button>
 			</div>
 		</form>

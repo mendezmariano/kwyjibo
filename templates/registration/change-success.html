@@ -1,17 +1,11 @@
 {% extends "base.html" %}
-{% load i18n %}
-{% block extrastyle %}
-<link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
-<link href="{{ STATIC_URL }}css/login.css" rel="stylesheet" />
-<link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-{% endblock %}
-
+{% load i18n static %}
 
 {% block head %}
-<title> {% trans "brand" %} | {% trans "Change Password" %}</title>
+<title> {% trans "Kwyjibo" %} | {% trans "Change password" %}</title>
 {% endblock %}
 
-{% block subtitle %} {% trans "changePassword" %}{% endblock %}
+{% block subtitle %} {% trans "Change password" %}{% endblock %}
 {% block nav_opts %}
 <li><a href="/" title="{% trans 'home' %}"><span class="icon-home"></span></a></li>
 {% endblock %}

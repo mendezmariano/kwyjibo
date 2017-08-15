@@ -1,4 +1,4 @@
-{% extends "teacher/teacher.html" %}
+{% extends "teachers/teacher_base.html" %}
 {% load i18n %}
 {% block content %}
 <script type="text/javascript">
@@ -42,7 +42,7 @@
 								<td>{{ suscription.pk }}</td>
 								<td>{{ suscription.student.uid }}</td>
 								<td>{{ suscription.student.user.first_name }} {{suscription.student.user.last_name  }}</td>
-								<td>{{ suscription.suscriptionDate }}</td>
+								<td>{{ suscription.suscription_date }}</td>
 								<td align="center">
 									<input type="checkbox" id="{{ suscription.pk }}" name="suscription" value="{{ suscription.pk }}">
 								</td>
@@ -88,8 +88,8 @@
 					<td>{{ suscription.pk }}</td>
 					<td>{{ suscription.student.uid }}</td>
 					<td>{{ suscription.student.get_full_name }}</td>
-					<td>{{ suscription.suscriptionDate }}</td>
-					<td>{{ suscription.resolveDate }}</td>
+					<td>{{ suscription.suscription_date }}</td>
+					<td>{{ suscription.resolve_date }}</td>
 					<td>{{ suscription.state }}</td>
 				</tr>
 				{% empty %}

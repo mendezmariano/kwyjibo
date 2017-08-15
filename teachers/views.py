@@ -26,6 +26,7 @@ STUDENT_CREATION_MAIL_SUBJECT = _("New user on Kwyjibo")
 STUDENT_CREATION_MAIL_BODY = _("A new user on Kwyjibo has been created for you. Your access information is Username: {username} and Password: {password}")
 STUDENT_CREATION_MAIL_REPLY_ADDRESS = "no-response@kwyjibo.org"
 
+MAX_PAGINATOR_SIZE = 25
 
 # Authorized access mixin abstract class
 class UserHasTeacherAccessLevel(AccessMixin):
@@ -40,6 +41,8 @@ class UserHasTeacherAccessLevel(AccessMixin):
         user_test_result = self.test_teacher(*args, **kwargs)
         if not user_test_result:
             return self.handle_no_permission()
+        print("args: {args}".format(args = args))
+        print("kwargs: {kwargs}".format(kwargs = kwargs))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -53,7 +56,7 @@ class RevisionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         
         delivery = Delivery.objects.get(pk=delivery_id)
         automatic_correction = delivery.get_automatic_correction()
-        return render(request, 'revision_details.html', {
+        return render(request, 'teachers/revision_details.html', {
             'current_course': current_course,
             'courses': courses,
             'automatic_correction': automatic_correction,
@@ -75,7 +78,7 @@ class CorrectionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             form = CorrectionForm(instance=correction)
         else:
             form = CorrectionForm()
-        return render(request, 'grade_delivery.html', {
+        return render(request, 'teachers/grade_delivery.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -111,7 +114,7 @@ class CorrectionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
                 deletable_correction.delete()
             return redirect('teachers:dashboard', course_id = course_id)
         else:
-            return render(request, 'grade_delivery.html', {
+            return render(request, 'teachers/grade_delivery.html', {
                 'current_course' : current_course,
                 'courses' : courses,
                 'form': form,
@@ -131,7 +134,7 @@ class NewCourseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             current_course = None
         
         form = CourseForm()
-        return render(request, 'course_new.html', {
+        return render(request, 'teachers/new_course.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -149,7 +152,7 @@ class NewCourseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             form.save()
             return redirect('teachers:dashboard', course_id = form.instance.pk)
 
-        return render(request, 'course_new.html', {
+        return render(request, 'teachers/new_course.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -160,7 +163,7 @@ class CoursesView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
     def get(self, request):
         courses_list = Course.objects.all().order_by('-name')
-        paginator = Paginator(courses_list, MAX_PAGINATOR) # Show 25 courses per page
+        paginator = Paginator(courses_list, MAX_PAGINATOR_SIZE) # Show 25 courses per page
         page = request.GET.get('page')
         try:
             courses = paginator.page(page)
@@ -170,7 +173,7 @@ class CoursesView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             courses = paginator.page(paginator.num_pages)
-        return render('courses.html', {"courses": courses},)
+        return render(request, 'teachers/courses.html', {"courses": courses},)
 
 
 class EditCourseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
@@ -182,7 +185,7 @@ class EditCourseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         
         course = current_course
         form = CourseForm(instance=course)
-        return render(request, 'course_edit.html', {
+        return render(request, 'teachers/edit_course.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -198,7 +201,7 @@ class EditCourseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         if (form.is_valid()):
             entity = form.save()
             return redirect('teachers:dashboard', course_id = course.pk)
-        return render(request, 'course_edit.html', {
+        return render(request, 'teachers/edit_course.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -218,7 +221,7 @@ class DeliveryListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         deliveries = Delivery.objects.filter(assignment=assignment).order_by('date')
         for delivery in deliveries:
             table_deliveries.append({'delivery': delivery, 'correction': delivery.correction})
-        return render(request, 'delivery_full_list.html', {
+        return render(request, 'teachers/delivery_full_list.html', {
             'current_course' : current_course,
             'courses' : courses,
             'table_deliveries': table_deliveries,
@@ -237,7 +240,7 @@ class StudentsDeliveryListView(LoginRequiredMixin, UserHasTeacherAccessLevel, Vi
         deliveries = Delivery.objects.filter(assignment=assignment,student__pk=student_id)
         for delivery in deliveries:
             table_deliveries.append({'delivery': delivery, 'correction': delivery.correction})
-        return render(request, 'delivery_partial_list.html', {
+        return render(request, 'teachers/delivery_partial_list.html', {
             'current_course' : current_course,
             'courses' : courses,
             'student' : student,
@@ -272,7 +275,7 @@ class DeliveryDetailView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         
         delivery = Delivery.objects.get(pk=delivery_id);
         correction = Correction.objects.filter(delivery=delivery)
-        return render(request, 'delivery_detail.html', 
+        return render(request, 'teachers/delivery_detail.html', 
                       {'current_course' : current_course,
                        'courses' : courses,
                        'delivery': delivery, 'correction':correction})
@@ -320,7 +323,7 @@ class DeliveryBrowseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             file_path = os.path.join(extraction_dir, file_to_browse)
             with open(file_path, 'r') as content_file:
                 file_content = content_file.read()
-        return render(request, 'delivery_browse.html', {
+        return render(request, 'teachers/delivery_browse.html', {
             'current_course' : current_course,
             'courses' : courses,
             'delivery': delivery,
@@ -361,7 +364,7 @@ class DashboardView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
                 status = delivery.get_automatic_correction().get_status()
                 if (status == "successfull"):
                     table_deliveries.append({'delivery': delivery, 'correction':correction})
-        return render(request, 'dashboard.html', {
+        return render(request, 'teachers/dashboard.html', {
             'current_course' : current_course,
             'courses' : courses,
             'table_contents': table_contents, 
@@ -376,7 +379,7 @@ class NewAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         current_course = courses.get(pk=course_id)
         
         form = AssignmentForm()
-        return render(request, 'assignment.html', {
+        return render(request, 'teachers/assignment.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -393,7 +396,7 @@ class NewAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             assignment.course = current_course
             assignment.save()
             return redirect('teachers:dashboard', course_id = course_id)
-        return render(request, 'assignment.html', {
+        return render(request, 'teachers/assignment.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -408,7 +411,7 @@ class EditAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         
         assignment = Assignment.objects.get(pk=assignment_id)
         form = AssignmentForm(instance=assignment)
-        return render(request, 'assignment.html', {
+        return render(request, 'teachers/assignment.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -424,7 +427,7 @@ class EditAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         if (form.is_valid()):
             assignment = form.save()
             return redirect('teachers:dashboard', course_id = course_id)
-        return render(request, 'assignment.html', {
+        return render(request, 'teachers/assignment.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -447,7 +450,7 @@ class UploadAssignmentsScriptView(LoginRequiredMixin, UserHasTeacherAccessLevel,
             script_file.close()
         else:
             form = AssignmentScriptForm()
-        return render(request, 'assignment_script.html', {
+        return render(request, 'teachers/assignment_script.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -470,7 +473,7 @@ class UploadAssignmentsScriptView(LoginRequiredMixin, UserHasTeacherAccessLevel,
         if (form.is_valid()):
             form_edit = form.save()
             return redirect('teachers:assignment_script', course_id = course_id, assignment_id = assignment_id)
-        return render(request, 'assignment_script.html', {
+        return render(request, 'teachers/assignment_script.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -489,7 +492,7 @@ class AssignmentsFilesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, Vi
         assignment = Assignment.objects.get(pk = assignment_id)
         assignmentFiles = assignment.get_assignment_file()
         form = AssignmentFileForm()
-        return render(request, 'assignment/uploadFile.html', {
+        return render(request, 'teachers/assignment/uploadFile.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -510,7 +513,7 @@ class AssignmentsFilesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, Vi
             form_edit = form.save()
             return redirect('teachers:assignment_files', course_id = course_id, assignment_id = assignment_id)
 
-        return render(request, 'assignment/uploadFile.html', {
+        return render(request, 'teachers/assignment/uploadFile.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -559,7 +562,7 @@ class NewShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         courses = Course.objects.all()
 
         form = ShiftForm(initial={'course':course})
-        return render(request, 'shift_new.html', {
+        return render(request, 'teachers/shift_new.html', {
             'current_course': course,
             'courses': courses,
             'form': form,
@@ -577,7 +580,7 @@ class NewShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         if (form.is_valid()):
             shift.save()
             return redirect('teachers:dashboard', course_id = course_id)
-        return render(request, 'shift_new.html', {
+        return render(request, 'teachers/shift_new.html', {
             'current_course': course,
             'courses': courses,
             'form': form,
@@ -596,7 +599,7 @@ class EditShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             return HttpResponseBadRequest
 
         form = ShiftForm(instance = shift)
-        return render(request, 'shift_edit.html', {
+        return render(request, 'teachers/shift_edit.html', {
             'current_course': course,
             'courses': courses,
             'shift': shift,
@@ -617,7 +620,7 @@ class EditShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         if (form.is_valid()):
             shift.save()
             return redirect('teachers:dashboard', course_id = course_id)
-        return render(request, 'shift_edit.html', {
+        return render(request, 'teachers/shift_edit.html', {
             'current_course': course,
             'courses': courses,
             'shift': shift,
@@ -671,7 +674,7 @@ class StudentsCourseListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View
             if student.corrector is not None:
                 student_dict.update({'corrector' : student.corrector.user.last_name})
             listable_students.append(student_dict)
-        return render(request, 'student_list.html', {
+        return render(request, 'teachers/student_list.html', {
             'current_course' : current_course,
             'courses' : courses, 
             'students': listable_students
@@ -696,7 +699,7 @@ class StudentsShiftListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View)
             if student.corrector is not None:
                 student_dict.update({'corrector' : student.corrector.user.last_name})
             listable_students.append(student_dict)
-        return render(request, 'student_list.html', {
+        return render(request, 'teachers/student_list.html', {
             'current_course' : current_course,
             'courses' : courses, 
             'shift' : shift,
@@ -712,7 +715,7 @@ class StudentDetailView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         current_course = courses.get(pk=course_id)
 
         student = Student.objects.get(pk=student_id)
-        return render(request, 'student_detail.html', {
+        return render(request, 'teachers/student_detail.html', {
             'current_course' : current_course,
             'courses' : courses, 
             'student': student,
@@ -726,7 +729,7 @@ class NewStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         current_course = courses.get(pk=course_id)
         
         form = StudentForm(initial={'shifts': [shift_id]})
-        return render(request, 'student_new.html', {
+        return render(request, 'teachers/student_new.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -763,7 +766,7 @@ class NewStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
                 )
             student = Student.objects.get(uid=user.username)
             return redirect('teachers:student_detail', course_id = course_id, student_id = student.pk)
-        return render(request, 'student_new.html', {
+        return render(request, 'teachers/student_new.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -779,7 +782,7 @@ class EditStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         
         student = Student.objects.get(pk=student_id)
         form = StudentForm(instance=student, initial={'email': student.user.email, 'first_name': student.user.first_name, 'last_name': student.user.last_name})
-        return render(request, 'student_edit.html', {
+        return render(request, 'teachers/student_edit.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -803,7 +806,7 @@ class EditStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             student.user.save()
             form.save()
             return redirect('teachers:student_detail', course_id = course_id, student_id = student.pk)
-        return render(request, 'student_edit.html', {
+        return render(request, 'teachers/student_edit.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -816,7 +819,7 @@ class EditUnenrolledStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, V
     def get(self, request, student_id):
         student = Student.objects.get(pk=student_id)     
         form = StudentForm(instance=student)
-        return render(request, 'student/editstudent.html', {'form': form})
+        return render(request, 'teachers/student/editstudent.html', {'form': form})
 
     def get(self, request, student_id):
         student = Student.objects.get(pk=student_id)     
@@ -824,20 +827,20 @@ class EditUnenrolledStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, V
         if (form.is_valid()):
             form.save()
             return redirect('teachers:students', course_id = None)
-        return render(request, 'student/editstudent.html', {'form': form})
+        return render(request, 'teachers/student/editstudent.html', {'form': form})
 
 
 class PendingDeliveriesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def pendingdeliveries(request, course_id):
+    def get(self, request, course_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
         final_list = []
-        practices = current_course.get_practices()
+        assignments = current_course.assignments.all()
         shifts = Shift.objects.filter(course=current_course)
         #para cada Assignment del curso...
-        for practice in practices:
+        for assignment in assignments:
             student_shift_list = []
             #recorro los turnos de donde voy a sacar los alumnos
             for shift in shifts:
@@ -845,12 +848,12 @@ class PendingDeliveriesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, V
                 #para cada alumno...
                 for student in students:
                     #cuento las entregas satisfactorias del estudiante para la Assignment que estoy analizando.
-                    successfull_deliveries = Delivery.objects.filter(student=student, practice=practice, automaticcorrection__status = 1).count()
+                    successfull_deliveries = Delivery.objects.filter(student=student, assignment=assignment, automaticcorrection__status = 1).count()
                     if (successfull_deliveries==0):
                         student_shift_list.append({'student': student, 'shift':shift})
             if len(student_shift_list) > 0:
-                final_list.append({'practice': practice, 'student_shift_list':student_shift_list})            
-        return render(request, 'pending_deliveries.html', {
+                final_list.append({'assignment': assignment, 'student_shift_list':student_shift_list})            
+        return render(request, 'teachers/pending_deliveries.html', {
             'current_course' : current_course,
             'courses' : courses,
             'final_list': final_list
@@ -865,12 +868,12 @@ class StudentsDeliveriesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, 
         current_course = courses.get(pk=course_id)
 
         student = Student.objects.get(pk=student_id)
-        deliveries = Delivery.objects.filter(student=student, practice__course=current_course).order_by('deliverDate', 'deliverTime')
+        deliveries = Delivery.objects.filter(student=student, assignment__course=current_course).order_by('deliverDate', 'deliverTime')
         table_deliveries = []
         for delivery in deliveries:
             correction = Correction.objects.filter(delivery=delivery)
             table_deliveries.append({'delivery': delivery, 'correction':correction})
-        return render(request, 'student_deliveries.html', {
+        return render(request, 'teachers/student_deliveries.html', {
             'current_course' : current_course,
             'courses' : courses, 
             'table_deliveries': table_deliveries,
@@ -919,14 +922,14 @@ class ListSuscriptionsView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         current_course = courses.get(pk=course_id)
         
         shift = Shift.objects.get(pk=shift_id)
-        suscriptions = Suscription.objects.filter(shift=shift, state="Pending").order_by('suscriptionDate')
-        suscriptions_solve = Suscription.objects.filter(shift=shift).order_by('suscriptionDate')
+        suscriptions = Suscription.objects.filter(shift=shift, state="Pending").order_by('suscription_date')
+        suscriptions_solve = Suscription.objects.filter(shift=shift).order_by('suscription_date')
         suscriptions_solve = suscriptions_solve.exclude(state="Pending")
-        return render(request, 'suscription_list.html', {
+        return render(request, 'teachers/suscription_list.html', {
             'current_course' : current_course,
             'courses' : courses,
             'suscriptions': suscriptions,
-            'suscriptionsSolve': suscriptions_solve,
+            'suscriptions_solve': suscriptions_solve,
             'shift': shift
         })
 
@@ -974,15 +977,15 @@ class ListPendingSuscriptionsView(LoginRequiredMixin, UserHasTeacherAccessLevel,
             if suscriptionPending:
                 table_suscription_shift.append({'shift':shift, 'suscriptionPending':suscriptionPending})
         
-        suscriptions = Suscription.objects.filter(shift__course=current_course, state="Pending").order_by('suscriptionDate')
-        suscriptions_solve = Suscription.objects.filter(shift__course=current_course).order_by('suscriptionDate')
+        suscriptions = Suscription.objects.filter(shift__course=current_course, state="Pending").order_by('suscription_date')
+        suscriptions_solve = Suscription.objects.filter(shift__course=current_course).order_by('suscription_date')
         suscriptions_solve = suscriptions_solve.exclude(state="Pending")
         
-        return render(request, 'pending_suscription_list.html', {
+        return render(request, 'teachers/pending_suscription_list.html', {
             'current_course' : current_course,
             'courses' : courses,
             'table_suscription_shift': table_suscription_shift,
             'suscriptions': suscriptions,
-            'suscriptionsSolve': suscriptions_solve
+            'suscriptions_solve': suscriptions_solve
         })
 

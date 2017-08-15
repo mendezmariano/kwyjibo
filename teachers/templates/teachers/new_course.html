@@ -1,8 +1,8 @@
-{% extends "teacher/teacher.html" %}
+{% extends "teachers/teacher_base.html" %}
 {% load i18n %}
 {% block content %}
 <div class="row">
-	<h4>{% trans "newCourse" %}</h4>
+	<h4>{% trans "New course" %}</h4>
 </div>
 <form id='formnewcoruse' action='' method='post'>
 	{% csrf_token %}
