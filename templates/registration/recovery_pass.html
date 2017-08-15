@@ -1,0 +1,32 @@
+{% load bootstrap_toolkit %}
+{% load i18n %}
+{% comment %}
+
+Main page to recovery password.
+
+{% endcomment %}
+{% block addl_styles %}
+<link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/login.css" rel="stylesheet" />
+<link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+{% endblock %}
+
+{% block head %}
+<title>{% trans "brand" %} | {% trans "recoveryPassword" %}</title>
+{% endblock %}
+
+{% block body %}
+	<div class="container" >
+		<form method="post" class="form-signin">
+			<h2 class="form-signin-heading">{% trans "recoveryPassword" %}</h2>
+			{% csrf_token %}
+			{{ form|as_bootstrap }}
+			<div>
+				<button  class="btn btn-large btn-primary" type="submit">
+					{% trans "recover" %}
+				</button>
+			</div>
+
+		</form>
+	</div>
+{% endblock %}

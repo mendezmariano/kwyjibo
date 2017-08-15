@@ -1,0 +1,39 @@
+{% extends "teacher/teacher.html" %}
+{% load i18n %}
+{% block content %}
+<body>
+	<div>
+		<div>
+			<div>
+				<div>{% trans "Students List" %}</div>
+			</div>
+				<table>
+					<tbody>
+					{% for student in students %}
+					    <tr><td>{{ student.name }}</a></td></tr>
+					{% empty %}
+					    <tr><td>{% trans "0 student" %}</td></tr>
+					{% endfor %}
+					</tbody>
+					{% if students|length > 0 %}
+						<tfoot><tr>
+						    <td class="pagination">
+						    		<a href="?page=1">{% trans "first" %}</a>
+						        {% if students.has_previous %}
+							            <a href="?page={{ contacts.previous_page_number }}">{% trans "previous" %}</a>
+						        {% endif %}
+						        <span class="current">
+						            Page {{ students.number }} of {{ students.paginator.num_pages }}.
+						        </span>
+						        {% if students.has_next %}
+							            <a href="?page={{ contacts.next_page_number }}">{% trans "next" %}</a>
+						        {% endif %}
+						        	<a href="?page={{ courses.paginator.num_pages }}">{% trans "last" %}</a>
+						    </td>
+						</tr></tfoot>
+					{% endif %}
+				</table>
+		</div>
+	</div>
+</body>
+{% endblock %}

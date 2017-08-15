@@ -1,0 +1,33 @@
+{% extends "teacher/index.html" %}
+{% load i18n %}
+{% block content %}
+
+{% if automatic_correction.status %}
+	<div>
+		<div>
+			<div class="row">
+				<p>{% trans "automaticCheckResult" %}:
+					<span style="font-weight: bold; color: 
+					{% if automatic_correction.status > 0 %}
+						green
+					{% else %}
+						red
+					{% endif %}
+					;">
+						{{ automatic_correction.get_status }}
+					</span>
+				</p>
+			</div>
+			<div>{% trans "autorunOutput" %} - {% trans 'delivery' %} <b>{{ automatic_correction.delivery.pk }}</b> - {% trans 'practice' %} <b>{{ automatic_correction.delivery.practice.uid }}</b></div>
+			<div class="output-container" >
+				<pre class="output-container" >{{ automatic_correction.get_smart_captured_stdout }}</pre>
+			</div>
+		</div>
+	</div>
+{% else %}
+	<div align="center">
+		<p><h5>{% trans "automaticCheckPending" %}</h5></p>
+	</div>
+{% endif %}
+	<div><a class="btn btn-small" href="javascript:history.back()"><span class="icon-backward" title="{% trans 'back' %}"></span></a></div>
+{% endblock %}

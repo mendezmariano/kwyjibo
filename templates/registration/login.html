@@ -1,0 +1,63 @@
+{% load i18n %}
+{% comment %}
+Main page to authenticate users.
+{% endcomment %}
+
+{% block addl_styles %}
+<link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/login.css" rel="stylesheet" />
+<link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+{% endblock %}
+
+{% block head %}
+<title>{% trans 'brand' %}</title>
+{% endblock %}
+
+{% block body %}
+<div class="container" >
+	<form class="form-signin" method="post" action=".">
+		<h2 class="form-signin-heading">{% trans "Login SEAL" %}</h2>
+		{% csrf_token %}
+		{% if form.errors %}
+		<p class="error" >
+			{% trans "wrongCredentials" %}
+		</p>
+		{% endif %}
+
+		<div class="row">
+			<div class="span3">
+				<label for="id_username" >{% trans "username" %}</label>{{ form.username }}
+			</div>
+		</div>
+		<div class="row"  >
+			<div class="span0">
+				<label for="id_password">{% trans "password" %}</label>{{ form.password }}
+			</div>
+		</div>
+		<div class="row" >
+			<input type="hidden" name="next" value="{{ next }}" />
+		</div>
+		<div class="row">
+			<div class="span3 text-center">
+				<button  class="btn btn-large btn-primary" type="submit">
+					{% trans "logIn" %}
+				</button>
+			</div>
+		</div>
+		<hr />
+		<div class="row" >
+			<div class="span3">
+				{% trans "Signup" %} <a href="{% url 'signup' %}">{% trans "registration" %}</a>
+			</div>
+		</div>
+		<div class="row" >
+			<div class="span3">
+				{% trans "Forgot your password?" %} <a href="/recoverypass"> {% trans "passwordRecovery" %}</a>
+			</div>
+		</div>
+
+	</form>
+	
+
+</div>
+{% endblock %}

@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from kwyjibo.settings import *
 
-from .model import Correction
+from .models import *
 
 
 class CorrectionForm(forms.ModelForm):
@@ -19,9 +19,10 @@ class CorrectionForm(forms.ModelForm):
 
 
 class CourseForm(forms.ModelForm):
+
     class Meta:
         model = Course
-
+        exclude = ()
 
 class DeliveryForm(forms.ModelForm):
     class Meta:
@@ -63,10 +64,7 @@ class AssignmentForm(forms.ModelForm):
     def validate_unique(self):
         exclude = self._get_validation_exclusions()
         exclude.remove('course') # allow checking against the missing attribute
-        try:
-            self.instance.validate_unique(exclude=exclude)
-        except ValidationError, e:
-            self._update_errors(e.message_dict)
+        self.instance.validate_unique(exclude=exclude)
 
 
 class EditAssignmentFileForm(forms.Form):
@@ -79,51 +77,6 @@ class AssignmentFileForm(forms.ModelForm):
     class Meta:
         model = AssignmentFile
         exclude = ('assignment', )
-    
-
-class LoginForm(forms.Form):
-    """
-    Registrtion form for new Student
-    """
-    name = forms.CharField(max_length=100)
-    passwd = forms.CharField(widget=forms.PasswordInput(render_value=True))
-    
-
-
-class RecoveryForm(forms.Form):
-    uid = forms.CharField(max_length=32, label=_("Username"))
-    email = forms.EmailField()
-    
-    def clean_uid(self):
-        uid = self.data.get('uid','')
-        email = self.data.get('email','')
-        if(not (User.objects.filter(username = uid, email = email))):
-            raise forms.ValidationError(_('The email is not registered for a user'))
-
-
-class RegistrationForm(forms.Form):
-    """
-    Registrtion form for new Student
-    """
-    username = forms.CharField(max_length=32, label=_("Username"))
-    passwd = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("Password"))
-    passwd_again = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("Repeat password"))
-
-    first_name = forms.CharField(max_length=100, label=_("First Name"))
-    last_name = forms.CharField(max_length=100, label=_("Last Name"))
-    email = forms.EmailField()
-    shifts = forms.ModelChoiceField(queryset=Shift.objects.all() , empty_label=_("Select Shift"), label=_("shift"))
-    
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        if(User.objects.filter(username=username)):
-            raise forms.forms.ValidationError(_('The username is not available'))
-    
-    def clean_passwd_again(self):
-        passwd = self.cleaned_data.get('passwd', None)
-        passwd_again = self.cleaned_data.get('passwd_again', None)
-        if(not (passwd == passwd_again)):
-            raise forms.forms.ValidationError(_('Passwords do not match'))
 
 
 class AssignmentScriptForm(forms.ModelForm):

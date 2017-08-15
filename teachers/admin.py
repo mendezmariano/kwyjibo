@@ -2,6 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 
+from .models import *
+
 class CourseAdmin(admin.ModelAdmin):
     """Utility for Django Admin tools.
     
@@ -15,8 +17,8 @@ class CourseAdmin(admin.ModelAdmin):
 admin.site.register(Teacher)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Shift)
-admin.site.register(Practice)
-admin.site.register(PracticeFile)
+admin.site.register(Assignment)
+admin.site.register(AssignmentFile)
 admin.site.register(Script)
 admin.site.register(Student)
 admin.site.register(Suscription)

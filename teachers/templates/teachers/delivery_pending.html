@@ -1,0 +1,43 @@
+{% extends "teacher/teacher.html" %}
+{% load i18n %}
+{% block content %}
+	<div class="container-fluid">
+		<div class="row-fluid" style="margin: auto;">
+			<h4>{% trans "pendingDeliveries" %}</h4>
+		</div>
+		{% for row in final_list %}
+		<div class="row-fluid">
+			<div class="span12">
+				<h5><u>{% trans "practice" %} {{ row.practice.uid }}</u></h5>
+			</div>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>{% trans "uidStudent" %}</th>
+						<th>{% trans "name" %}</th>
+						<th>{% trans "shift" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for student_shift in row.student_shift_list %}
+					<tr>
+						<td>{{ student_shift.student.uid }}</td>
+						<td>{{ student_shift.student.get_full_name }}</td>
+						<td>{{ student_shift.shift.name }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<hr />
+		{% empty %}
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<td>{% trans "noStudentWithPendingDelivery" %}</td>
+				</tr>
+			</tbody>
+		</table>
+		{% endfor %}
+	</div>
+{% endblock %}

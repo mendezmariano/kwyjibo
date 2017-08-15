@@ -1,0 +1,28 @@
+{% extends "students/students.html" %}
+{% load i18n %}
+{% comment %}
+    Main page of the Student's portal.
+{% endcomment %}
+
+{% block title %}{% trans "Student" %}{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <h4>{% trans "courses" %} - {% trans "shifts" %}</h4>
+    </div>
+
+    <table class="table table-striped">
+        <thead><tr><th>{% trans "name" %}</th></tr></thead>
+        <tbody>
+        {% for shift in shifts %}
+            <tr>
+                <td><a href="/students/practice/list/{{shift.course.pk}}">{{ shift }}</a></td>
+            </tr>
+        {% empty %}
+            <tr><td>{% trans "noShiftsToEnroll" %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div><h5>{% trans "subscriptionHere" %} <a href="/students/suscription/" >{% trans "suscription" %}</a></h5></div> 
+</div>
+{% endblock %}

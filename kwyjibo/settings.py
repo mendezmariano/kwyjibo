@@ -32,9 +32,11 @@ ALLOWED_HOSTS = ['localhost', 'tps.algoritmos7540mendez.tk']
 INSTALLED_APPS = [
     # Application modules
     'teachers.apps.TeachersConfig',
-    'undergraduates.apps.UndergraduatesConfig',
+    'students.apps.StudentsConfig',
+    'mailing.apps.MailingConfig',
 
     # Third-party utilities
+    #'bootstrap_toolkit',
     'captcha',
     'kronos',
     'django_nose', ## for coverage
@@ -50,6 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -130,8 +133,42 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '' 
+
+STATIC_ROOT = ''
+MEDIA_ROOT = ''
+
+ADMIN_MEDIA_PREFIX = '/static/admin/'
+
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    BASE_DIR + '/static/',
+)
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 
+
+
+# URL of the login page.
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'login'
+
+
+
+LANGUAGES = (
+    ('en', 'English'),
+    ('es', 'Español'),
+)
 
 
 ###############################################################################

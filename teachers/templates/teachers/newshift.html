@@ -1,0 +1,13 @@
+{% extends "teacher/teacher.html" %}
+{% load i18n %}
+{% block content %}
+<form id='formnewshift' action='' method='post'>
+	{% csrf_token %}
+	<table>
+		<h4>{% trans "newShift" %}</h4>
+		{{ form.as_table }}
+	</table>
+	<button type='submit' class="btn btn-primary" >{% trans "save" %}</button>
+</form>
+<div><a class="btn btn-small" href="/teacher/{{ idcourse }}"><span class="icon-backward" title="{% trans 'back' %}"></span></a></div>
+{% endblock %}

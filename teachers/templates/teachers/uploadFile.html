@@ -1,0 +1,49 @@
+{% extends "teacher/index.html" %}
+{% load i18n %}
+{% block content %}
+	<div class="row">
+		{% trans "uploadFilePractice" %} <b>{{ namepractice }}</b>
+	</div>
+	<form id='formuploadfile' action='' method='post' enctype='multipart/form-data'>
+		{% csrf_token %}
+		<table style="margin-bottom: 10px;">
+			{{ form.as_table }}
+		</table>
+		<button class="btn btn-primary" type='submit' >{% trans "save" %}</button>
+	</form>
+		
+	<div class="row">
+		{% trans "listFilePractice" %} <b>{{ namepractice }}</b>
+	</div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>{% trans "namePractice" %}</th>
+					<th>{% trans "file" %}</th>
+					<th>{% trans "actions" %}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for file in practiceFiles %}
+					<tr>
+						<td>{{ file.name }}</td>
+						<td>{{ file.file }}</td>
+						<td>
+						<a href="/teacher/practices/downloadfile/{{ file.pk }}" title="{% trans 'download' %}"><span class="icon-download-alt"></span>	
+					{% if file.isEditable %}
+						<a name="edit{{file.pk}}" title="{% trans 'edit' %}" class="icon-edit icon-grid" href="/teacher/practices/editfile/{{ current_course.pk }}/{{ file.pk }}"></a>						
+					{% endif %}
+						<a name="delete{{file.name}}" title="{% trans 'delete' %}" class="icon-trash" href="/teacher/practices/deletefile/{{ file.pk }}"></a>		    	
+						</td>
+					</tr>
+				{% empty %}
+				<tr>
+					<td colspan="5">{% trans "noFilePractice" %}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div>
+			<a class="btn btn-small" href="/teacher/{{ idcourse }}"><span class="icon-backward" title="{% trans 'back' %}"></span></a>
+		</div>
+{% endblock %}

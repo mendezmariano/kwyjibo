@@ -3,10 +3,11 @@ import shutil
 from zipfile import ZipFile
 
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
-from django.core.exceptions import BadRequest
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
+from django.utils.translation import ugettext_lazy as _
+from django.views.generic import View
 
 from kwyjibo.settings import *
 from mailing.models import Mail
@@ -64,7 +65,7 @@ class RevisionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 class CorrectionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
     """Teachers manual correction form flow"""
 
-    def get(request, course_id, delivery_id):
+    def get(self, request, course_id, delivery_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -82,7 +83,7 @@ class CorrectionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             'corrector': delivery.student.corrector,
         })
 
-    def post(request, course_id, delivery_id):
+    def post(self, request, course_id, delivery_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -122,7 +123,7 @@ class CorrectionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 class NewCourseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
     """This is for creating a new course"""
 
-    def get(request, course_id=None):
+    def get(self, request, course_id=None):
         courses = Course.objects.all()
         if course_id is not None:
             current_course = courses.get(pk=course_id)
@@ -136,7 +137,7 @@ class NewCourseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             'form': form,
         })
 
-    def post(request, course_id=None):
+    def post(self, request, course_id=None):
         courses = Course.objects.all()
         if course_id:
             current_course = courses.get(pk=course_id)
@@ -157,7 +158,7 @@ class NewCourseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class CoursesView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request):
+    def get(self, request):
         courses_list = Course.objects.all().order_by('-name')
         paginator = Paginator(courses_list, MAX_PAGINATOR) # Show 25 courses per page
         page = request.GET.get('page')
@@ -175,7 +176,7 @@ class CoursesView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 class EditCourseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
     """This is for editing an already existant course"""
         
-    def get(request, course_id):
+    def get(self, request, course_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -188,7 +189,7 @@ class EditCourseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             'course': course
         })
         
-    def post(request, course_id):
+    def post(self, request, course_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -208,7 +209,7 @@ class EditCourseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class DeliveryListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, assignment_id):
+    def get(self, request, course_id, assignment_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -227,7 +228,7 @@ class DeliveryListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class StudentsDeliveryListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, assignment_id, student_id):
+    def get(self, request, course_id, assignment_id, student_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         student = Student.objects.get(pk=student_id)
@@ -247,7 +248,7 @@ class StudentsDeliveryListView(LoginRequiredMixin, UserHasTeacherAccessLevel, Vi
 
 class DeliveryDownloadView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, delivery_id):
+    def get(self, request, course_id, delivery_id):
         delivery = Delivery.objects.get(pk=delivery_id)
         student = delivery.student
         assignment = delivery.assignment
@@ -265,7 +266,7 @@ class DeliveryDownloadView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class DeliveryDetailView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, delivery_id):
+    def get(self, request, course_id, delivery_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -299,7 +300,7 @@ def walk_directory(files_list, path, relative_path):
 
 class DeliveryBrowseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, delivery_id, file_to_browse=None):
+    def get(self, request, course_id, delivery_id, file_to_browse=None):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -338,7 +339,7 @@ class DeliveryExploreView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class DashboardView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id=None):
+    def get(self, request, course_id=None):
         courses = Course.objects.all()
         if course_id is None:
             try:
@@ -370,7 +371,7 @@ class DashboardView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class NewAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
     
-    def get(request, course_id):
+    def get(self, request, course_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -382,7 +383,7 @@ class NewAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             'course_id': course_id,
         })
             
-    def post(request, course_id):
+    def post(self, request, course_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
 
@@ -401,7 +402,7 @@ class NewAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class EditAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
     
-    def get(request, course_id , assignment_id):
+    def get(self, request, course_id , assignment_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -414,7 +415,7 @@ class EditAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             'course_id': course_id,
         })
             
-    def post(request, course_id , assignment_id):
+    def post(self, request, course_id , assignment_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -433,7 +434,7 @@ class EditAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class UploadAssignmentsScriptView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id , assignment_id):
+    def get(self, request, course_id , assignment_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -455,7 +456,7 @@ class UploadAssignmentsScriptView(LoginRequiredMixin, UserHasTeacherAccessLevel,
             'script_text': script_text
         })
 
-    def post(request, course_id , assignment_id):
+    def post(self, request, course_id , assignment_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -481,7 +482,7 @@ class UploadAssignmentsScriptView(LoginRequiredMixin, UserHasTeacherAccessLevel,
 
 class AssignmentsFilesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id , assignment_id):
+    def get(self, request, course_id , assignment_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -497,7 +498,7 @@ class AssignmentsFilesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, Vi
             'assignmentFiles': assignmentFiles
         })
 
-    def post(request, course_id , assignment_id):
+    def post(self, request, course_id , assignment_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -521,7 +522,7 @@ class AssignmentsFilesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, Vi
 
 class AssignmentsFileDownloadView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, assignment_id, assignment_file_id):
+    def get(self, request, course_id, assignment_id, assignment_file_id):
         assignment_file = AssignmentFile.objects.get(pk=assignment_file_id)
         filename = assignment_file.file.name.split('/')[-1]
         response = HttpResponse(assignment_file.file)
@@ -531,21 +532,21 @@ class AssignmentsFileDownloadView(LoginRequiredMixin, UserHasTeacherAccessLevel,
 
 class AssignmentsFileDeleteView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, assignment_id, assignment_file_id):
+    def get(self, request, course_id, assignment_id, assignment_file_id):
         assignment_file = AssignmentFile.objects.get(pk=assignment_file_id)
         if not (course_id == assignment_file.assignment.course.pk and assignment_id == assignment_file.assignment):
-            raise BadRequest()
+            return HttpResponseBadRequest
         assignment_file.delete()
         return redirect('teachers:assignment_files', course_id = course_id, assignment_id = assignment_id)
 
 
 class DeleteAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, assignment_id):
+    def get(self, request, course_id, assignment_id):
         assignment = Assignment.objects.get(pk=assignment_id)
         delivery_list = Delivery.objects.filter(assignment = assignment)
         if (delivery_list or course_id != assignment.course.pk):
-            raise BadRequest()
+            return HttpResponseBadRequest
         assignment.delete()
         return redirect('teachers:dashboard', course_id = course_id)
 
@@ -553,7 +554,7 @@ class DeleteAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class NewShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id):
+    def get(self, request, course_id):
         course = Course.objects.get(pk=course_id)
         courses = Course.objects.all()
 
@@ -566,7 +567,7 @@ class NewShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         })
 
 
-    def post(request, course_id):
+    def post(self, request, course_id):
         course = Course.objects.get(pk=course_id)
         courses = Course.objects.all()
 
@@ -586,13 +587,13 @@ class NewShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class EditShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, shift_id):
+    def get(self, request, course_id, shift_id):
         course = Course.objects.get(pk=course_id)
         courses = Course.objects.all()
         
         shift = Shift.objects.get(pk=shift_id)
         if (course_id != shift.course.pk):
-            raise BadRequest()
+            return HttpResponseBadRequest
 
         form = ShiftForm(instance = shift)
         return render(request, 'shift_edit.html', {
@@ -603,14 +604,14 @@ class EditShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             'course_id':shift.course.id
         })
 
-    def post(request, course_id, shift_id):
+    def post(self, request, course_id, shift_id):
         course = Course.objects.get(pk=course_id)
         courses = Course.objects.all()
 
         course = Course.objects.get(pk = course_id)
         shift = Shift(course = course)
         if (course_id != shift.course.pk):
-            raise BadRequest()
+            return HttpResponseBadRequest
 
         form = ShiftForm(request.POST, instance = shift)
         if (form.is_valid()):
@@ -627,18 +628,18 @@ class EditShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class DeleteShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, shift_id):
+    def get(self, request, course_id, shift_id):
         shift = Shift.objects.get(pk=shift_id)
         list_student = shift.get_students()
         if (list_student or course_id != shift.course.pk):
-            raise BadRequest()
+            return HttpResponseBadRequest
         shift.delete()
         return redirect('teachers:dashboard', course_id = course_id)
 
 
 class StudentsFullListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         
-    def get(request):
+    def get(self, request):
         student_list = Student.objects.all().order_by('uid')
         paginator = Paginator(student_list, MAX_PAGINATOR_SIZE) # Show 10 students per page
         page = request.GET.get('page')
@@ -655,7 +656,7 @@ class StudentsFullListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class StudentsCourseListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id):
+    def get(self, request, course_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
 
@@ -679,7 +680,7 @@ class StudentsCourseListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View
 
 class StudentsShiftListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, shift_id):
+    def get(self, request, course_id, shift_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
 
@@ -706,7 +707,7 @@ class StudentsShiftListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View)
 
 class StudentDetailView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, student_id):
+    def get(self, request, course_id, student_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
 
@@ -720,7 +721,7 @@ class StudentDetailView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class NewStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, shift_id=None):
+    def get(self, request, course_id, shift_id=None):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -732,7 +733,7 @@ class NewStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             'shift_id': shift_id
         })
 
-    def post(request, course_id, shift_id=None):
+    def post(self, request, course_id, shift_id=None):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
 
@@ -772,7 +773,7 @@ class NewStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class EditStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, student_id, shift_id=None):
+    def get(self, request, course_id, student_id, shift_id=None):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -785,7 +786,7 @@ class EditStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             'shift_id': shift_id
         })
 
-    def get(request, course_id, student_id, shift_id=None):
+    def get(self, request, course_id, student_id, shift_id=None):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -812,12 +813,12 @@ class EditStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class EditUnenrolledStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, student_id):
+    def get(self, request, student_id):
         student = Student.objects.get(pk=student_id)     
         form = StudentForm(instance=student)
         return render(request, 'student/editstudent.html', {'form': form})
 
-    def get(request, student_id):
+    def get(self, request, student_id):
         student = Student.objects.get(pk=student_id)     
         form = StudentForm(request.POST, instance=student)
         if (form.is_valid()):
@@ -859,7 +860,7 @@ class PendingDeliveriesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, V
 
 class StudentsDeliveriesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, student_id):
+    def get(self, request, course_id, student_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
 
@@ -880,7 +881,7 @@ class StudentsDeliveriesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, 
 
 class StudentSearchView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id):
+    def get(self, request, course_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
 
@@ -893,7 +894,7 @@ class StudentSearchView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             'students': students
         })
 
-    def post(request, course_id):
+    def post(self, request, course_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
 
@@ -913,7 +914,7 @@ class StudentSearchView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class ListSuscriptionsView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id, shift_id):
+    def get(self, request, course_id, shift_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -932,7 +933,7 @@ class ListSuscriptionsView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class AcceptBatchSuscriptionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def post(request, course_id):
+    def post(self, request, course_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -948,7 +949,7 @@ class AcceptBatchSuscriptionView(LoginRequiredMixin, UserHasTeacherAccessLevel, 
 
 class RejectBatchSuscriptionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def post(request, course_id):
+    def post(self, request, course_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -962,7 +963,7 @@ class RejectBatchSuscriptionView(LoginRequiredMixin, UserHasTeacherAccessLevel, 
 
 class ListPendingSuscriptionsView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(request, course_id):
+    def get(self, request, course_id):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
 

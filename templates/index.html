@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% comment %}
+	Index page of seal website.
+{% endcomment %}
+<html lang="en">
+	<head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        {% block addl_styles %}
+			<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css" />
+        {% endblock %}
+		{% block head %}
+		    <title>Kwyjibo</title>
+		{% endblock %}
+	</head>
+    <body>
+    	<div class="header" >Kwyjibo</div>
+    	<div class="main-container" >
+    		<div class="subtitle-wrapper" >
+	    		<div class="subtitle">{% block subtitle %}Welcome{% endblock %}</div>
+	    		{% block welcome %}{% endblock %}
+    		</div>
+			{% block body %}
+			    <div>
+			    	<table>
+			    		<tr>
+			    			<td><a href="login">Log me in</a></td>
+			    			<td><a href="registration">Registrate</a></td>
+			    		</tr>
+			    	</table>
+			    </div>
+			{% endblock %}
+    	</div>
+    </body>
+</html>

@@ -1,11 +1,12 @@
 import mimetypes
 
-from django.utils import timezone
+from decimal import Decimal
 
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 from _utils.models import ChoiceEnum
 
@@ -38,7 +39,7 @@ class Teacher(models.Model):
     
     def __str__(self):
         """Stringify the Teacher"""
-        return "{last_name}, {first_name}".format(self.user.last_name, self.user.first_name)
+        return "{last_name}, {first_name}".format(last_name = self.user.last_name, first_name = self.user.first_name)
     
     def save(self, force_insert=False, force_update=False, using=None):
         """Extends parent. Checks for the existance of the login user"""
@@ -244,7 +245,7 @@ class Student(models.Model):
     
     """
     
-    uid = models.CharField(unique=True, max_length = 32,verbose_name="Padron")
+    uid = models.CharField(unique=True, max_length = 32,verbose_name=_("Padron"))
     shifts = models.ManyToManyField(Shift, blank=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     corrector = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True)
@@ -311,7 +312,7 @@ class Delivery(models.Model):
         return self.deliverDate.strftime('%Y-%m-%d') + " " + self.deliverTime.strftime('%H:%M:%S')
     
     class Meta:
-        ordering = ('-deliverDate', '-deliverTime')
+        ordering = ('-date', )
 
 
 
@@ -324,9 +325,9 @@ class Correction(models.Model):
     
     feedback = models.TextField(_('Feedback'), max_length=2000)
     comments = models.TextField(_('Comments'), max_length=2000)
-    grade = models.DecimalField(_('Grade'))
+    grade = models.DecimalField(_('Grade'), max_digits=4, decimal_places=2, default=Decimal(0.00))
     delivery = models.OneToOneField(Delivery, on_delete=models.CASCADE)
-    corrector = models.ForeignKey(Teacher, on_delete=models.SET_NULL)
+    corrector = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
         """Stringify the Correction"""
