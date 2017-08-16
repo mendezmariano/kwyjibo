@@ -9,7 +9,7 @@
 		<div class="span3">
 			<div class="container-fluid">
 				<div class="row-fluid">
-					<div class="span12 btn side-btn" onclick="location='/teacher/students/list/{{ current_course.pk }}'">
+					<div class="span12 btn side-btn" onclick="location='{% url 'teachers:student_list' current_course.pk %}'">
 						<span>{% trans 'students' %}</span>
 						<hr class="thin" />
 						<span class="pull-right icon-user alignment-margin"></span><span class="pull-right pulled-margin"><b>{{ current_course.student_count }}</b></span>
@@ -20,7 +20,7 @@
 
 				{% for shift in current_course.shift_set.all %}
 				<div class="row-fluid">
-					<div class="span12 btn side-btn" onclick="location='/teacher/students/listshift/{{ current_course.pk }}/{{ shift.pk }}'">
+					<div class="span12 btn side-btn" onclick="location='{% url 'teachers:student_shift_list' current_course.pk shift.pk %}'">
 						<span>{% trans 'shift' %} {{ shift.name }}</span>
 						<hr class="thin" />
 						<span class="pull-right icon-user alignment-margin"></span><span class="pull-right pulled-margin"><b>{{ shift.student_set.count }}</b></span>

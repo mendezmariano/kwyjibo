@@ -58,6 +58,6 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	<div><a class="btn btn-small" href="/teacher/{{ current_course.pk  }}"><span class="icon-backward" title="{% trans 'back' %}"></span></a></div>
+	<div><a class="btn btn-small" href="{% url 'teachers:student_list' current_course.pk %}"><span class="icon-backward" title="{% trans 'back' %}"></span></a></div>
 </div>
 {% endblock %}

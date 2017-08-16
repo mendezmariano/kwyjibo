@@ -23,7 +23,7 @@ Ver dev-setup.md
     /var/log/kwyjibo
 
   # DATABASE
-  * $ mysql -u root -p < __db/create_schema.sql
+  * $ mysql -u root -p < __handwork/create_schema.sql
 
   # APACHE 2 MODS
   * Enabling apache mods.
