@@ -490,15 +490,16 @@ class AssignmentsFilesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, Vi
         current_course = courses.get(pk=course_id)
         
         assignment = Assignment.objects.get(pk = assignment_id)
-        assignmentFiles = assignment.get_assignment_file()
+        assignment_files = assignment.assignmentfile_set.all()
         form = AssignmentFileForm()
-        return render(request, 'teachers/assignment/uploadFile.html', {
+        return render(request, 'teachers/upload_assignment_file.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
             'course_id':course_id,
             'assignment_name':assignment.uid,
-            'assignmentFiles': assignmentFiles
+            'assignment':assignment,
+            'assignment_files': assignment_files
         })
 
     def post(self, request, course_id , assignment_id):
@@ -506,20 +507,20 @@ class AssignmentsFilesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, Vi
         current_course = courses.get(pk=course_id)
         
         assignment = Assignment.objects.get(pk = assignment_id)
-        assignmentFiles = assignment.get_assignment_file()
+        assignment_files = assignment.assignmentfile_set.all()
         assignment_file_instance = AssignmentFile(assignment=assignment)
         form = AssignmentFileForm(request.POST, request.FILES, instance=assignment_file_instance)
         if (form.is_valid()):
             form_edit = form.save()
             return redirect('teachers:assignment_files', course_id = course_id, assignment_id = assignment_id)
 
-        return render(request, 'teachers/assignment/uploadFile.html', {
+        return render(request, 'teachers/upload_assignment_file.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
             'course_id':course_id,
             'assignment_name':assignment.uid,
-            'assignmentFiles': assignmentFiles
+            'assignment_files': assignment_files
         })
 
 
@@ -537,8 +538,8 @@ class AssignmentsFileDeleteView(LoginRequiredMixin, UserHasTeacherAccessLevel, V
 
     def get(self, request, course_id, assignment_id, assignment_file_id):
         assignment_file = AssignmentFile.objects.get(pk=assignment_file_id)
-        if not (course_id == assignment_file.assignment.course.pk and assignment_id == assignment_file.assignment):
-            return HttpResponseBadRequest
+        if not (int(course_id) == assignment_file.assignment.course.pk and int(assignment_id) == assignment_file.assignment.pk):
+            return HttpResponseBadRequest()
         assignment_file.delete()
         return redirect('teachers:assignment_files', course_id = course_id, assignment_id = assignment_id)
 
@@ -850,7 +851,7 @@ class PendingDeliveriesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, V
                 #para cada alumno...
                 for student in students:
                     #cuento las entregas satisfactorias del estudiante para la Assignment que estoy analizando.
-                    successfull_deliveries = Delivery.objects.filter(student=student, assignment=assignment, automaticcorrection__status = 1).count()
+                    successfull_deliveries = Delivery.objects.filter(student=student, assignment=assignment, revision__status = 1).count()
                     if (successfull_deliveries==0):
                         student_shift_list.append({'student': student, 'shift':shift})
             if len(student_shift_list) > 0:
@@ -870,7 +871,7 @@ class StudentsDeliveriesListView(LoginRequiredMixin, UserHasTeacherAccessLevel, 
         current_course = courses.get(pk=course_id)
 
         student = Student.objects.get(pk=student_id)
-        deliveries = Delivery.objects.filter(student=student, assignment__course=current_course).order_by('deliverDate', 'deliverTime')
+        deliveries = Delivery.objects.filter(student=student, assignment__course=current_course).order_by('date')
         table_deliveries = []
         for delivery in deliveries:
             correction = Correction.objects.filter(delivery=delivery)

@@ -34,6 +34,9 @@ class IndexView(LoginRequiredMixin, View):
             if course_id:
                 return redirect('teachers:dashboard', course_id = course_id)
             else: 
+                course = Course.objects.all().order_by('-name')[:1][0]
+                if course:
+                    return redirect('teachers:dashboard', course_id = course.pk)
                 return redirect('teachers:index')
         elif(user.is_superuser):
             return HttpResponseRedirect(REDIRECTADMIN)

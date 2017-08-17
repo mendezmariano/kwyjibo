@@ -13,7 +13,11 @@
 			{% endif %}
 		</div>
 		<div class="span4">
+			{% if shift %}
 			<a name="newstudent" href="{% url 'teachers:new_student_in_shift' current_course.pk shift.pk %}" class="btn btn-primary pull-right">+ {% trans "newStudent" %}</a>
+			{% else %}
+			<a name="newstudent" href="{% url 'teachers:new_student' current_course.pk %}" class="btn btn-primary pull-right">+ {% trans "newStudent" %}</a>
+			{% endif %}
 		</div>
 	</div>
 	<table class="table table-striped">
@@ -58,6 +62,6 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	<div><a class="btn btn-small" href="{% url 'teachers:student_list' current_course.pk %}"><span class="icon-backward" title="{% trans 'back' %}"></span></a></div>
+	<div><a class="btn btn-small" href="{% url 'teachers:dashboard' current_course.pk %}"><span class="icon-backward" title="{% trans 'back' %}"></span></a></div>
 </div>
 {% endblock %}
