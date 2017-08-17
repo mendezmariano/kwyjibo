@@ -43,7 +43,7 @@ urlpatterns = [
     url(r'^students/(?P<course_id>\d+)/edit/(?P<student_id>\d+)/(?P<shift_id>\d+)/$', views.EditStudentView.as_view(), name = 'edit_student'),
     url(r'^students/(?P<course_id>\d+)/edit/(?P<student_id>\d+)/$', views.EditUnenrolledStudentView.as_view(), name = 'edit_unenrolled_student'),
     url(r'^students/(?P<course_id>\d+)/deliveries/pending/$', views.PendingDeliveriesListView.as_view(), name = 'pending_deliveries'),
-    url(r'^students/(?P<course_id>\d+)/deliveries/list/(?P<student_id>\d+)/$', views.StudentsDeliveriesListView.as_view(), name = 'student_deliveries'),
+    url(r'^students/(?P<course_id>\d+)/deliveries/(?P<student_id>\d+)/list/$', views.StudentsDeliveriesListView.as_view(), name = 'student_deliveries'),
 
 
     url(r'^shifts/(?P<course_id>\d+)/new/?$', views.NewShiftView.as_view(), name = 'new_shift'),
@@ -52,7 +52,7 @@ urlpatterns = [
 
 
     url(r'^deliveries/(?P<course_id>\d+)/assignment/(?P<assignment_id>\d+)/$', views.DeliveryListView.as_view(), name = 'assignment_deliveries'),
-    url(r'^deliveries/(?P<course_id>\d+)/assignment/(?P<assignment_id>\d+)/student/(?P<student_id>\d+)/$', views.StudentsDeliveryListView.as_view(), name = 'student_deliveries'),
+    url(r'^deliveries/(?P<course_id>\d+)/assignment/(?P<assignment_id>\d+)/student/(?P<student_id>\d+)/$', views.StudentsDeliveryListView.as_view(), name = 'assignment_deliveries_for_student'),
     url(r'^deliveries/(?P<course_id>\d+)/download/(?P<delivery_id>\d+)/$', views.DeliveryDownloadView.as_view(), name = 'download_delivery'),
     url(r'^deliveries/(?P<course_id>\d+)/detail/(?P<delivery_id>\d+)/$', views.DeliveryDetailView.as_view(), name = 'delivery_detail'),
     url(r'^deliveries/(?P<course_id>\d+)/browse/(?P<delivery_id>\d+)/(?P<file_to_browse>[\w\-\./]+)/$', views.DeliveryBrowseView.as_view(), name = 'browse_delivery'),

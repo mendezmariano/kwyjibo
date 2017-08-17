@@ -112,7 +112,7 @@ class Shift(models.Model):
     
     def __str__(self):
         """Stringify the Course"""
-        return "{course}-{shift}".format(self.course.name, self.name)
+        return "{course}-{shift}".format(course = self.course.name, shift = self.name)
     
     def get_students(self, uid=None, name=None, email=None):
         partial_query = self.student_set.all()
@@ -226,7 +226,7 @@ class Script(models.Model):
     file = models.FileField(upload_to = SCRIPT_FILES_PATH, max_length=128)
 
     def __str__(self):
-        return "script for assignment {assignment}".format(str(self.assignment))
+        return "script for assignment {assignment}".format(assignment = str(self.assignment))
 
 
 class Student(models.Model):
@@ -255,7 +255,7 @@ class Student(models.Model):
         return self.uid
     
     def get_full_name(self):
-        return "{first_name} {last_name}".format(self.user.first_name, self.user.last_name)
+        return "{first_name} {last_name}".format(first_name = self.user.first_name, last_name = self.user.last_name)
 
     def first_name(self):
         return self.user.first_name

@@ -1,10 +1,11 @@
 import os
+from datetime import date
 
 from django import forms
-
 from django.contrib.auth.models import User
 from django.forms import ModelForm, ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 from kwyjibo.settings import *
 
@@ -56,6 +57,7 @@ class AssignmentForm(forms.ModelForm):
     def clean_deadline(self):
         deadline = self.cleaned_data['deadline']
         today = date(date.today().year, date.today().month, date.today().day)
+        #today = timezone.now()
         if (deadline <= today):
             raise forms.ValidationError(_('The deadline must be in the future'))
         else:
@@ -110,6 +112,8 @@ class StudentForm(forms.ModelForm):
                 raise forms.ValidationError(_('A password must be supplied'))
 
     def clean_passwd_again(self):
+        print(self.data)
+        print(self.cleaned_data)
         passwd = self.data['passwd']
         passwd_again = self.cleaned_data['passwd_again']
         if((passwd or passwd_again) and (not (passwd == passwd_again)) ):

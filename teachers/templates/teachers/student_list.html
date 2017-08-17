@@ -7,13 +7,13 @@
 			{% if shift %}
 				{% trans "shift" %} <b>{{ shift }}</b>
 				<span>&nbsp;</span>
-				<a name="edit-shift" title="{% trans 'edit' %}" class="btn btn-small" href="/teacher/shifts/editshift/{{ current_course.pk }}/{{ shift.pk }}">
+				<a name="edit-shift" title="{% trans 'edit' %}" class="btn btn-small" href="{% url 'teachers:edit_shift' current_course.pk shift.pk %}">
 					<span class="icon-edit"></span>
 				</a>
 			{% endif %}
 		</div>
 		<div class="span4">
-			<a name="newstudent" href="/teacher/students/newstudent/{{ current_course.pk }}/{{ shift.pk }}" class="btn btn-primary pull-right">+ {% trans "newStudent" %}</a>
+			<a name="newstudent" href="{% url 'teachers:new_student_in_shift' current_course.pk shift.pk %}" class="btn btn-primary pull-right">+ {% trans "newStudent" %}</a>
 		</div>
 	</div>
 	<table class="table table-striped">
@@ -42,13 +42,13 @@
 					{% endif %} 
 				</td>
 				<td>
-					<a name="detail{{student.uid}}" title="{% trans 'detail' %}" class="icon-user" href="/teacher/students/detail/{{ current_course.pk }}/{{student.pk}}"></a>
+					<a name="detail{{student.uid}}" title="{% trans 'detail' %}" class="icon-user" href="{% url 'teachers:student_detail' current_course.pk student.pk %}"></a>
 					{% if shift %}
-						<a name="edit{{student.uid}}" title="{% trans 'edit' %}" class="icon-edit" href="/teacher/students/editstudent/{{ current_course.pk }}/{{student.pk}}/{{ shift.pk }}"></a>
+						<a name="edit{{student.uid}}" title="{% trans 'edit' %}" class="icon-edit" href="{% url 'teachers:edit_student' current_course.pk student.pk shift.pk %}"></a>
 					{% else %}
-						<a name="edit{{student.uid}}" title="{% trans 'edit' %}" class="icon-edit" href="/teacher/students/editstudent/{{ current_course.pk }}/{{student.pk}}"></a>
+						<a name="edit{{student.uid}}" title="{% trans 'edit' %}" class="icon-edit" href="{% url 'teachers:edit_student' current_course.pk student.pk %}"></a>
 					{% endif %}
-					<a title="{% trans 'deliveriesList' %}" class="icon-inbox" href="/teacher/students/listdeliveries/{{ current_course.pk }}/{{student.pk}}"></a>	
+					<a title="{% trans 'deliveriesList' %}" class="icon-inbox" href="{% url 'teachers:student_deliveries' current_course.pk student.pk %}"></a>
 				</td>
 			</tr>
 			{% empty %}

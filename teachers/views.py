@@ -562,7 +562,7 @@ class NewShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         courses = Course.objects.all()
 
         form = ShiftForm(initial={'course':course})
-        return render(request, 'teachers/shift_new.html', {
+        return render(request, 'teachers/new_shift.html', {
             'current_course': course,
             'courses': courses,
             'form': form,
@@ -580,7 +580,7 @@ class NewShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         if (form.is_valid()):
             shift.save()
             return redirect('teachers:dashboard', course_id = course_id)
-        return render(request, 'teachers/shift_new.html', {
+        return render(request, 'teachers/new_shift.html', {
             'current_course': course,
             'courses': courses,
             'form': form,
@@ -599,7 +599,7 @@ class EditShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             return HttpResponseBadRequest
 
         form = ShiftForm(instance = shift)
-        return render(request, 'teachers/shift_edit.html', {
+        return render(request, 'teachers/edit_shift.html', {
             'current_course': course,
             'courses': courses,
             'shift': shift,
@@ -620,7 +620,7 @@ class EditShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         if (form.is_valid()):
             shift.save()
             return redirect('teachers:dashboard', course_id = course_id)
-        return render(request, 'teachers/shift_edit.html', {
+        return render(request, 'teachers/edit_shift.html', {
             'current_course': course,
             'courses': courses,
             'shift': shift,
@@ -707,7 +707,6 @@ class StudentsShiftListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View)
         })
 
 
-
 class StudentDetailView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
     def get(self, request, course_id, student_id):
@@ -729,7 +728,7 @@ class NewStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         current_course = courses.get(pk=course_id)
         
         form = StudentForm(initial={'shifts': [shift_id]})
-        return render(request, 'teachers/student_new.html', {
+        return render(request, 'teachers/new_student.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -743,7 +742,7 @@ class NewStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         form = StudentForm(request.POST)
         if (form.is_valid()):
             user = User.objects.create(
-                username = form.data['username'],
+                username = form.data['uid'],
                 email = form.data['email'],
                 first_name = form.data['first_name'],
                 last_name = form.data['last_name'],
@@ -757,7 +756,7 @@ class NewStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             mail = Mail()
             mail = Mail.objects.create(
                     subject = STUDENT_CREATION_MAIL_SUBJECT,
-                    body = STUDENT_CREATION_MAIL_BODY.fromat(
+                    body = STUDENT_CREATION_MAIL_BODY.format(
                             username = user.username,
                             password = form.data['passwd'],
                         ),
@@ -766,7 +765,7 @@ class NewStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
                 )
             student = Student.objects.get(uid=user.username)
             return redirect('teachers:student_detail', course_id = course_id, student_id = student.pk)
-        return render(request, 'teachers/student_new.html', {
+        return render(request, 'teachers/new_student.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
@@ -781,15 +780,18 @@ class EditStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         current_course = courses.get(pk=course_id)
         
         student = Student.objects.get(pk=student_id)
-        form = StudentForm(instance=student, initial={'email': student.user.email, 'first_name': student.user.first_name, 'last_name': student.user.last_name})
-        return render(request, 'teachers/student_edit.html', {
+        form = StudentForm(
+            instance=student,
+            initial={'email': student.user.email, 'first_name': student.user.first_name, 'last_name': student.user.last_name}
+        )
+        return render(request, 'teachers/edit_student.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
             'shift_id': shift_id
         })
 
-    def get(self, request, course_id, student_id, shift_id=None):
+    def post(self, request, course_id, student_id, shift_id=None):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -806,7 +808,7 @@ class EditStudentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             student.user.save()
             form.save()
             return redirect('teachers:student_detail', course_id = course_id, student_id = student.pk)
-        return render(request, 'teachers/student_edit.html', {
+        return render(request, 'teachers/edit_student.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
