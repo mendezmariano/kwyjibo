@@ -34,10 +34,15 @@ class IndexView(LoginRequiredMixin, View):
         user = request.user
         if(Teacher.objects.filter(user_id=user.id)):
             if course_id:
+                course = Course.objects.get(pk = course_id)
+                request.session["current_course_id"] = course.pk
+                request.session["current_course_name"] = course.name
                 return redirect('teachers:dashboard', course_id = course_id)
             else: 
                 course = Course.objects.all().order_by('-name')[:1][0]
                 if course:
+                    request.session["current_course_id"] = course.pk
+                    request.session["current_course_name"] = course.name
                     return redirect('teachers:dashboard', course_id = course.pk)
                 return redirect('teachers:index')
         elif(user.is_superuser):
