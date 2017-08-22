@@ -57,9 +57,8 @@ urlpatterns = [
     url(r'^deliveries/(?P<course_id>\d+)/detail/(?P<delivery_id>\d+)/$', views.DeliveryDetailView.as_view(), name = 'delivery_detail'),
     url(r'^deliveries/(?P<course_id>\d+)/browse/(?P<delivery_id>\d+)/(?P<file_to_browse>[\w\-\./]+)/$', views.DeliveryBrowseView.as_view(), name = 'browse_delivery'),
     url(r'^deliveries/(?P<course_id>\d+)/explore/(?P<delivery_id>\d+)/$', views.DeliveryExploreView.as_view(), name = 'explore_delivery'),
-
-
-    url(r'^correction/(?P<course_id>\d+)/delivery/(?P<delivery_id>\d+)/$', views.CorrectionView.as_view(), name = 'correction'),
+    url(r'^deliveries/(?P<course_id>\d+)/revisions/(?P<delivery_id>\d+)/$', views.RevisionView.as_view(), name = 'delivery_revision'),
+    url(r'^deliveries/(?P<course_id>\d+)/correction/(?P<delivery_id>\d+)/$', views.CorrectionView.as_view(), name = 'correction'),
 
 
     url(r'^suscriptions/(?P<course_id>\d+)/list/(?P<shift_id>\d+)/$', views.ListSuscriptionsView.as_view(), name = 'suscriptions'),
@@ -68,7 +67,6 @@ urlpatterns = [
     url(r'^suscriptions/(?P<course_id>\d+)/pending/$', views.ListPendingSuscriptionsView.as_view(), name='pending_suscriptions'),
 
 
-    url(r'^revisions/(?P<course_id>\d+)/delivery/(?P<delivery_id>\d+)/$', views.RevisionView.as_view(), name = 'details'),
 
 
     #url(r'^export/(?P<course_id>\d+)/$', 'choose'),

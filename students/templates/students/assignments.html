@@ -1,4 +1,4 @@
-{% extends "students/index.html" %}
+{% extends "students/student_base.html" %}
 {% load i18n %}
 {% block content %}
     <div class="row">
@@ -13,16 +13,17 @@
             </tr>
         </thead>
         <tbody>
-            {% for practice in practices %}
+            {% for assignment in assignments %}
             <tr>
-                <td>{{ practice.uid }}</td>
-                <td>{{ practice.deadline }}</td>
+                <td>{{ assignment.uid }}</td>
+                <td>{{ assignment.deadline }}</td>
                 <td>
-                    <a href="/students/practice/practiceFile/{{ practice.pk}}" title="{% trans 'download' %}"><span class="icon-download-alt"></span>
-                    {% if practice.isExpired %}
-                        <span class="icon-minus-sign" title="{% trans 'practiceExpired' %}"></span>
+                    <a href="{% url 'students:assignment_files' course.pk assignment.pk %}" title="{% trans 'download' %}"><span class="icon-download-alt"></span></a>
+                    <a href="{% url 'students:delivery_list' course.pk assignment.pk %}" title="{% trans 'deliveries' %}"><span class="icon-inbox"></span></a>
+                    {% if assignment.is_expired %}
+                        <span class="icon-minus-sign" title="{% trans 'assignmentExpired' %}"></span>
                     {% else %}
-                        <a href="/students/delivery/upload/{{ practice.pk}}" title="{% trans 'makeDelivery' %}"><span class="icon-circle-arrow-up"></span></a>
+                        <a href="{% url 'students:new_delivery' course.pk assignment.pk %}" title="{% trans 'makeDelivery' %}"><span class="icon-circle-arrow-up"></span></a>
                     {% endif %}
                 </td>
             </tr>

@@ -1,0 +1,3 @@
+infinity:
+ - credito pre acordado
+ - nro de gestión: 15251265

@@ -28,7 +28,7 @@ class CourseForm(forms.ModelForm):
 class DeliveryForm(forms.ModelForm):
     class Meta:
         model = Delivery
-        exclude = ('student', 'assignment', 'deliverDate','corrector')
+        exclude = ('student', 'assignment', 'date','corrector')
         
     def clean_file(self):
         data = self.cleaned_data['file']

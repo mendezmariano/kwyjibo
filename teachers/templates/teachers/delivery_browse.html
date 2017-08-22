@@ -22,16 +22,26 @@
         <h5>{% trans "Corrector" %} - <b>{{corrector}}</b></h5>
     </div>
 
-    <div class="row">
-        <form id='formcorrect' action='' method='post'>
-            {% csrf_token %}
-            <table>
-                {{ form.as_table }}
-            </table>
-            <button class="btn btn-primary" type='submit'>{% trans "save" %}</button>
-        </form>
-        <div>
-            <a class="btn btn-small" href="javascript:history.back()"><span class="icon-backward" title="{% trans 'back' %}"></span></a>
-        </div>
-    </div>
+	<div class="row">
+		<div class="span12"><!-- col-sm-12 -->
+			<ul>
+				{% for filepath in files_list %}
+					<li>
+						<a href="{% url 'teachers:browse_delivery' current_course.pk delivery.pk filepath %}" >{{ filepath }}</a>
+					</li>
+				{% empty %}
+					<li>{% trans "noFilesFoundInDelivery" %}</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+<!--
+	<div class="row">
+		<a class="btn btn-small" href="javascript:history.back()"><span class="icon-backward" title="{% trans 'back' %}"></span></a>
+	</div>
+-->
+	{% if file_content %}
+		<pre>{{ file_content }}</pre>
+	{% endif %}
 {% endblock %}

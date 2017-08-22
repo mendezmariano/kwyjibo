@@ -34,10 +34,10 @@
 				</td>
 				<td>{% if delivery_row.correction %} <span class="label label-success">{% trans "corrected" %}</span> {% else %} <span class="label label-warning">{% trans "pending" %}</span> {% endif %} </td>
 				<td>
-					<a name="download{{delivery_row.delivery.pk}}" title="{% trans 'download' %}" class="icon-download" href="/teacher/delivery/download/{{ delivery_row.delivery.pk}}"></a>
-					<a name="autocorrection{{delivery_row.delivery.pk}}" title="{% trans 'automaticCorrection' %}" class="icon-certificate" href="/teacher/automatic_correction/{{ current_course.pk }}/{{ delivery_row.delivery.pk }}"></a>
-					<a name="navigate{{delivery_row.delivery.pk}}" title="{% trans 'navigate' %}" class="icon-folder-open" href="/teacher/delivery/explore/{{ current_course.pk }}/{{ delivery_row.delivery.pk }}"></a>
-					<a name="correct{{delivery_row.delivery.pk}}" title="{% trans 'correct' %}" class="icon-pencil" href="/teacher/correction/{{ current_course.pk }}/{{ delivery_row.delivery.pk}}"></a>
+					<a name="download{{delivery_row.delivery.pk}}" title="{% trans 'download' %}" class="icon-download" href="{% url 'teachers:download_delivery' current_course.pk delivery_row.delivery.pk %}"></a>
+					<a name="autocorrection{{delivery_row.delivery.pk}}" title="{% trans 'automaticCorrection' %}" class="icon-certificate" href="{% url 'teachers:delivery_revision' current_course.pk delivery_row.delivery.pk %}"></a>
+					<a name="navigate{{delivery_row.delivery.pk}}" title="{% trans 'navigate' %}" class="icon-folder-open" href="{% url 'teachers:explore_delivery' current_course.pk delivery_row.delivery.pk %}"></a>
+					<a name="correct{{delivery_row.delivery.pk}}" title="{% trans 'correct' %}" class="icon-pencil" href="{% url 'teachers:correction' current_course.pk delivery_row.delivery.pk %}"></a>
 				</td>
 			</tr>
 			{% empty %}

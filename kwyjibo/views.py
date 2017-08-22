@@ -8,6 +8,8 @@ from django.views.generic import View
 from django.views.generic.base import TemplateView
 from django.utils.translation import ugettext_lazy as _
 
+from mailing.models import Mail
+
 from .forms import *
 
 
@@ -43,7 +45,7 @@ class IndexView(LoginRequiredMixin, View):
         elif(Student.objects.filter(user_id=user.id).exists()):
             student = Student.objects.get(user_id=user.id)
             if (student.shifts.all().count() == 1):
-                return redirect('students:index', course_id = student.shifts.all()[0].course.pk)
+                return redirect('students:assignments', course_id = student.shifts.all()[0].course.pk)
             else:
                 return redirect('students:index')
         else:
@@ -78,7 +80,7 @@ class SignUpView(View):
                 student.save()
             
             mail = Mail()
-            mail.save_mail(SUBJECTMAIL, BODYMAIL % (user.username), user.email)
+            mail.save_mail(SUBJECTMAIL, BODYMAIL.format(username = user.username), user.email)
             return render(request, 'registration/registration-success.html')
         return render(request, 'registration/register.html', {'form': form,})
 

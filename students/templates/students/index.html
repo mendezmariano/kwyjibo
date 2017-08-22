@@ -1,4 +1,4 @@
-{% extends "students/students.html" %}
+{% extends "students/student_base.html" %}
 {% load i18n %}
 {% comment %}
     Main page of the Student's portal.
@@ -16,7 +16,7 @@
         <tbody>
         {% for shift in shifts %}
             <tr>
-                <td><a href="/students/practice/list/{{shift.course.pk}}">{{ shift }}</a></td>
+                <td><a href="{% url 'students:assignments' shift.course.pk %}">{{ shift }}</a></td>
             </tr>
         {% empty %}
             <tr><td>{% trans "noShiftsToEnroll" %}</td></tr>

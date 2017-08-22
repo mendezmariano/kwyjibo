@@ -1,0 +1,39 @@
+{% extends "students/student_base.html" %}
+{% load i18n %}
+{% block content %}
+    <div class="row">
+        {% trans "uploadDeliveryForPractice" %} <b>{{assignment.name}}</b>
+    </div>
+    <form class="form-horizontal" method="post" enctype='multipart/form-data'>
+        {% csrf_token %}
+        <div class="row" style="padding: 25px 0;">
+            <div class="span6">
+                {% for field in form %}
+                    {% if form.file.errors %}
+                        <div class="span0 control-group error">
+                            <label class="control-label">{{ form.file.label }}</label> 
+                            <div class="controls">{{ form.file }}
+                                <span class="help-inline">
+                                    {% for error in  form.file.errors %}{{ error }}{% endfor %}
+                                </span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="span0 control-group">
+                            <label class="control-label">{{ form.file.label }}</label> 
+                            <div class="controls">{{ form.file }}
+                                {% if form.file.help_text %}
+                                    <p class="help-inline"><small>{{ form.file.help_text }}</small></p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="span1"><button type="submit" style="padding: 2px 22px;">{% trans "submit" %}</button></div>
+        </div>
+    </form>
+    <footer>
+        <a class="btn btn-small" href="{% url 'students:assignments' course.pk %}"><span class="icon-backward" title="{% trans 'back' %}"></span></a>
+    </footer>
+{% endblock %}

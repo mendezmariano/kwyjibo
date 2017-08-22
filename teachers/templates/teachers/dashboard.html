@@ -21,7 +21,7 @@
 				{% for shift in current_course.shift_set.all %}
 				<div class="row-fluid">
 					<div class="span12 btn side-btn" onclick="location='{% url 'teachers:student_shift_list' current_course.pk shift.pk %}'">
-						<span>{% trans 'shift' %} {{ shift.name }}</span>
+						<span>{{ shift.name }}</span>
 						<hr class="thin" />
 						<span class="pull-right icon-user alignment-margin"></span><span class="pull-right pulled-margin"><b>{{ shift.student_set.count }}</b></span>
 					</div>

@@ -41,8 +41,8 @@ class UserHasTeacherAccessLevel(AccessMixin):
         user_test_result = self.test_teacher(*args, **kwargs)
         if not user_test_result:
             return self.handle_no_permission()
-        print("args: {args}".format(args = args))
-        print("kwargs: {kwargs}".format(kwargs = kwargs))
+        #print("args: {args}".format(args = args))
+        #print("kwargs: {kwargs}".format(kwargs = kwargs))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -55,12 +55,14 @@ class RevisionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         courses = Course.objects.all()
         
         delivery = Delivery.objects.get(pk=delivery_id)
-        automatic_correction = delivery.get_automatic_correction()
+        revision = Revision.objects.filter(delivery = delivery)[0]
         return render(request, 'teachers/revision_details.html', {
             'current_course': current_course,
             'courses': courses,
-            'automatic_correction': automatic_correction,
-            'assignment': delivery.assignment
+            'delivery': delivery,
+            'revision': revision,
+            'assignment': delivery.assignment,
+            'delivery_detail': delivery.file.name.split('/')[-1],
         })
 
 
@@ -75,14 +77,17 @@ class CorrectionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         delivery = Delivery.objects.get(pk=delivery_id)
         correction = Correction.objects.filter(delivery=delivery)
         if correction:
-            form = CorrectionForm(instance=correction)
+            form = CorrectionForm(instance=correction[0])
         else:
             form = CorrectionForm()
         return render(request, 'teachers/grade_delivery.html', {
             'current_course' : current_course,
             'courses' : courses,
             'form': form,
+            'assignment': delivery.assignment,
             'delivery': delivery,
+            'delivery_detail': delivery.file.name.split('/')[-1],
+            'revision': delivery.revision,
             'corrector': delivery.student.corrector,
         })
 
@@ -93,8 +98,11 @@ class CorrectionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         teacher = Teacher.objects.get(user=request.user)
         delivery = Delivery.objects.get(pk=delivery_id)
 
-        deletable_correction = Correction.objects.filter(delivery=delivery)
-        correction = Correction(delivery=delivery)
+        previous_correction = Correction.objects.filter(delivery=delivery)
+        if not previous_correction:
+            correction = Correction(delivery=delivery)
+        else:
+            correction = previous_correction[0]
         correction.corrector = teacher
         form = CorrectionForm(request.POST, instance=correction)
         if (form.is_valid()):
@@ -103,22 +111,23 @@ class CorrectionView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             delivery.student.save()
             mail = Mail.objects.create(
                     subject = CORRECTION_NOTIFICATION_MAIL_SUBJECT,
-                    body = CORRECTION_NOTIFICATION_MAIL_BODY.fromat(
+                    body = CORRECTION_NOTIFICATION_MAIL_BODY.format(
                         assignment = correction.delivery.assignment.uid,
-                        comment = correction.public_comment,
+                        comment = correction.feedback,
                         grade = correction.grade,),
                     recipient = delivery.student.user.email,
                     reply_address = CORRECTION_NOTIFICATION_MAIL_REPLY_ADDRESS,
                 )
-            if deletable_correction:
-                deletable_correction.delete()
             return redirect('teachers:dashboard', course_id = course_id)
         else:
             return render(request, 'teachers/grade_delivery.html', {
                 'current_course' : current_course,
                 'courses' : courses,
                 'form': form,
+                'assignment': delivery.assignment,
                 'delivery': delivery,
+                'delivery_detail': delivery.file.name.split('/')[-1],
+                'revision': delivery.revision,
                 'corrector': delivery.student.corrector,
             })
 
@@ -220,7 +229,8 @@ class DeliveryListView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         table_deliveries = []
         deliveries = Delivery.objects.filter(assignment=assignment).order_by('date')
         for delivery in deliveries:
-            table_deliveries.append({'delivery': delivery, 'correction': delivery.correction})
+            correction = Correction.objects.filter(delivery=delivery)
+            table_deliveries.append({'delivery': delivery, 'correction': correction})
         return render(request, 'teachers/delivery_full_list.html', {
             'current_course' : current_course,
             'courses' : courses,
@@ -303,7 +313,7 @@ def walk_directory(files_list, path, relative_path):
 
 class DeliveryBrowseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def get(self, request, course_id, delivery_id, file_to_browse=None):
+    def get(self, request, course_id, delivery_id, file_to_browse):
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
@@ -326,7 +336,10 @@ class DeliveryBrowseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         return render(request, 'teachers/delivery_browse.html', {
             'current_course' : current_course,
             'courses' : courses,
+            'assignment': delivery.assignment,
             'delivery': delivery,
+            'delivery_detail': delivery.file.name.split('/')[-1],
+            'revision': delivery.revision,
             'files_list': files_list,
             'file_content': file_content,
         })
@@ -334,10 +347,33 @@ class DeliveryBrowseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
 class DeliveryExploreView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
-    def explore(request, idcourse, iddelivery):
-        if(os.path.exists(BROWSE_DELIVERIES_PATH, str(iddelivery))):
-            shutil.rmtree(BROWSE_DELIVERIES_PATH, str(iddelivery))
-        return browse(request, idcourse, iddelivery)
+    def get(self, request, course_id, delivery_id):
+        if(os.path.exists(os.path.join(BROWSE_DELIVERIES_PATH, str(delivery_id)))):
+            shutil.rmtree(BROWSE_DELIVERIES_PATH, str(delivery_id))
+
+        courses = Course.objects.all()
+        current_course = courses.get(pk=course_id)
+        
+        delivery = Delivery.objects.get(pk=delivery_id);
+        extraction_dir = os.path.join(BROWSE_DELIVERIES_PATH, str(delivery.pk))
+        if (not os.path.exists(extraction_dir)):
+            zipfile = ZipFile(delivery.file)
+            zipfile.extractall(extraction_dir)
+        
+        files_list = []
+        walk_directory(files_list, extraction_dir, None)
+
+        file_content = None
+        return render(request, 'teachers/delivery_browse.html', {
+            'current_course' : current_course,
+            'courses' : courses,
+            'assignment': delivery.assignment,
+            'delivery': delivery,
+            'delivery_detail': delivery.file.name.split('/')[-1],
+            'revision': delivery.revision,
+            'files_list': files_list,
+            'file_content': file_content,
+        })
 
 
 class DashboardView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
@@ -361,7 +397,7 @@ class DashboardView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             deliveries = Delivery.objects.filter(student=student, assignment__course=current_course)
             for delivery in deliveries:
                 correction = Correction.objects.filter(delivery=delivery)
-                status = delivery.get_automatic_correction().get_status()
+                status = delivery.revision.status
                 if (status == "successfull"):
                     table_deliveries.append({'delivery': delivery, 'correction':correction})
         return render(request, 'teachers/dashboard.html', {
@@ -442,11 +478,16 @@ class UploadAssignmentsScriptView(LoginRequiredMixin, UserHasTeacherAccessLevel,
         current_course = courses.get(pk=course_id)
         
         assignment = Assignment.objects.get(pk=assignment_id)
+        script = Script.objects.filter(assignment = assignment)
         script_text = ''
-        if(assignment.get_script()):
-            form = AssignmentScriptForm(instance=assignment.get_script())
-            script_file = open(assignment.get_script().file.name, "r")
-            script_text = script_file.read()
+        if(script):
+            script = script[0]
+            form = AssignmentScriptForm(instance=script)
+            script_file = open(script.file.name, "r")
+            try:
+                script_text = script_file.read()
+            except:
+                script_text = _("File cannot be read. Is it text?")
             script_file.close()
         else:
             form = AssignmentScriptForm()
@@ -456,6 +497,7 @@ class UploadAssignmentsScriptView(LoginRequiredMixin, UserHasTeacherAccessLevel,
             'form': form,
             'assignment': assignment,
             'course_id': course_id,
+            'script': script,
             'script_text': script_text
         })
 
@@ -596,8 +638,8 @@ class EditShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         courses = Course.objects.all()
         
         shift = Shift.objects.get(pk=shift_id)
-        if (course_id != shift.course.pk):
-            return HttpResponseBadRequest
+        if (int(course_id) != shift.course.pk):
+            return HttpResponseBadRequest()
 
         form = ShiftForm(instance = shift)
         return render(request, 'teachers/edit_shift.html', {
@@ -613,10 +655,10 @@ class EditShiftView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         courses = Course.objects.all()
 
         course = Course.objects.get(pk = course_id)
-        shift = Shift(course = course)
-        if (course_id != shift.course.pk):
-            return HttpResponseBadRequest
-
+        shift = Shift.objects.filter(course = course)
+        if ((not shift.exists()) or int(course_id) != shift[0].course.pk):
+            return HttpResponseBadRequest()
+        shift = shift[0]
         form = ShiftForm(request.POST, instance = shift)
         if (form.is_valid()):
             shift.save()
@@ -893,7 +935,7 @@ class StudentSearchView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
         form = StudentSearchForm()
         students = []
-        return render(request,'student_search.html', {
+        return render(request,'teachers/student_search.html', {
             'current_course' : current_course,
             'courses' : courses, 
             'query': data,
@@ -909,7 +951,7 @@ class StudentSearchView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         data = form.data['data_search']
         students = Student.objects.filter(Q(uid__icontains = data) | Q(user__first_name__icontains = data) | 
                                               Q(user__last_name__icontains = data))
-        return render(request,'student_search.html', {
+        return render(request,'teachers/student_search.html', {
             'current_course' : current_course,
             'courses' : courses, 
             'query': data,

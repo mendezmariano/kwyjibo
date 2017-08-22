@@ -1,0 +1,29 @@
+{% extends "students/student_base.html" %}
+{% load i18n %}
+{% block content %}
+    <div>
+        <div>
+            <div class="row">
+                <h3>{% trans "correctionPractice" %}:</h3>
+            </div>
+            <div class="row"><h4>{% trans 'Assignment' %}: <b>{{ assignment.uid }}</b></h4></div>
+            <div class="row"><h4>{{ delivery.date|date:"SHORT_DATETIME_FORMAT" }} - {{ delivery_detail }}</h4></div>
+            {% if correction %}
+                <div class="row" style="padding-top: 25px;">
+                    <span>{% trans 'Grade' %}: <b>{{ correction.grade }}</b></span>
+                </div>
+                <div class="row" style="padding-bottom: 25px;">
+                    <h5>{{ correction.feedback }}</h5>
+                </div>
+            {% else %}
+                <div class="row" style="padding: 25px 0;>
+                    <p">{% trans 'This delivery has not been corrected yet.' %}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        <a class="btn btn-small" href="{% url 'students:delivery_list' course.pk assignment.pk %}"><span class="icon-backward" title="{% trans 'back' %}"></span></a>
+    </footer>
+{% endblock %}

@@ -1,5 +1,6 @@
 import mimetypes
 
+from datetime import date
 from decimal import Decimal
 
 from django.contrib.auth.models import User
@@ -306,10 +307,10 @@ class Delivery(models.Model):
     
     def __str__(self):
         """Stringify the Delivery"""
-        return (str(self.assignment) + " - " + str(self.student) + " - " + str(self.deliverDate))
+        return (str(self.assignment) + " - " + str(self.student) + " - " + str(self.date))
     
     def full_date(self):
-        return self.deliverDate.strftime('%Y-%m-%d') + " " + self.deliverTime.strftime('%H:%M:%S')
+        return self.date.strftime('%Y-%m-%d %H:%M:%S')
     
     class Meta:
         ordering = ('-date', )

@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^students/', include('students.urls')),
 
     url('^', include('django.contrib.auth.urls')),
+    url(r'^captcha/', include('captcha.urls')),
 
 
 ]

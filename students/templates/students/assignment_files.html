@@ -1,0 +1,34 @@
+{% extends "students/student_base.html" %}
+{% load i18n %}
+{% block content %}
+    <div class="row">
+        {% trans "filesOfPractice" %} <b>{{ assignment.name }}</b>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{% trans "name" %}</th>
+                <th>{% trans "actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in assignment_files %}
+            <tr>
+                <td>{{ file.name }}</td>
+                <td>
+                    <a href="{% url 'students:download_assignment_file' course.pk assignment.pk file.pk %}" title="{% trans 'download' %}">
+                        <span class="icon-circle-arrow-down"></span>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">{% trans "noFilesBounded" %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <footer>
+        <a class="btn btn-small" href="{% url 'students:assignments' course.pk %}"><span class="icon-backward" title="{% trans 'back' %}"></span></a>
+    </footer>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "teachers/teacher_base.html" %}
+{% load i18n %}
+{% block content %}
+    <div class="row">
+        <h3>{{ delivery.student.uid }} - {{ delivery.student.first_name }} {{ delivery.student.last_name }} / {{ assignment.uid }}</h3>
+    </div>
+    <div class="row"><h4>{{ delivery.date|date:"SHORT_DATETIME_FORMAT" }} - {{ delivery_detail }}</h4></div>
+    <div class="row">
+        <h4>{% trans "Auto-revision result" %}:
+            <span style="font-weight: bold; color: 
+            {% if revision.status == 'SUCCESSFUL' %}
+                green
+            {% elif revision.status == 'PENDING' %}
+                gray
+            {% else %}
+                red
+            {% endif %}
+            ;">
+                {{ revision.status }}
+            </span>
+        </h4>
+    </div>
+    {% if revision.status != 'PENDING' %}
+        <div class="row">
+            <div class="output-container" >
+                <pre class="output-container" >{{ revision.captured_stdout }}</pre>
+            </div>
+        </div>
+    {% endif %}
+<!--
+    <footer>
+        <a class="btn btn-small" href="{-% url 'students:delivery_list' course.pk assignment.pk %}"><span class="icon-backward" title="{% trans 'back' %}"></span></a>
+    </footer>
+-->
+{% endblock %}

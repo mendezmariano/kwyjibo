@@ -1,0 +1,38 @@
+{% extends "students/student_base.html" %}
+{% load i18n %}
+{% block content %}
+    <div>
+        <div>
+            <div class="row">
+                <h3>{% trans "automaticCheckResult" %}:
+                    <span style="font-weight: bold; color: 
+                    {% if revision.status > 0 %}
+                        green
+                    {% else %}
+                        red
+                    {% endif %}
+                    ;">
+                        {{ revision.status.get_label }}
+                    </span>
+                </h3>
+            </div>
+            <div class="row"><h4>{% trans 'Assignment' %}: <b>{{ assignment.uid }}</b></h4></div>
+            <div class="row"><h4>{{ delivery.date|date:"SHORT_DATETIME_FORMAT" }} - {{ delivery_detail }}</h4></div>
+            {% if revision.status != 'PENDING' %}
+                <div class="row">
+                    <div class="output-container" >
+                        <pre class="output-container" >{{ revision.captured_stdout }}</pre>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row" style="padding: 25px 0;>
+                    <p">{% trans "This delivery's revision is still pending." %}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        <a class="btn btn-small" href="{% url 'students:delivery_list' course.pk assignment.pk %}"><span class="icon-backward" title="{% trans 'back' %}"></span></a>
+    </footer>
+{% endblock %}

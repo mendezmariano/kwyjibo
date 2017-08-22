@@ -1,0 +1,53 @@
+{% extends "students/student_base.html" %}
+{% load i18n %}
+{% block content %}
+    <div class="row">
+        {% trans "deliveriesFromPractice" %} <b>{{assignment.name}}</b>
+    </div>
+    <table class="table table-striped">
+        <thead style="text-align: center; ">
+            <tr>
+                <th>{% trans "uidDelivery" %}</th>
+                <th>{% trans "deliveryDate" %}</th>
+                <th>{% trans "status" %}</th>
+                <th>{% trans "automaticCorrection" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for delivery in deliveries %}
+            <tr>
+                <td>{{ delivery.pk }}</td>
+                <td>{{ delivery.full_date }}</td>
+                <td>
+                    {% if delivery.correction %}
+                        <span class="label label-{% if delivery.correction.grade >= 4 %}success{% else %}warning{% endif %}">{% trans "corrected" %}</span>
+                    {% else %}
+                        <span class="label label-important">{% trans "uncorrected" %}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if delivery.revision.status.get_label == 'successfull' %}
+                        <span class="label label-success">{% trans "successfull" %}</span>
+                    {% elif delivery.revision.status.get_label == 'failed' %}
+                        <span class="label label-important">{% trans "failed" %}</span>
+                    {% else %}
+                        <span class="label label-warning">{% trans "pending" %}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a title="{% trans 'automaticCorrection' %}" class="icon-asterisk" href="{% url 'students:revision_details' course.pk assignment.pk delivery.pk %}"></a>
+                    <a name="correct{{delivery_row.delivery.pk}}" title="{% trans 'correct' %}" class="icon-pencil" href="{% url 'students:correction_details' course.pk assignment.pk delivery.pk %}"></a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">{% trans "noDeliveriesPractice" %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <footer>
+        <a class="btn btn-small" href="{% url 'students:assignments' course.pk %}"><span class="icon-backward" title="{% trans 'back' %}"></span></a>
+    </footer>
+{% endblock %}
