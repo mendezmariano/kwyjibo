@@ -124,6 +124,8 @@ Listen *:80
 
     #==========================#
 
+# CHROOT installation
+See chroot-setup.md
 
 ## API Reference
 

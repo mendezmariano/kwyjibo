@@ -2,15 +2,15 @@
 {% load i18n %}
 {% block content %}
     <div class="row">
-        {% trans "deliveriesFromPractice" %} <b>{{assignment.name}}</b>
+        {% trans "Deliveries for" %} <b>{{assignment.name}}</b>
     </div>
     <table class="table table-striped">
         <thead style="text-align: center; ">
             <tr>
-                <th>{% trans "uidDelivery" %}</th>
-                <th>{% trans "deliveryDate" %}</th>
-                <th>{% trans "status" %}</th>
-                <th>{% trans "automaticCorrection" %}</th>
+                <th>{% trans "ID" %}</th>
+                <th>{% trans "Date" %}</th>
+                <th>{% trans "Correction Status" %}</th>
+                <th>{% trans "Revision Status" %}</th>
                 <th>{% trans "Actions" %}</th>
             </tr>
         </thead>
@@ -21,28 +21,28 @@
                 <td>{{ delivery.full_date }}</td>
                 <td>
                     {% if delivery.correction %}
-                        <span class="label label-{% if delivery.correction.grade >= 4 %}success{% else %}warning{% endif %}">{% trans "corrected" %}</span>
+                        <span class="label label-{% if delivery.correction.grade >= 4 %}success{% else %}warning{% endif %}">{% trans "Corrected" %}</span>
                     {% else %}
-                        <span class="label label-important">{% trans "uncorrected" %}</span>
+                        <span class="label label-important">{% trans "Uncorrected" %}</span>
                     {% endif %}
                 </td>
                 <td>
-                    {% if delivery.revision.status.get_label == 'successfull' %}
-                        <span class="label label-success">{% trans "successfull" %}</span>
-                    {% elif delivery.revision.status.get_label == 'failed' %}
-                        <span class="label label-important">{% trans "failed" %}</span>
+                    {% if delivery.revision.status == 'SUCCESSFUL' %}
+                        <span class="label label-success">{% trans "Successfull" %}</span>
+                    {% elif delivery.revision.status == 'FAILED' %}
+                        <span class="label label-important">{% trans "Failed" %}</span>
                     {% else %}
-                        <span class="label label-warning">{% trans "pending" %}</span>
+                        <span class="label label-warning">{% trans "Pending" %}</span>
                     {% endif %}
                 </td>
                 <td>
-                    <a title="{% trans 'automaticCorrection' %}" class="icon-asterisk" href="{% url 'students:revision_details' course.pk assignment.pk delivery.pk %}"></a>
-                    <a name="correct{{delivery_row.delivery.pk}}" title="{% trans 'correct' %}" class="icon-pencil" href="{% url 'students:correction_details' course.pk assignment.pk delivery.pk %}"></a>
+                    <a title="{% trans 'Revision' %}" class="icon-asterisk" href="{% url 'students:revision_details' course.pk assignment.pk delivery.pk %}"></a>
+                    <a name="correct{{delivery_row.delivery.pk}}" title="{% trans 'Correct' %}" class="icon-pencil" href="{% url 'students:correction_details' course.pk assignment.pk delivery.pk %}"></a>
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4">{% trans "noDeliveriesPractice" %}</td>
+                <td colspan="4">{% trans "There are no deliveries for this assignment" %}</td>
             </tr>
             {% endfor %}
         </tbody>

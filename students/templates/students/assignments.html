@@ -2,14 +2,14 @@
 {% load i18n %}
 {% block content %}
     <div class="row">
-        {% trans "practiceOfShift" %} <b>{{ shift }}</b>
+        {% trans "Assignments for" %} <b>{{ shift }}</b>
     </div>
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>{% trans "practiceName" %}</th>
-                <th>{% trans "deadLine" %}</th>
-                <th>{% trans "actions" %}</th>
+                <th>{% trans "Name" %}</th>
+                <th>{% trans "Deadline" %}</th>
+                <th>{% trans "Actions" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -21,15 +21,15 @@
                     <a href="{% url 'students:assignment_files' course.pk assignment.pk %}" title="{% trans 'download' %}"><span class="icon-download-alt"></span></a>
                     <a href="{% url 'students:delivery_list' course.pk assignment.pk %}" title="{% trans 'deliveries' %}"><span class="icon-inbox"></span></a>
                     {% if assignment.is_expired %}
-                        <span class="icon-minus-sign" title="{% trans 'assignmentExpired' %}"></span>
+                        <span class="icon-minus-sign" title="{% trans 'expired' %}"></span>
                     {% else %}
-                        <a href="{% url 'students:new_delivery' course.pk assignment.pk %}" title="{% trans 'makeDelivery' %}"><span class="icon-circle-arrow-up"></span></a>
+                        <a href="{% url 'students:new_delivery' course.pk assignment.pk %}" title="{% trans 'post a delivery' %}"><span class="icon-circle-arrow-up"></span></a>
                     {% endif %}
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4">{% trans "thereNoPractices" %}</td>
+                <td colspan="4">{% trans "There are no assignments for this shift yet." %}</td>
             </tr>
             {% endfor %}
         </tbody>
