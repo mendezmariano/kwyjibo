@@ -22,6 +22,15 @@ if pid:
 
     txt = r.read()
     os.waitpid(pid, 0) # make sure the child process gets cleaned up
+    
+    #if the result has been obtained, the is no point on keeping the timer alive
+    if process_timer.ran:
+        print("Execution has been terminated for exceding the timeout limit.")
+    else:
+        process_timer.cancel_timer()
+        print("Process finished correctly without exceding timeout limit.")
+
+
 else:
     # we are the child
     os.close(r)
@@ -47,13 +56,5 @@ else:
     print(captured_stdout)
     sys.exit(exit_value)
 
-
-
-#if the result has been obtained, the is no point on keeping the timer alive
-if process_timer.ran:
-    print("Execution has been terminated for exceding the timeout limit.")
-else:
-    process_timer.cancel_timer()
-    print("Process finished correctly without exceding timeout limit.")
 
 print("parent: got it; text =", txt)
