@@ -1,4 +1,5 @@
 import os, shutil, subprocess
+from timeout import ProcessTimeout
 
 os.chroot('/var/chroot')
 
@@ -15,7 +16,7 @@ print("directory changed successfully to: " + os.getcwd())
 process = subprocess.Popen([script], shell=True, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
 
 
-process_timer = ProcessTimeout(process, RunScriptCommand.TIME_OUT)
+process_timer = ProcessTimeout(process, 10)
 process_timer.start_timer()
 print("Process timeout timer launched")
 

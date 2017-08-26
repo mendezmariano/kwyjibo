@@ -5,6 +5,7 @@ $ sudo apt-get install build-essential checkinstall
 $ sudo apt-get install libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
 $ sudo apt-get install gettext libz-dev libjpeg-dev libfreetype6-dev libmysqlclient-dev
 $ sudo apt-get install apache2-dev libapache2-mod-wsgi-py3
+$ sudo apt-get install psutils
 
 # Instalación de Python 3.6.2
 $ mkdir /tmp/py-install

@@ -8,4 +8,4 @@ echo "Linea cuerda" >> $TMP
 
 grep 'loca' $TMP
 
-exit($?)
+exit $?
