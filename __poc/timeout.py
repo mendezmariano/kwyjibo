@@ -20,7 +20,7 @@ class ProcessTimeout:
 
     def killtree(self):
         parent = psutil.Process(self.pid)
-        for child in parent.get_children(recursive=True):
+        for child in parent.children(recursive=True):
             print("killing pid %d", child.pid)
             # child.kill()
             os.kill(child.pid, signal.SIGKILL)

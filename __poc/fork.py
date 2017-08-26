@@ -22,7 +22,7 @@ if pid:
 
     txt = r.read()
     os.waitpid(pid, 0) # make sure the child process gets cleaned up
-    
+
     #if the result has been obtained, the is no point on keeping the timer alive
     if process_timer.ran:
         print("Execution has been terminated for exceding the timeout limit.")
@@ -35,9 +35,7 @@ else:
     # we are the child
     os.close(r)
     w = os.fdopen(w, 'w')
-    print("child: writing")
     
-
     import os, shutil, subprocess
 
     # move to the jail
