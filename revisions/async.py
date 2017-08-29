@@ -4,5 +4,6 @@ from services import RevisionBatchService
 
 @kronos.register('*/5 * * * *')
 def run_revisions():
+    print("Running revisions...")
     service = RevisionBatchService()
     service.run_batch()
