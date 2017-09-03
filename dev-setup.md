@@ -1,19 +1,27 @@
 ## Instalación de un ambiente de desarrollo para el proyecto
 
+# Servidor de base de datos
+$ sudo apt-get install mysql-server
+
+# Web-server
+$ sudo apt-get install apache2
+
 # Dependencias de python previas a la instalación
 $ sudo apt-get install build-essential checkinstall
 $ sudo apt-get install libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
 $ sudo apt-get install gettext libz-dev libjpeg-dev libfreetype6-dev libmysqlclient-dev
 $ sudo apt-get install apache2-dev libapache2-mod-wsgi-py3
+
+NO INSTALAR ESTO
 $ sudo apt-get install psutils
 
 # Instalación de Python 3.6.2
 $ mkdir /tmp/py-install
 $ cd /tmp/py-install
 $ wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tgz
-$ tar zxvf Python-3.6.2.tgz 
+$ tar zxvf Python-3.6.2.tgz
 $ cd Python-3.6.2
-$ ./configure --prefix=/usr/local/lib/python3.6.2/
+$ ./configure --prefix=/usr/local/lib/python3.6.2/ --enable-shared
 $ make
 $ sudo make install
 

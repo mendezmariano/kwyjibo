@@ -29,6 +29,7 @@ Ver dev-setup.md
   * Enabling apache mods.
     $ sudo a2enmod headers
 
+
   # WSGI: check https://modwsgi.readthedocs.io/en/develop/user-guides/quick-installation-guide.html
   * $ cd /tmp
   * $ mkdir mod_wsgi
@@ -59,28 +60,32 @@ Listen *:80
     LanguagePriority es
     ForceLanguagePriority Prefer
 
-    Alias /robots.txt /var/www/kwyjibo/static/robots.txt
-    Alias /favicon.ico /var/www/kwyjibo/static/favicon.ico
+    Alias /robots.txt /var/www/kwyjiroot/kwyjibo/static/robots.txt
+    Alias /favicon.ico /var/www/kwyjiroot/kwyjibo/static/favicon.ico
 
-    Alias /media/ /var/www/kwyjibo/media/
-    Alias /static/ /var/www/kwyjibo/static/
+    Alias /media/ /var/www/kwyjiroot/kwyjibo/media/
+    Alias /static/ /var/www/kwyjiroot/kwyjibo/static/
 
-    <Directory /var/www/kwyjibo/static>
+    <Directory /var/www/kwyjiroot/kwyjibo/static>
       Require all granted
     </Directory>
 
-    <Directory /var/www/kwyjibo/media>
+    <Directory /var/www/kwyjiroot/kwyjibo/media>
       Require all granted
     </Directory>
 
-    WSGIDaemonProcess kwyjibo processes=2 threads=15 python-path=/var/www/kwyjibo inactivity-timeout=60 display-name=[wsgi-kwyjibo]httpd
+    WSGIDaemonProcess kwyjibo processes=2 threads=15 python-home=/var/www/kwyjiroot/env python-path=/var/www/kwyjiroot/kwyjibo inactivity-timeout=60 display-name=[wsgi-kwyjibo]httpd
     WSGIProcessGroup kwyjibo
-    WSGIScriptAlias / /var/www/kwyjibo/mrm/wsgi.py
+    WSGIScriptAlias / /var/www/kwyjiroot/kwyjibo/kwyjibo/wsgi.py
 
-    <Directory /var/www/kwyjibo/mrm>
+    <Directory /var/www/kwyjiroot/kwyjibo/kwyjibo>
       <Files wsgi.py>
         Require all granted
       </Files>
+    </Directory>
+
+    <Directory /var/www/kwyjiroot/env>
+      Require all granted
     </Directory>
 </VirtualHost>
 [END CONF]
