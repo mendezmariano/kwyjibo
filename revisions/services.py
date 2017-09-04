@@ -36,7 +36,7 @@ class RevisionRunnerService(object):
     def __init__(self):
         super(RevisionRunnerService, self).__init__()
         self.env_setup_service = EnviromentSetupService()
-        self.safe_code_runner = SafeForeignCodeRunner()
+        self.safe_code_runner = SafeCodeRunner()
         self.publish_result_visitors = (PublishResultsVisitorWeb(), 
                                         PublishResultsVisitorMail(),)
 
