@@ -46,7 +46,7 @@ class SafeCodeRunner(object):
     Service to run delivered code safely within a jail
     """
     def __init__(self):
-        super(SafeForeignCodeRunner, self).__init__()
+        super(SafeCodeRunner, self).__init__()
         # self.arg = arg
         
     def execute(self, script_name):
