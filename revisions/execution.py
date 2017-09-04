@@ -94,7 +94,7 @@ class SafeCodeRunner(object):
 
         current_dir = os.getcwd()
         script_dir = EXECUTION_ROOT
-        script = os.join(EXECUTION_ROOT, script_name)
+        script = os.path.join(EXECUTION_ROOT, script_name)
 
         process = subprocess.Popen([script], shell=True, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
 
