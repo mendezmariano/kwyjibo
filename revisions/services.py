@@ -52,10 +52,10 @@ class RevisionRunnerService(object):
         script = assignment.script
         
         # Prepare
-        self.env_setup_service.setup(revision)
+        self.env_setup_service.setup(revision, EXECUTION_ROOT)
 
         # Run
-        result = self.safe_code_runner.execute(os.path.join(MEDIA_ROOT, script.file))
+        result = self.safe_code_runner.execute(EXECUTION_ROOT + "/" + os.path.basename(revision.delivery.assignment.script))
         result.revision = revision
 
         # Share the results
