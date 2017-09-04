@@ -17,7 +17,7 @@ class RevisionBatchService(object):
     """
 
     def __init__(self):
-        super(ReviseDeliveryService, self).__init__()
+        super(RevisionBatchService, self).__init__()
         self.revision_runner = RevisionRunnerService()
     
     def run_batch(self):
@@ -34,7 +34,7 @@ class RevisionRunnerService(object):
     """
 
     def __init__(self):
-        super(ReviseDeliveryService, self).__init__()
+        super(RevisionRunnerService, self).__init__()
         self.env_setup_service = EnviromentSetupService()
         self.safe_code_runner = SafeForeignCodeRunner()
         self.publish_result_visitors = (PublishResultsVisitorWeb(), 
