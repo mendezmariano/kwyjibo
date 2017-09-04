@@ -59,7 +59,7 @@ class SafeCodeRunner(object):
 
 
 
-    def parent(pid, r, w):
+    def parent(self, pid, r, w):
         os.close(w) # use os.close() to close a file descriptor
         r = os.fdopen(r) # turn r into a file object
         print("Fork made, setting timeout...")
@@ -85,7 +85,7 @@ class SafeCodeRunner(object):
         return result
 
 
-    def child(r, w, script_name):
+    def child(self, r, w, script_name):
         os.close(r)
         w = os.fdopen(w, 'w')
 

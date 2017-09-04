@@ -44,7 +44,7 @@ class RevisionRunnerService(object):
     def run(self, revision):
         print("Now processing revision <{id} - {date}::{student} / {assignment}>".format(
             id = revision.pk,
-            date = revision.delivery.date,
+            date = iso revision.delivery.date.isoformat(),
             student = revision.delivery.student.get_full_name(),
             assignment = revision.delivery.assignment.uid,
         ))
