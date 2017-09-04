@@ -2,6 +2,7 @@ import os, psutil, signal
 
 from threading import Timer
 
+from kwyjibo.settings import *
 from teachers.models import *
 
 from .local_settings import *
@@ -54,7 +55,7 @@ class RevisionRunnerService(object):
         self.env_setup_service.setup(revision)
 
         # Run
-        result = self.safe_code_runner.execute(os.(script.file))
+        result = self.safe_code_runner.execute(os.path.join(MEDIA_ROOT, script.file))
         result.revision = revision
 
         # Share the results
