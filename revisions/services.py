@@ -25,7 +25,7 @@ class RevisionBatchService(object):
         print("Running revisions...")
         for revision in revisions:
             self.revision_runner.run(revision)
-            revision.save()
+            # revision.save()
 
 
 class RevisionRunnerService(object):
