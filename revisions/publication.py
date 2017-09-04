@@ -41,13 +41,13 @@ class PublishResultsVisitorMail(PublishResultsVisitor):
         visitable.revision.status = self.translate_exit_value_to_status(visitable.exit_value)
 
         mail = Mail()
-        mail.subject = MAIL_SUBJECT
+        mail.subject = PublishResultsVisitorMail.MAIL_SUBJECT
         mail.recipient = visitable.revision.user_mail
         final_status = self.translate_exit_value_to_status(visitable.exit_value)
         if(final_status == RevisionStatus.SUCCESSFUL):
-            mail.body = SUCCESSFUL_REVISION_MAIL_BODY
+            mail.body = PublishResultsVisitorMail.SUCCESSFUL_REVISION_MAIL_BODY
         else:
-            mail.body = UNSUCCESSFUL_REVISION_MAIL_BODY
+            mail.body = PublishResultsVisitorMail.UNSUCCESSFUL_REVISION_MAIL_BODY
         mail.save()
         print(" ...results published through mail.")
     
