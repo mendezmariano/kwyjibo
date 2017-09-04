@@ -3,7 +3,7 @@ import os, psutil, signal, subprocess, sys
 from threading import Timer
 
 from .local_settings import *
-from .model import ScriptResult
+from .models import ScriptResult
 
 class ProcessTimeout:
     """
