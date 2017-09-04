@@ -48,7 +48,9 @@ class PublishResultsVisitorMail(PublishResultsVisitor):
             mail.body = PublishResultsVisitorMail.SUCCESSFUL_REVISION_MAIL_BODY
         else:
             mail.body = PublishResultsVisitorMail.UNSUCCESSFUL_REVISION_MAIL_BODY
-        mail.save()
+        # mail.save()
+        print("Mail-body:")
+        print(mail.body)
         print(" ...results published through mail.")
     
 
