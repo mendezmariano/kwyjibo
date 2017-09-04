@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'teachers.apps.TeachersConfig',
     'students.apps.StudentsConfig',
     'mailing.apps.MailingConfig',
+    'revisions.apps.RevisionsConfig',
 
     # Third-party utilities
     #'bootstrap_toolkit',
