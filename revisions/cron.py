@@ -1,6 +1,6 @@
 import kronos
 
-from services import RevisionBatchService
+from .services import RevisionBatchService
 
 @kronos.register('*/5 * * * *')
 def run_revisions():
