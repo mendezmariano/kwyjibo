@@ -37,12 +37,14 @@
                 </td>
                 <td>
                     <a title="{% trans 'Revision' %}" class="icon-asterisk" href="{% url 'students:revision_details' course.pk assignment.pk delivery.pk %}"></a>
-                    <a name="correct{{delivery_row.delivery.pk}}" title="{% trans 'Correct' %}" class="icon-pencil" href="{% url 'students:correction_details' course.pk assignment.pk delivery.pk %}"></a>
+                    {% if delivery.correction %}
+                        <a name="correct{{delivery_row.delivery.pk}}" title="{% trans 'Correction' %}" class="icon-pencil" href="{% url 'students:correction_details' course.pk assignment.pk delivery.pk %}"></a>
+                    {% endif %}
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4">{% trans "There are no deliveries for this assignment" %}</td>
+                <td colspan="5">{% trans "There are no deliveries for this assignment" %}</td>
             </tr>
             {% endfor %}
         </tbody>
