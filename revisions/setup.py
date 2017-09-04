@@ -2,8 +2,7 @@ import os, shutil, subprocess
 
 from zipfile import ZipFile
 
-from exceptions import IllegalStateException
-
+from .exceptions import IllegalStateException
 
 class EnviromentSetupService():
 
