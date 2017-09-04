@@ -17,7 +17,7 @@ class PublishResultsVisitor:
             0: RevisionStatus.SUCCESSFUL,
             1: RevisionStatus.FAILED,
         }
-        return switcher.get(argument, RevisionStatus.UNKNOWN)
+        return switcher.get(exit_value, RevisionStatus.UNKNOWN)
 
     def visit(self, visitable):
         yield None
