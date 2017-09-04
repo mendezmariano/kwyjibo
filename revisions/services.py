@@ -66,6 +66,6 @@ class RevisionRunnerService(object):
         print(" ...finished processing revision <{id} - {date}::{student} / {assignment}>".format(
             id = revision.pk,
             date = revision.delivery.date,
-            student = revision.delivery.student.name,
+            student = revision.delivery.student.get_full_name(),
             assignment = revision.delivery.assignment.uid,
         ))
