@@ -54,7 +54,7 @@ class SafeCodeRunner(object):
         pid = os.fork()
         if pid:
             return self.parent(pid, r, w)
-        else
+        else:
             self.child(r, w, script_name)
 
 
