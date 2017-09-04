@@ -60,9 +60,10 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
     
     def visit(self, visitable):
         print("Saving results...")
-        visitable.revision.exit_value = visitable.exit_value
-        visitable.revision.captured_stdout = visitable.captured_stdout
-        visitable.revision.status = self.translate_exit_value_to_status(visitable.exit_value)
-        visitable.revision.save()
+        revision = Revision.objects.get(pk = visitable.revision.id)
+        revision.exit_value = visitable.exit_value
+        revision.captured_stdout = visitable.captured_stdout
+        revision.status = self.translate_exit_value_to_status(visitable.exit_value)
+        revision.save()
         print(" ...results saved to the DB.")
     
