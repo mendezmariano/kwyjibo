@@ -64,6 +64,10 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
         revision.exit_value = visitable.exit_value
         revision.captured_stdout = visitable.captured_stdout
         revision.status = self.translate_exit_value_to_status(visitable.exit_value)
-        revision.save()
+
+        print("Salida capturada: ")
+        print(visitable.captured_stdout)
+
+        #revision.save()
         print(" ...results saved to the DB.")
     
