@@ -14,7 +14,7 @@ class EnviromentSetupService():
         
         print(" preparing delivery files...")
         os.mkdir(target_directory)
-        zipfile = ZipFile(zip_file)
+        zipfile = ZipFile(revision.delivery.file)
         zipfile.extractall(target_directory)
         
         print(" putting revision script alongside the code...")
