@@ -32,6 +32,7 @@ class IndexView(LoginRequiredMixin, View):
 
     def get(self, request, course_id = None):
         user = request.user
+        course = None
         if(Teacher.objects.filter(user_id=user.id)):
             if course_id:
                 course = Course.objects.get(pk = course_id)
