@@ -42,7 +42,7 @@ class PublishResultsVisitorMail(PublishResultsVisitor):
 
         mail = Mail()
         mail.subject = PublishResultsVisitorMail.MAIL_SUBJECT
-        mail.recipient = visitable.revision.student.user.email
+        mail.recipient = visitable.revision.delivery.student.user.email
         final_status = self.translate_exit_value_to_status(visitable.exit_value)
         if(final_status == RevisionStatus.SUCCESSFUL):
             mail.body = PublishResultsVisitorMail.SUCCESSFUL_REVISION_MAIL_BODY
