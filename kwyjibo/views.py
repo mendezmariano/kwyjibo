@@ -39,7 +39,8 @@ class IndexView(LoginRequiredMixin, View):
                 request.session["current_course_name"] = course.name
                 return redirect('teachers:dashboard', course_id = course_id)
             else: 
-                course = Course.objects.all().order_by('-name')[:1][0]
+                if Course.objects.all().exists():
+                    course = Course.objects.all().order_by('-name')[:1][0]
                 if course:
                     request.session["current_course_id"] = course.pk
                     request.session["current_course_name"] = course.name

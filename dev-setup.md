@@ -4,13 +4,13 @@
 $ sudo apt-get install mysql-server
 
 # Web-server
-$ sudo apt-get install apache2
+$ sudo apt-get install 
 
 # Dependencias de python previas a la instalación
 $ sudo apt-get install build-essential checkinstall
 $ sudo apt-get install libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
 $ sudo apt-get install gettext libz-dev libjpeg-dev libfreetype6-dev libmysqlclient-dev
-$ sudo apt-get install apache2-dev libapache2-mod-wsgi-py3
+$ sudo apt-get install apache2 apache2-dev libapache2-mod-wsgi-py3 
 
 NO INSTALAR ESTO
 $ sudo apt-get install psutils
@@ -21,7 +21,10 @@ $ cd /tmp/py-install
 $ wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tgz
 $ tar zxvf Python-3.6.2.tgz
 $ cd Python-3.6.2
-$ ./configure --prefix=/usr/local/lib/python3.6.2/ --enable-shared
+
+$ ./configure --prefix=/usr/local/lib/python3.6.2/ --enable-shared 
+$ ./configure --prefix=/usr/local/lib/python3.6.2/ --enable-shared LDFLAGS="-Wl,--rpath=/usr/local/lib/python3.6.2/lib"
+
 $ make
 $ sudo make install
 
@@ -53,6 +56,7 @@ $ . env/bin/activate
 
 # Clonar proyecto
 $ git clone git@github.com:pelgoros/kwyjibo.git
+$ git clone https://github.com/pelgoros/kwyjibo.git
 
 # Instalar dependencias con pip (OJO: SIN 'sudo')
 $ cd ~/workspace/python/kwyjibo/kwyjibo
