@@ -19,9 +19,9 @@ class EnviromentSetupService():
         
         print(" putting revision script alongside the code...")
         script_file = revision.delivery.assignment.script.file
-        shutil.copy(script_file, target_directory + "/" + os.path.basename(script_file))
+        shutil.copy(script_file.path, target_directory + "/" + os.path.basename(script_file.path))
         # We must ensure the script is runnable
-        process = subprocess.Popen(["chmod", "a+x", target_directory + "/" + os.path.basename(script_file)])
+        process = subprocess.Popen(["chmod", "a+x", target_directory + "/" + os.path.basename(script_file.path)])
         process.wait()
 
         print("Enviroment set.")

@@ -45,7 +45,7 @@ class RevisionRunnerService(object):
         print("Now processing revision <{id} - {date}::{student} / {assignment}>".format(
             id = revision.pk,
             date = revision.delivery.date,
-            student = revision.delivery.student.get_full_name,
+            student = revision.delivery.student.get_full_name(),
             assignment = revision.delivery.assignment.uid,
         ))
         assignment = revision.delivery.assignment
@@ -55,7 +55,7 @@ class RevisionRunnerService(object):
         self.env_setup_service.setup(revision, EXECUTION_ROOT)
 
         # Run
-        result = self.safe_code_runner.execute(EXECUTION_ROOT + "/" + os.path.basename(revision.delivery.assignment.script))
+        result = self.safe_code_runner.execute(EXECUTION_ROOT + "/" + os.path.basename(script.file.path))
         result.revision = revision
 
         # Share the results
