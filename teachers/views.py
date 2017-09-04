@@ -1,4 +1,4 @@
-import shutil
+import os, shutil
 
 from zipfile import ZipFile
 
@@ -483,7 +483,7 @@ class UploadAssignmentsScriptView(LoginRequiredMixin, UserHasTeacherAccessLevel,
         if(script):
             script = script[0]
             form = AssignmentScriptForm(instance=script)
-            script_file = open(script.file.name, "r")
+            script_file = open(os.path.join(MEDIA_ROOT, script.file.name), "r")
             try:
                 script_text = script_file.read()
             except:
