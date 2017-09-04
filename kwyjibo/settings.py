@@ -136,8 +136,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '' 
 
-STATIC_ROOT = 'static/'
-MEDIA_ROOT = 'media/'
+STATIC_ROOT = os.join(BASE_DIR, 'static/')
+MEDIA_ROOT = os.join(BASE_DIR, 'media/')
 
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
@@ -178,10 +178,10 @@ MAIL_REPLY_ADDRESS    = "support@kwyjibo.org"
 MAIL_NO_REPLY_ADDRESS = "no-reply@kwyjibo.org"
 
 # Path customizables
-DELIVERY_FILES_PATH = "media/deliveries/%Y"
-ASSIGNMENT_FILES_PATH = "media/assignments/%Y"
-SCRIPT_FILES_PATH = "media/scripts/%Y"
-BROWSE_DELIVERIES_PATH = "media/browse/"
+DELIVERY_FILES_PATH = "deliveries/%Y"
+ASSIGNMENT_FILES_PATH = "assignments/%Y"
+SCRIPT_FILES_PATH = "scripts/%Y"
+BROWSE_DELIVERIES_PATH = "browse/"
 
 
 # Deliveries mime-type
