@@ -18,9 +18,10 @@ class EnviromentSetupService():
         zipfile.extractall(target_directory)
         
         print(" putting revision script alongside the code...")
-        shutil.copy(revision.delivery.assignment.script, target_directory + "/" + os.path.basename(revision.delivery.assignment.script))
+        script_file = revision.delivery.assignment.script.file
+        shutil.copy(script_file, target_directory + "/" + os.path.basename(script_file))
         # We must ensure the script is runnable
-        process = subprocess.Popen(["chmod", "a+x", target_directory + "/" + os.path.basename(revision.delivery.assignment.script)])
+        process = subprocess.Popen(["chmod", "a+x", target_directory + "/" + os.path.basename(script_file)])
         process.wait()
 
         print("Enviroment set.")
