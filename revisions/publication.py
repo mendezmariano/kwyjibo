@@ -1,7 +1,8 @@
 
+from django.utils.translation import ugettext_lazy as _
+
 from teachers.models import *
 from mailing.models import *
-
 
 class PublishResultsVisitor:
     """
