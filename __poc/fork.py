@@ -11,6 +11,9 @@ r, w = os.pipe() # these are file descriptors, not file objects
 pid = os.fork()
 
 if pid:
+
+    print("I'm the parent!!! My pid: {own_pid} // My child's pid: {pid}.".format(os.getpid(), pid))
+
     # we are the parent
     os.close(w) # use os.close() to close a file descriptor
     r = os.fdopen(r) # turn r into a file object
@@ -20,8 +23,9 @@ if pid:
     process_timer.start_timer()
     print("Process timeout timer launched")
 
-    txt = r.read()
     os.waitpid(pid, 0) # make sure the child process gets cleaned up
+    txt = r.read()
+    print("Just read the pipe:\n", txt)
 
     #if the result has been obtained, the is no point on keeping the timer alive
     if process_timer.ran:
@@ -32,6 +36,9 @@ if pid:
 
 
 else:
+
+    print("I'm the child!!! My pid: {own_pid} // the variable pid: {pid}.".format(os.getpid(), pid))
+
     # we are the child
     os.close(r)
     w = os.fdopen(w, 'w')

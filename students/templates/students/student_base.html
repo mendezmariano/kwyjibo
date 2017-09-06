@@ -5,7 +5,7 @@
 {% endcomment %}
 
 {% block head %}
-    <title>{% trans 'brand' %}</title>
+    <title>{% trans 'Kwyjibo' %}</title>
 {% endblock %}
 
 {% block title_view %}{% trans "studentView" %}{% endblock %}
@@ -19,6 +19,7 @@
             {% trans "welcome" %} {{ user.first_name }} {{ user.last_name }}
         </div>
     </div></li>
+    <li><a target="_blank" href="https://goo.gl/forms/RSTd3C2eWq5QmmRh2" title="{% trans 'Report a bug' %}" ><span class="icon-warning-sign"></span></a></li>
     <li><a name="changepassword" href="{% url 'change_password' %}" title="{% trans 'changePassword' %}" ><span class="icon-lock"></span></a></li>
     <li><a name="logout" href="/logout/" title="{% trans 'logOut' %}"><span class="icon-off" style="width: 24px; height: 24px;"></span></a></li>
 {% endblock %}
