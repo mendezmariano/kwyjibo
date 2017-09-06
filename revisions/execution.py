@@ -61,7 +61,12 @@ class SafeCodeRunner(object):
 
     def parent(self, pid, r, w):
 
-        print("I'm the parent!!! My pid: {own_pid} // My child's pid: {pid}.".format(own_pid = os.getpid(), pid = pid))
+        print("I'm the parent!!! My pid: {own_pid} // My child's pid: {pid}.\nMy r: {r} // my w: {w}".format(
+            own_pid = os.getpid(),
+            pid = pid,
+            r = r,
+            w = w,
+        ))
 
         os.close(w) # use os.close() to close a file descriptor
         r = os.fdopen(r) # turn r into a file object
@@ -89,9 +94,13 @@ class SafeCodeRunner(object):
         return result
 
 
-    def child(self, r, w, script_name, pid):
+    def child(self, r, w, script_name):
 
-        print("I'm the child!!! My pid: {own_pid} // the variable pid: {pid}.".format(own_pid = os.getpid(), pid = pid))
+        print("I'm the child!!! My pid: {own_pid} // My r: {r} // my w: {w}".format(
+            own_pid = os.getpid(),
+            r = r,
+            w = w,
+        ))
 
         os.close(r)
         w = os.fdopen(w, 'w')
