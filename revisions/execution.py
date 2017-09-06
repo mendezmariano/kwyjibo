@@ -72,9 +72,9 @@ class SafeCodeRunner(object):
         exit_value = os.waitpid(pid, 0) # make sure the child process gets cleaned up
         
         accumulated = ''
-        txt = r.read()
+        txt = r.readln()
         while txt:
-            accumulated = accumulated + "\\n" + txt
+            accumulated = accumulated + "\n" + txt
             txt = r.read()
 
         #if the result has been obtained, the is no point on keeping the timer alive
