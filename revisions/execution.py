@@ -120,6 +120,9 @@ class SafeCodeRunner(object):
         script_dir = EXECUTION_ROOT
         script = os.path.join(EXECUTION_ROOT, script_name)
 
+        print(" jail path:")
+        print(os.listdir(script_dir))
+
         process = subprocess.Popen([script], shell=True, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
 
         exit_value = process.wait()
