@@ -94,7 +94,7 @@ class SafeCodeRunner(object):
             print("Process finished correctly without exceding timeout limit.")
 
         return_code = exit_value[1]
-        print("return code: {return_code}".format(return_code = return_code))
+        print("return code: %0x".format(return_code))
 
         result = ScriptResult()
         result.exit_value = exit_value
