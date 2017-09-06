@@ -114,6 +114,7 @@ class SafeCodeRunner(object):
         print(" jailed working path file-list:", os.listdir(script_dir))
 
         process = subprocess.Popen([script], shell=True, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_value = process.wait()
 
         output = process.communicate()
         captured_stdout = output[0]
