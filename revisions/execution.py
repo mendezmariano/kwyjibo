@@ -91,7 +91,7 @@ class SafeCodeRunner(object):
 
     def child(self, r, w, script_name, pid):
 
-        print("I'm the child!!! My pid: {own_pid} // the variable pid: {pid}.".format(os.getpid(), pid))
+        print("I'm the child!!! My pid: {own_pid} // the variable pid: {pid}.".format(own_pid = os.getpid(), pid = pid))
 
         os.close(r)
         w = os.fdopen(w, 'w')
