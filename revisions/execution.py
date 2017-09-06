@@ -74,7 +74,7 @@ class SafeCodeRunner(object):
         accumulated = ''
         txt = r.read()
         while txt:
-            accumulated = accumulated + "\n" + txt
+            accumulated = accumulated + "\\n" + txt
             txt = r.read()
 
         #if the result has been obtained, the is no point on keeping the timer alive
