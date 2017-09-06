@@ -19,7 +19,7 @@
             {% trans "welcome" %} {{ user.first_name }} {{ user.last_name }}
         </div>
     </div></li>
-    <li><a name="changepassword" href="/changepassw/" title="{% trans 'changePassword' %}" ><span class="icon-lock"></span></a></li>
+    <li><a name="changepassword" href="{% url 'change_password' %}" title="{% trans 'changePassword' %}" ><span class="icon-lock"></span></a></li>
     <li><a name="logout" href="/logout/" title="{% trans 'logOut' %}"><span class="icon-off" style="width: 24px; height: 24px;"></span></a></li>
 {% endblock %}
 

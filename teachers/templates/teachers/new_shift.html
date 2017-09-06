@@ -9,5 +9,5 @@
 	</table>
 	<button type='submit' class="btn btn-primary" >{% trans "save" %}</button>
 </form>
-<div><a class="btn btn-small" href="/teacher/{{ idcourse }}"><span class="icon-backward" title="{% trans 'back' %}"></span></a></div>
+<div><a class="btn btn-small" href="{% url 'teachers:dashboard' current_course.pk %}"><span class="icon-backward" title="{% trans 'back' %}"></span></a></div>
 {% endblock %}
