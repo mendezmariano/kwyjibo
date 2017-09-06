@@ -123,7 +123,7 @@ class SafeCodeRunner(object):
         process = subprocess.Popen([script], shell=True, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
 
         exit_value = process.wait()
-        return_code = exit_value[1]
+        return_code = exit_value
         print("return code: %0x".format(return_code))
 
         output = process.communicate()
