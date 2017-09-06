@@ -77,22 +77,20 @@ class SafeCodeRunner(object):
             accumulated = accumulated + "\n" + txt
             txt = r.read()
 
-        print(" pipe read: ", accumulated)
-
         #if the result has been obtained, the is no point on keeping the timer alive
         if process_timer.ran:
-            print(" Execution has been terminated for exceding the timeout limit.")
+            print(" execution has been terminated for exceding the timeout limit.")
         else:
             process_timer.cancel_timer()
-            print(" Process finished correctly without exceding timeout limit.")
+            print(" process finished correctly without exceding timeout limit.")
 
         return_code = exit_value[1]
-        print("exit_value: {exit_value}".format(exit_value = exit_value))
-        print("return code: {ret_code}".format(ret_code = hex(return_code)))
+        print(" exit_value: {exit_value}".format(exit_value = exit_value))
+        print(" return code: {ret_code}".format(ret_code = hex(return_code)))
 
         result = ScriptResult()
         result.exit_value = return_code
-        result.captured_stdout = accumulated
+        result.captured_stdout = str(accumulated)
 
         r.close()
 
