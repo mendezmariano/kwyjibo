@@ -91,7 +91,7 @@ class SafeCodeRunner(object):
         print("return code: {ret_code}".format(ret_code = hex(return_code)))
 
         result = ScriptResult()
-        result.exit_value = exit_value
+        result.exit_value = return_code
         result.captured_stdout = accumulated
 
         r.close()
