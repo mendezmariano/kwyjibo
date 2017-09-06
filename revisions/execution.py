@@ -91,6 +91,8 @@ class SafeCodeRunner(object):
         result.exit_value = exit_value
         result.captured_stdout = txt
 
+        r.close()
+
         return result
 
 
@@ -117,5 +119,6 @@ class SafeCodeRunner(object):
         exit_value = process.wait()
         output = process.communicate()
         captured_stdout = output[0]
+        print("###{X}###".format(X = exit_value))
         print(captured_stdout) # Imprime al pipe que lo comunica con el padre
         sys.exit(exit_value)
