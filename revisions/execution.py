@@ -55,7 +55,7 @@ class SafeCodeRunner(object):
         if pid:
             return self.parent(pid, r, w)
         else:
-            self.child(r, w, script_name, pid)
+            self.child(r, w, script_name)
 
 
 
