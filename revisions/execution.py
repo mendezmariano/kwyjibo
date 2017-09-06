@@ -125,7 +125,7 @@ class SafeCodeRunner(object):
         exit_value = process.wait()
         return_code = exit_value
         print("exit_value: {exit_value}".format(exit_value = exit_value))
-        print("return code: %s".format(hex(return_code)))
+        print("return code: {ret_code}".format(ret_code = hex(return_code)))
 
         output = process.communicate()
         captured_stdout = output[0]
