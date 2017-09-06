@@ -24,6 +24,9 @@ class EnviromentSetupService():
         process = subprocess.Popen(["chmod", "a+x", target_directory + "/" + os.path.basename(script_file.path)])
         process.wait()
 
+        print(" checking final status...")
+        print(os.listdir(target_directory))
+
         print("Enviroment set.")
         
 
