@@ -8,6 +8,8 @@ class EnviromentSetupService():
 
     def setup(self, revision, target_directory):
         print("Setting up enviroment...")
+        
+        print(" target_directory: {target_directory}".format(target_directory = target_directory))
 
         print(" cleaning up working directory...")
         shutil.rmtree(target_directory, ignore_errors=True)
