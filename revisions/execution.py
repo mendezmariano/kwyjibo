@@ -72,7 +72,7 @@ class SafeCodeRunner(object):
         exit_value = os.waitpid(pid, 0) # make sure the child process gets cleaned up
         
         accumulated = ''
-        txt = r.readln()
+        txt = r.readline()
         while txt:
             accumulated = accumulated + "\n" + txt
             txt = r.read()
