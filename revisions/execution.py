@@ -60,6 +60,9 @@ class SafeCodeRunner(object):
 
 
     def parent(self, pid, r, w):
+
+        print("I'm the parent!!! My pid: {own_pid} // My child's pid: {pid}.".format(os.getpid(), pid))
+
         os.close(w) # use os.close() to close a file descriptor
         r = os.fdopen(r) # turn r into a file object
         print("Fork made, setting timeout...")
@@ -68,8 +71,9 @@ class SafeCodeRunner(object):
         process_timer.start_timer()
         print(" ...timeout timer launched")
 
-        txt = r.read()
         exit_value = os.waitpid(pid, 0) # make sure the child process gets cleaned up
+        txt = r.read()
+        print("Just read the pipe:\n", txt)
 
         #if the result has been obtained, the is no point on keeping the timer alive
         if process_timer.ran:
@@ -86,6 +90,9 @@ class SafeCodeRunner(object):
 
 
     def child(self, r, w, script_name):
+
+        print("I'm the child!!! My pid: {own_pid} // the variable pid: {pid}.".format(os.getpid(), pid))
+
         os.close(r)
         w = os.fdopen(w, 'w')
 
