@@ -77,8 +77,14 @@ class SafeCodeRunner(object):
         print(" ...timeout timer launched")
 
         exit_value = os.waitpid(pid, 0) # make sure the child process gets cleaned up
+        
+        accumulated = ''
         txt = r.read()
-        print("Just read the pipe:\n", txt)
+        while txt:
+            accumulated = accumulated + "\n" + txt
+            txt = r.read()
+
+        print("Just read the pipe:\n", accumulated)
 
         #if the result has been obtained, the is no point on keeping the timer alive
         if process_timer.ran:
@@ -87,9 +93,12 @@ class SafeCodeRunner(object):
             process_timer.cancel_timer()
             print("Process finished correctly without exceding timeout limit.")
 
+        return_code = exit_value[1]
+        print("return code: {return_code}".format(return_code = return_code))
+
         result = ScriptResult()
         result.exit_value = exit_value
-        result.captured_stdout = txt
+        result.captured_stdout = accumulated
 
         r.close()
 
