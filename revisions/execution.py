@@ -93,9 +93,6 @@ class SafeCodeRunner(object):
             process_timer.cancel_timer()
             print("Process finished correctly without exceding timeout limit.")
 
-        return_code = exit_value[1]
-        print("return code: %0x".format(return_code))
-
         result = ScriptResult()
         result.exit_value = exit_value
         result.captured_stdout = accumulated
@@ -126,8 +123,11 @@ class SafeCodeRunner(object):
         process = subprocess.Popen([script], shell=True, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
 
         exit_value = process.wait()
+        return_code = exit_value[1]
+        print("return code: %0x".format(return_code))
+
         output = process.communicate()
         captured_stdout = output[0]
         print("###{X}###".format(X = exit_value))
-        print(captured_stdout) # Imprime al pipe que lo comunica con el padre
+        print(captured_stdout, file = w) # Imprime al pipe que lo comunica con el padre
         sys.exit(exit_value)
