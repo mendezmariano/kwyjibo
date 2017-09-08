@@ -1,8 +1,8 @@
 # workfolders
-media/deliveries/
-media/assignments/
-media/scripts/
-media/browse/
+media/deliveries/*
+media/assignments/*
+media/scripts/*
+media/browse/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
