@@ -8,6 +8,8 @@ class EnviromentSetupService():
 
     def setup(self, revision, target_directory):
         print("Setting up enviroment...")
+        
+        print(" target_directory: {target_directory}".format(target_directory = target_directory))
 
         print(" cleaning up working directory...")
         shutil.rmtree(target_directory, ignore_errors=True)
@@ -23,6 +25,9 @@ class EnviromentSetupService():
         # We must ensure the script is runnable
         process = subprocess.Popen(["chmod", "a+x", target_directory + "/" + os.path.basename(script_file.path)])
         process.wait()
+
+        print(" checking final status...")
+        print(os.listdir(target_directory))
 
         print("Enviroment set.")
         

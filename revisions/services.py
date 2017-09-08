@@ -52,7 +52,7 @@ class RevisionRunnerService(object):
         script = assignment.script
         
         # Prepare
-        self.env_setup_service.setup(revision, EXECUTION_ROOT)
+        self.env_setup_service.setup(revision, JAIL_ROOT + EXECUTION_ROOT)
 
         # Run
         result = self.safe_code_runner.execute(EXECUTION_ROOT + "/" + os.path.basename(script.file.path))
