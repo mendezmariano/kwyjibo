@@ -357,7 +357,7 @@ class DeliveryExploreView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         delivery = Delivery.objects.get(pk=delivery_id);
         extraction_dir = os.path.join(BROWSE_DELIVERIES_PATH, str(delivery.pk))
         if (not os.path.exists(extraction_dir)):
-            os.mkdir(target_directory)
+            os.mkdir(extraction_dir)
             zipfile = ZipFile(delivery.file)
             zipfile.extractall(extraction_dir)
         
