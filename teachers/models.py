@@ -370,7 +370,7 @@ class Revision(models.Model):
     def __str__(self):
         """Stringify the Revision"""
         # return ("Revision | exit value: " + str(self.exit_value) + " - status: " + str(self.status))
-        return _("Revision | exit value: {exit_value} - status: {status}").format(exit_value = self.exit_value, status = self.status.get_label())
+        return _("Revision | exit value: {exit_value} - status: {status}").format(exit_value = self.exit_value, status = self.status)
 
     def get_status(self):
         """Returns a status raw value as a human readable value"""
