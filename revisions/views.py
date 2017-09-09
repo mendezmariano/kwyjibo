@@ -38,7 +38,7 @@ class Revision(View):
         print("Request post: ", request.POST)
         print("Request body: ", request.body)
 
-        post_dict = self.json_loader.dict_from_body(request.body)
+        post_dict = self.json_loader.dict_from_body(request.body.decode('ascii'))
 
         pk = post_dict["pk"]
         status = post_dict["status"]
