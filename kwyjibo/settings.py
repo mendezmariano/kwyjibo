@@ -96,6 +96,7 @@ DATABASES = {
         'PASSWORD': DB_PASSWORD,
     }
 }
+CONN_MAX_AGE = 10
 
 
 # Password validation
