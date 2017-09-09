@@ -269,7 +269,7 @@ class DeliveryDownloadView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         filename = '{assignment}_{student_uid}_{date}.zip'.format(
             assignment = assignment,
             student_uid = student.uid,
-            date = delivery.date.isoformat(sep='T', timespec='seconds')
+            date = delivery.date.isoformat(sep='T')
         )
         
         response = HttpResponse(delivery.file, content_type=DELIVERY_ACCEPTED_MIMETYPE)
@@ -348,16 +348,18 @@ class DeliveryBrowseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 class DeliveryExploreView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
     def get(self, request, course_id, delivery_id):
-        if(os.path.exists(os.path.join(BROWSE_DELIVERIES_PATH, str(delivery_id)))):
-            shutil.rmtree(BROWSE_DELIVERIES_PATH, str(delivery_id))
+        delivery = Delivery.objects.get(pk=delivery_id);
+
+        browse_path = os.path.join(MEDIA_ROOT, BROWSE_DELIVERIES_PATH)
+
+        if(os.path.exists(os.path.join(browse_path, str(delivery_id)))):
+            shutil.rmtree(browse_path, str(delivery_id))
 
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
         
-        delivery = Delivery.objects.get(pk=delivery_id);
-        extraction_dir = os.path.join(BROWSE_DELIVERIES_PATH, str(delivery.pk))
+        extraction_dir = os.path.join(browse_path, str(delivery.pk))
         if (not os.path.exists(extraction_dir)):
-            os.mkdir(extraction_dir)
             zipfile = ZipFile(delivery.file)
             zipfile.extractall(extraction_dir)
         

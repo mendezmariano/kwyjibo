@@ -15,7 +15,6 @@ class EnviromentSetupService():
         shutil.rmtree(target_directory, ignore_errors=True)
         
         print(" preparing delivery files...")
-        os.mkdir(target_directory)
         zipfile = ZipFile(revision.delivery.file)
         zipfile.extractall(target_directory)
         
