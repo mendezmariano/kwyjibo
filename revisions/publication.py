@@ -93,10 +93,10 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
 
         # FIXME: Handmade json is at least, cuestionable
         data = '{start}"pk": {data_pk}, "status": "{data_status}", "exit_value": {data_exit_value}, "captured_stdout": "{data_captured_stdout}"{end}'.format(
-            data_pk = 1,
-            data_status = 'SUCCESSFUL',
-            data_exit_value = 0,
-            data_captured_stdout = 'Una salida sin pena ni gloria',
+            data_pk = visitable.revision.pk,
+            data_status = self.translate_exit_value_to_status(visitable.exit_value),
+            data_exit_value = visitable.exit_value,
+            data_captured_stdout = visitable.captured_stdout,
 
             start = '{',
             end = '}',
