@@ -76,7 +76,7 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
             'captured_stdout': visitable.captured_stdout
         }
 
-        revision.save()
+        visitable.revision.save()
         #r = requests.post(url = POST_END_POINT, data = data)
 
         print(" ...results saved to the DB.")
