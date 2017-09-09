@@ -29,7 +29,7 @@ class JSONloader(object):
 @method_decorator(csrf_exempt, name='dispatch')
 class Revision(View):
 
-    def __init__(self, arg):
+    def __init__(self):
         super(Revision, self).__init__()
         self.json_loader = JSONloader()
 
@@ -70,7 +70,7 @@ class Revision(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class Mail(View):
 
-    def __init__(self, arg):
+    def __init__(self):
         super(Mail, self).__init__()
         self.json_loader = JSONloader()
 
