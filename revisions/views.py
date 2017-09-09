@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 
