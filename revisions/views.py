@@ -8,9 +8,9 @@ from django.views.decorators.csrf import csrf_exempt
 from teachers.models import *
 from mailing.models import *
 
+@method_decorator(csrf_exempt, name='dispatch')
 class Revision(View):
 
-    @method_decorator(csrf_exempt)
     def post(self, request):
         
         pk = request.POST.get("id", "")
@@ -33,9 +33,9 @@ class Revision(View):
 
         return HttpResponse()
 
+@method_decorator(csrf_exempt, name='dispatch')
 class Mail(View):
 
-    @method_decorator(csrf_exempt)
     def post(self, request):
         
         recipient = request.POST.get("recipient", "")
