@@ -9,7 +9,7 @@ from mailing.models import *
 
 class Revision(View):
 
-    @csrf_exempt
+    @method_decorator(csrf_exempt)
     def post(self, request):
         
         pk = request.POST.get("id", "")
@@ -34,6 +34,7 @@ class Revision(View):
 
 class Mail(View):
 
+    @method_decorator(csrf_exempt)
     def post(self, request):
         
         recipient = request.POST.get("recipient", "")
