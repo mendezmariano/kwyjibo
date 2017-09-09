@@ -18,11 +18,18 @@ class Revision(View):
         exit_value = request.POST.get("exit_value", "")
         stdout = request.POST.get("captured_output", "")
 
+        print("pk:", pk)
+        print("status:", status)
+        print("exit_value:", exit_value)
+        print("stdout:", stdout)
+
         if (not pk or not status or not exit_value or not stdout):
+            print("invalid input")
             return HttpResponseBadRequest()
 
         revision = Revision.objects.get(pk = pk)
         if not revision:
+            print("Revision for id not found")
             return HttpResponseBadRequest()
 
         revision.status = status
