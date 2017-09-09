@@ -12,6 +12,7 @@ from mailing.models import *
 
 class JSONloader(object):
     def dict_from_body(self, body):
+        print(" -> Request body received: ", body)
         return json.loads(body)
 
 
