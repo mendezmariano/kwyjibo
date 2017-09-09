@@ -13,7 +13,9 @@ class Revision(View):
 
     def post(self, request):
         
-        pk = request.POST.get("id", "")
+        print("Request received: ", request.POST)
+
+        pk = request.POST.get("pk", "")
         status = request.POST.get("status", "")
         exit_value = request.POST.get("exit_value", "")
         stdout = request.POST.get("captured_output", "")
