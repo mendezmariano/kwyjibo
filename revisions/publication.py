@@ -48,7 +48,7 @@ class PublishResultsVisitorMail(PublishResultsVisitor):
             mail.body = PublishResultsVisitorMail.SUCCESSFUL_REVISION_MAIL_BODY
         else:
             mail.body = PublishResultsVisitorMail.UNSUCCESSFUL_REVISION_MAIL_BODY
-        # mail.save()
+        mail.save()
         print("Mail-body:")
         print(mail.body)
         print(" ...results published through mail.")
@@ -63,10 +63,10 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
     def visit(self, visitable):
         print("Saving results...")
         
-        revision = Revision.objects.get(pk = visitable.revision.id)
-        #revision.exit_value = visitable.exit_value
-        #revision.captured_stdout = visitable.captured_stdout
-        #revision.status = self.translate_exit_value_to_status(visitable.exit_value)
+        #revision = Revision.objects.get(pk = visitable.revision.id)
+        visitable.revision.exit_value = visitable.exit_value
+        visitable.revision.captured_stdout = visitable.captured_stdout
+        visitable.revision.status = self.translate_exit_value_to_status(visitable.exit_value)
 
         print("Salida capturada: ")
         print(visitable.captured_stdout)
