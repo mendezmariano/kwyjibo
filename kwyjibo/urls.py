@@ -36,6 +36,8 @@ urlpatterns = [
 
     url(r'^teachers/', include('teachers.urls')),
     url(r'^students/', include('students.urls')),
+    
+    url(r'^revisions/', include('revisions.urls')),
 
     url('^', include('django.contrib.auth.urls')),
     url(r'^captcha/', include('captcha.urls')),
