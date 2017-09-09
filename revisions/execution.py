@@ -1,5 +1,7 @@
 import os, psutil, signal, subprocess, sys
 
+from django.contrib.auth.models import User
+
 from threading import Timer
 
 from .local_settings import *
@@ -51,10 +53,13 @@ class SafeCodeRunner(object):
         
     def execute(self, script_name):
         r, w = os.pipe() # these are file descriptors, not file objects
+        User.objects.all()
         pid = os.fork()
         if pid:
+            User.objects.all()
             return self.parent(pid, r, w)
         else:
+            User.objects.all()
             self.child(r, w, script_name)
 
 

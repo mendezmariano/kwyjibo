@@ -1,3 +1,4 @@
+import requests
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -63,14 +64,20 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
     def visit(self, visitable):
         print("Saving results...")
         
-        #revision = Revision.objects.get(pk = visitable.revision.id)
+        # revision = Revision.objects.get(pk = visitable.revision.id)
         visitable.revision.exit_value = visitable.exit_value
         visitable.revision.captured_stdout = visitable.captured_stdout
         visitable.revision.status = self.translate_exit_value_to_status(visitable.exit_value)
 
-        print("Salida capturada: ")
-        print(visitable.captured_stdout)
+        data = {
+            'pk':visitable.revision.pk,
+            'status':self.translate_exit_value_to_status(visitable.exit_value),
+            'exit_value':visitable.exit_value,
+            'captured_stdout': visitable.captured_stdout
+        }
 
-        #revision.save()
+        revision.save()
+        #r = requests.post(url = POST_END_POINT, data = data)
+
         print(" ...results saved to the DB.")
     
