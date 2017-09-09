@@ -61,7 +61,7 @@ class PublishResultsVisitorMail(PublishResultsVisitor):
         }
 
         #mail.save()
-        r = requests.post(url = POST_END_POINT, data = data)
+        r = requests.post(url = POST_MAIL_URL, data = data)
 
 
         print(" ...results published through mail.")
@@ -89,7 +89,7 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
         }
 
         #visitable.revision.save()
-        r = requests.post(url = POST_END_POINT, data = data)
+        r = requests.post(url = POST_REVISION_URL, data = data)
 
         print(" ...results saved to the DB.")
     
