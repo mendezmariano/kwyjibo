@@ -5,6 +5,9 @@ from django.utils.translation import ugettext_lazy as _
 from teachers.models import *
 from mailing.models import *
 
+from .local_settings import *
+from kwyjibo.settings import *
+
 class PublishResultsVisitor:
     """
     
@@ -46,12 +49,21 @@ class PublishResultsVisitorMail(PublishResultsVisitor):
         mail.recipient = visitable.revision.delivery.student.user.email
         final_status = self.translate_exit_value_to_status(visitable.exit_value)
         if(final_status == RevisionStatus.SUCCESSFUL):
-            mail.body = PublishResultsVisitorMail.SUCCESSFUL_REVISION_MAIL_BODY
+            body = PublishResultsVisitorMail.SUCCESSFUL_REVISION_MAIL_BODY
         else:
-            mail.body = PublishResultsVisitorMail.UNSUCCESSFUL_REVISION_MAIL_BODY
-        mail.save()
-        print("Mail-body:")
-        print(mail.body)
+            body = PublishResultsVisitorMail.UNSUCCESSFUL_REVISION_MAIL_BODY
+
+        data = {
+            'subject': PublishResultsVisitorMail.MAIL_SUBJECT,
+            'recipient': visitable.revision.delivery.student.user.email,
+            'reply_address': MAIL_NO_REPLY_ADDRESS,
+            'body': body,
+        }
+
+        #mail.save()
+        r = requests.post(url = POST_END_POINT, data = data)
+
+
         print(" ...results published through mail.")
     
 
@@ -65,9 +77,9 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
         print("Saving results...")
         
         # revision = Revision.objects.get(pk = visitable.revision.id)
-        visitable.revision.exit_value = visitable.exit_value
-        visitable.revision.captured_stdout = visitable.captured_stdout
-        visitable.revision.status = self.translate_exit_value_to_status(visitable.exit_value)
+        #visitable.revision.exit_value = visitable.exit_value
+        #visitable.revision.captured_stdout = visitable.captured_stdout
+        #visitable.revision.status = self.translate_exit_value_to_status(visitable.exit_value)
 
         data = {
             'pk':visitable.revision.pk,
@@ -76,8 +88,8 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
             'captured_stdout': visitable.captured_stdout
         }
 
-        visitable.revision.save()
-        #r = requests.post(url = POST_END_POINT, data = data)
+        #visitable.revision.save()
+        r = requests.post(url = POST_END_POINT, data = data)
 
         print(" ...results saved to the DB.")
     
