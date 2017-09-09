@@ -1,6 +1,7 @@
 import os, psutil, signal
 
 from threading import Timer
+from django.contrib.auth.models import User
 
 from kwyjibo.settings import *
 from teachers.models import *
@@ -24,6 +25,7 @@ class RevisionBatchService(object):
         revisions = Revision.objects.filter(status = RevisionStatus.PENDING).order_by('-delivery__date')[:REVISION_BATCH_SIZE]
         print("Running revisions...")
         for revision in revisions:
+            User.objects.all()
             self.revision_runner.run(revision)
             # revision.save()
 

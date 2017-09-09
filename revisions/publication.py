@@ -65,9 +65,9 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
         print("Saving results...")
         
         # revision = Revision.objects.get(pk = visitable.revision.id)
-        visitable.revision.exit_value = visitable.exit_value
-        visitable.revision.captured_stdout = visitable.captured_stdout
-        visitable.revision.status = self.translate_exit_value_to_status(visitable.exit_value)
+        #visitable.revision.exit_value = visitable.exit_value
+        #visitable.revision.captured_stdout = visitable.captured_stdout
+        #visitable.revision.status = self.translate_exit_value_to_status(visitable.exit_value)
 
         data = {
             'pk':visitable.revision.pk,
@@ -76,8 +76,8 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
             'captured_stdout': visitable.captured_stdout
         }
 
-        visitable.revision.save()
-        #r = requests.post(url = POST_END_POINT, data = data)
+        #visitable.revision.save()
+        r = requests.post(url = POST_END_POINT, data = data)
 
         print(" ...results saved to the DB.")
     
