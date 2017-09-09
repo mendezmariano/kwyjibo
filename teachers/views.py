@@ -401,7 +401,7 @@ class DashboardView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             for delivery in deliveries:
                 correction = Correction.objects.filter(delivery=delivery)
                 status = delivery.revision.status
-                if (status == "successfull"):
+                if (status == RevisionStatus.SUCCESSFUL.name):
                     table_deliveries.append({'delivery': delivery, 'correction':correction})
         return render(request, 'teachers/dashboard.html', {
             'current_course' : current_course,

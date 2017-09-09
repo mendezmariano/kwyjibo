@@ -160,10 +160,11 @@ class Assignment(models.Model):
             return False
 
     def get_successfull_deliveries_count(self):
-        return self.delivery_set.filter(revision__status = 1, assignment = self).count()
+        return self.delivery_set.filter(revision__status = RevisionStatus.SUCCESSFUL, assignment = self).count()
 
     def get_failed_deliveries_count(self):
-        return self.delivery_set.filter(~Q(revision__status = 1), assignment = self).count()
+        #return self.delivery_set.filter(~Q(revision__status = RevisionStatus.SUCCESSFUL), assignment = self).count()
+        return self.delivery_set.filter(revision__status = RevisionStatus.FAILED, assignment = self).count()
 
     def get_students_pending_deliveries_count(self):
         students = Student.objects.filter(shifts__course = self.course).count()
