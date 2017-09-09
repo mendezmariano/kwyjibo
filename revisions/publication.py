@@ -53,7 +53,7 @@ class PublishResultsVisitorMail(PublishResultsVisitor):
         else:
             body = PublishResultsVisitorMail.UNSUCCESSFUL_REVISION_MAIL_BODY
 
-        data = '{start}"subject": "{subject}", "recipient": "{recipient}", "reply_address": {reply_address}, "body": "body"{end}'.format(
+        data = '{start}"subject": "{subject}", "recipient": "{recipient}", "reply_address": "{reply_address}", "body": "body"{end}'.format(
             subject = PublishResultsVisitorMail.MAIL_SUBJECT,
             recipient = visitable.revision.delivery.student.user.email,
             reply_address = MAIL_NO_REPLY_ADDRESS,
