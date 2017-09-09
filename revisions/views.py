@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
@@ -8,17 +10,40 @@ from django.views.decorators.csrf import csrf_exempt
 from teachers.models import *
 from mailing.models import *
 
+class JSONloader(object):
+    def dict_from_body(self, body):
+        data = json.loads(body)
+        data_dict = QueryDict('', mutable=True)
+        for key, value in data.iteritems():
+            if isinstance(value, list):
+                # need to iterate through the list and upate
+                # so that the list does not get wrapped in an
+                # additional list.
+                for x in value:
+                    data_dict.update({key: x})
+            else:
+                data_dict.update({key: value})
+        return data_dict
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class Revision(View):
 
+    def __init__(self, arg):
+        super(Revision, self).__init__()
+        self.json_loader = JSONloader()
+
     def post(self, request):
         
-        print("Request received: ", request.POST)
+        print("Request post: ", request.POST)
+        print("Request body: ", request.body)
 
-        pk = request.POST.get("pk", "")
-        status = request.POST.get("status", "")
-        exit_value = request.POST.get("exit_value", "")
-        stdout = request.POST.get("captured_output", "")
+        post_dict = self.json_loader.dict_from_body(request.body)
+
+        pk = post_dict["pk"]
+        status = post_dict["status"]
+        exit_value = post_dict["exit_value"]
+        stdout = post_dict["captured_output"]
 
         print("pk:", pk)
         print("status:", status)
@@ -44,6 +69,10 @@ class Revision(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class Mail(View):
+
+    def __init__(self, arg):
+        super(Mail, self).__init__()
+        self.json_loader = JSONloader()
 
     def post(self, request):
         
