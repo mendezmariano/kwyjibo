@@ -74,7 +74,7 @@ class SafeCodeRunner(object):
         accumulated = ''
         txt = str(r.readline())
         while txt:
-            accumulated = accumulated + txt.replace("\n", "\\n")
+            accumulated = accumulated + txt.replace("\n", "\\n") # FIXME: This should be way more elegant
             txt = r.readline()
 
         #if the result has been obtained, the is no point on keeping the timer alive
