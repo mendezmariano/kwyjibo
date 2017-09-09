@@ -4,6 +4,6 @@ from . import views
 
 app_name = 'revisions'
 urlpatterns = [
-    url(r'^revision/$', views.Revision.as_view(), name = 'revision'),
-    url(r'^mail/$', views.Mail.as_view(), name = 'mail'),
+    url(r'^revision/$', views.RevisionView.as_view(), name = 'revision'),
+    url(r'^mail/$', views.MailView.as_view(), name = 'mail'),
 ]

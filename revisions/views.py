@@ -12,46 +12,26 @@ from mailing.models import *
 
 class JSONloader(object):
     def dict_from_body(self, body):
-        data = json.loads(body)
-        data_dict = QueryDict('', mutable=True)
-        for key, value in data.iteritems():
-            if isinstance(value, list):
-                # need to iterate through the list and upate
-                # so that the list does not get wrapped in an
-                # additional list.
-                for x in value:
-                    data_dict.update({key: x})
-            else:
-                data_dict.update({key: value})
-        return data_dict
+        return json.loads(body)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class Revision(View):
+class RevisionView(View):
 
     def __init__(self):
-        super(Revision, self).__init__()
+        super(RevisionView, self).__init__()
         self.json_loader = JSONloader()
 
     def post(self, request):
         
-        print("Request post: ", request.POST)
-        print("Request body: ", request.body)
-
         post_dict = self.json_loader.dict_from_body(request.body.decode('ascii'))
 
         pk = post_dict["pk"]
         status = post_dict["status"]
         exit_value = post_dict["exit_value"]
-        stdout = post_dict["captured_output"]
+        stdout = post_dict["captured_stdout"]
 
-        print("pk:", pk)
-        print("status:", status)
-        print("exit_value:", exit_value)
-        print("stdout:", stdout)
-
-        if (not pk or not status or not exit_value or not stdout):
-            print("invalid input")
+        if (not pk or not status or exit_value is None or not stdout):
             return HttpResponseBadRequest()
 
         revision = Revision.objects.get(pk = pk)
@@ -68,19 +48,20 @@ class Revision(View):
         return HttpResponse()
 
 @method_decorator(csrf_exempt, name='dispatch')
-class Mail(View):
+class MailView(View):
 
     def __init__(self):
-        super(Mail, self).__init__()
+        super(MailView, self).__init__()
         self.json_loader = JSONloader()
 
     def post(self, request):
-        
-        recipient = request.POST.get("recipient", "")
-        reply_address = request.POST.get("reply_address", "")
-        subject = request.POST.get("subject", "")
-        body = request.POST.get("body", "")
-        # html = request.POST.get("html", False)
+        post_dict = self.json_loader.dict_from_body(request.body.decode('ascii'))
+
+        recipient = post_dict["recipient"]
+        reply_address = post_dict["reply_address"]
+        subject = post_dict["subject"]
+        body = post_dict["body"]
+        # html = post_dict["html"]
 
         if (not recipient or not reply_address or not subject or not body):
             return HttpResponseBadRequest()
