@@ -168,7 +168,7 @@ class Assignment(models.Model):
 
     def get_students_pending_deliveries_count(self):
         students = Student.objects.filter(shifts__course = self.course).count()
-        students_delivery_succesfull = Student.objects.filter(delivery__revision__status = 1, delivery__assignment = self).distinct().count()
+        students_delivery_succesfull = Student.objects.filter(delivery__revision__status = RevisionStatus.SUCCESSFUL, delivery__assignment = self).distinct().count()
         return students - students_delivery_succesfull
         
     # for the dashboard view
