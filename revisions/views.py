@@ -6,7 +6,7 @@ from django.views.generic import View
 from teachers.models import *
 from mailing.models import *
 
-class Revision(object):
+class Revision(View):
 
     def post(self, request):
         
@@ -30,7 +30,7 @@ class Revision(object):
 
         return HttpResponse()
 
-class Mail(object):
+class Mail(View):
 
     def post(self, request):
         
