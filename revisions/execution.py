@@ -75,7 +75,7 @@ class SafeCodeRunner(object):
         txt = str(r.readline())
         while txt:
             accumulated = accumulated + "\n" + txt
-            txt = r.read()
+            txt = r.readline()
 
         #if the result has been obtained, the is no point on keeping the timer alive
         if process_timer.ran:
