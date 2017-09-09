@@ -2,12 +2,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.views.decorators.csrf import csrf_exempt
 
 from teachers.models import *
 from mailing.models import *
 
 class Revision(View):
 
+    @csrf_exempt
     def post(self, request):
         
         pk = request.POST.get("id", "")
