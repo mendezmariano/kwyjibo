@@ -53,12 +53,16 @@ class PublishResultsVisitorMail(PublishResultsVisitor):
         else:
             body = PublishResultsVisitorMail.UNSUCCESSFUL_REVISION_MAIL_BODY
 
-        data = {
-            'subject': PublishResultsVisitorMail.MAIL_SUBJECT,
-            'recipient': visitable.revision.delivery.student.user.email,
-            'reply_address': MAIL_NO_REPLY_ADDRESS,
-            'body': body,
-        }
+        data = '{start}"subject": "{subject}", "recipient": "{recipient}", "reply_address": {reply_address}, "body": "body"{end}'.format(
+            subject = PublishResultsVisitorMail.MAIL_SUBJECT,
+            recipient = visitable.revision.delivery.student.user.email,
+            reply_address = MAIL_NO_REPLY_ADDRESS,
+            body = body,
+
+            start = '{',
+            end = '}',
+
+        )
 
         #mail.save()
         r = requests.post(url = POST_MAIL_URL, data = data)
@@ -80,12 +84,26 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
         #visitable.revision.captured_stdout = visitable.captured_stdout
         #visitable.revision.status = self.translate_exit_value_to_status(visitable.exit_value)
 
-        data = {
-            'pk':visitable.revision.pk,
-            'status':self.translate_exit_value_to_status(visitable.exit_value),
-            'exit_value':visitable.exit_value,
-            'captured_stdout': visitable.captured_stdout
-        }
+        #data = {
+        #    'pk':visitable.revision.pk,
+        #    'status':self.translate_exit_value_to_status(visitable.exit_value),
+        #    'exit_value':visitable.exit_value,
+        #    'captured_stdout': visitable.captured_stdout
+        #}
+
+        # FIXME: Handmade json is at least, cuestionable
+        data = '{start}"pk": {data_pk}, "status": "{data_status}", "exit_value": {data_exit_value}, "captured_stdout": "{data_captured_stdout}"{end}'.format(
+            data_pk = 1,
+            data_status = 'SUCCESSFUL',
+            data_exit_value = 0,
+            data_captured_stdout = 'Una salida sin pena ni gloria',
+
+            start = '{',
+            end = '}',
+
+        )
+
+
 
         #visitable.revision.save()
         r = requests.post(url = POST_REVISION_URL, data = data)
