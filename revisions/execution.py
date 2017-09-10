@@ -79,6 +79,9 @@ class SafeCodeRunner(object):
 
         #if the result has been obtained, the is no point on keeping the timer alive
         if process_timer.ran:
+            if len(accumulated) > 1024:
+                accumulated = accumulated[:1024] + _("\\n[data truncated for being too long]")
+            accumulated = _("Execution timed out. The process took too long to run and was terminated. Output Detected:\\n\\n") + accumulated
             print(" execution has been terminated for exceding the timeout limit.")
         else:
             process_timer.cancel_timer()
@@ -104,6 +107,7 @@ class SafeCodeRunner(object):
 
         # move to the jail
         os.chroot(JAIL_ROOT)
+        os.chdir(EXECUTION_ROOT)
 
         current_dir = os.getcwd()
         script_dir = EXECUTION_ROOT

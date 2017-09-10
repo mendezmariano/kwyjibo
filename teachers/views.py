@@ -319,6 +319,7 @@ class DeliveryBrowseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         
         delivery = Delivery.objects.get(pk=delivery_id);
         extraction_dir = os.path.join(BROWSE_DELIVERIES_PATH, str(delivery.pk))
+        print("Accessing dir: ", extraction_dir)
         if (not os.path.exists(extraction_dir)):
             zipfile = ZipFile(delivery.file)
             zipfile.extractall(extraction_dir)
