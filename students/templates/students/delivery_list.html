@@ -28,9 +28,11 @@
                 </td>
                 <td>
                     {% if delivery.revision.status == 'SUCCESSFUL' %}
-                        <span class="label label-success">{% trans "Successfull" %}</span>
+                        <span class="label label-success">{% trans "Successful" %}</span>
                     {% elif delivery.revision.status == 'FAILED' %}
                         <span class="label label-important">{% trans "Failed" %}</span>
+                    {% elif delivery.revision.status == 'UNKNOWN' %}
+                        <span class="label label-important">{% trans "Unknown" %}</span>
                     {% else %}
                         <span class="label label-warning">{% trans "Pending" %}</span>
                     {% endif %}
