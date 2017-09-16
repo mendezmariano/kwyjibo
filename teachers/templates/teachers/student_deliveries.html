@@ -22,11 +22,11 @@
 			<tr>
 				<td>{{ delivery_row.delivery.full_date }}</td>
 				<td>
-					{% if delivery_row.delivery.get_automatic_correction.get_status == 'successfull' %}
+					{% if delivery_row.delivery.get_automatic_correction.get_status == 'SUCCESSFUL' %}
 						<span class="label label-success">{% trans "successfull" %}</span>
-					{% elif delivery_row.delivery.get_automatic_correction.get_status == 'failed' %}
+					{% elif delivery_row.delivery.get_automatic_correction.get_status == 'FAILED' %}
 						<span class="label label-important">{% trans "failed" %}</span>
-					{% elif delivery_row.delivery.get_automatic_correction.get_status == 'pending' %}
+					{% elif delivery_row.delivery.get_automatic_correction.get_status == 'PENDING' %}
 						<span class="label label-warning">{% trans "pending" %}</span>
 					{% else %}
 						<span class="label label-important">{% trans "unknown" %}</span>
