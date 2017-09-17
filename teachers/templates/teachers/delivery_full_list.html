@@ -32,15 +32,7 @@
 					{% endif %}
 				</td>
 				<td>
-					{% if delivery_row.delivery.revision.status == 'SUCCESSFUL' %}
-						<span class="label label-success">{% trans "successfull" %}</span>
-					{% elif delivery_row.delivery.revision.status == 'FAILED' %}
-						<span class="label label-important">{% trans "failed" %}</span>
-					{% elif delivery_row.delivery.revision.status == 'PENDING' %}
-						<span class="label label-warning">{% trans "pending" %}</span>
-					{% else %}
-						<span class="label label-important">{% trans "unknown" %}</span>
-					{% endif %}
+                    <span class="label {{ delivery_row.delivery.revision.status_badge_style }}">{{ delivery_row.delivery.revision.status_label }}</span>
 				</td>
 				<td>
 					<a name="download{{delivery_row.delivery.pk}}" title="{% trans 'download' %}" class="icon-download" href="{% url 'teachers:download_delivery' current_course.pk delivery_row.delivery.pk %}"></a>

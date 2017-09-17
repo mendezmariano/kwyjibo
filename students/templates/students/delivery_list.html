@@ -27,15 +27,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if delivery.revision.status == 'SUCCESSFUL' %}
-                        <span class="label label-success">{% trans "Successful" %}</span>
-                    {% elif delivery.revision.status == 'FAILED' %}
-                        <span class="label label-important">{% trans "Failed" %}</span>
-                    {% elif delivery.revision.status == 'UNKNOWN' %}
-                        <span class="label label-important">{% trans "Unknown" %}</span>
-                    {% else %}
-                        <span class="label label-warning">{% trans "Pending" %}</span>
-                    {% endif %}
+                    <span class="label {{ delivery.revision.status_badge_style }}">{{ delivery.revision.status_label }}</span>
                 </td>
                 <td>
                     <a title="{% trans 'Revision' %}" class="icon-asterisk" href="{% url 'students:revision_details' course.pk assignment.pk delivery.pk %}"></a>

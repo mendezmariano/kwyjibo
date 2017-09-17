@@ -350,6 +350,9 @@ class RevisionStatus(ChoiceEnum):
     def get_label(self):
         return _(self.name.lower())
 
+    def get_badge(self):
+        return RevisionStatus._BADGES[self];
+
 
 class Revision(models.Model):
     """    
@@ -376,6 +379,21 @@ class Revision(models.Model):
     def get_status(self):
         """Returns a status raw value as a human readable value"""
         return self.status.get_label()
+
+    def status_label(self):
+        """Returns a status raw value as a human readable value"""
+        return _(self.status.lower())
+
+    _BADGES = {
+        'PENDING': 'label-warning',
+        'FAILED': 'label-important',
+        'SUCCESSFUL': 'label-success',
+        'UNKNOWN': 'label-important'
+    }
+    def status_badge_style(self):
+        """Returns a status raw value as a human readable value"""
+        return Revision._BADGES[self.status]
+
     
     def get_delivery_file(self):
         return self.delivery.file.path
