@@ -101,7 +101,7 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
             start = '{',
             end = '}',
 
-        )
+        ).encode("utf8")
 
 
 
