@@ -83,7 +83,7 @@
 						<div class="row-fluid narrow">
 							<span class="icon-user pull-left center-icon"></span>
 							<div class="progress">
-								<div class="bar bar-success" style="width: {{ assignment.get_completion_percentage }}%;"></div>
+								<div class="bar bar-success" style="width: {{ assignment.get_completion_percentage|floatformat:0 }}%;"></div>
 							</div>
 						</div>
 						<div class="row-fluid">

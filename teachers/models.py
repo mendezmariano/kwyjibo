@@ -173,15 +173,19 @@ class Assignment(models.Model):
         
     # for the dashboard view
     def get_completion_percentage(self):
-        deliveries_queryset = self.delivery_set.filter(revision__status = 1, assignment = self).all()
+        deliveries_queryset = self.delivery_set.filter(revision__status = RevisionStatus.SUCCESSFUL, assignment = self).all()
+        print(deliveries_queryset)
         students = []
         for delivery in deliveries_queryset:
-            if delivery.student not in students:
-                students.append(delivery.student)
+            if delivery.student.pk not in students:
+                students.append(delivery.student.pk)
+        print(students)
         shifts = self.course.shift_set.all()
         total_students = 0
         for shift in shifts:
             total_students += shift.student_set.all().count()
+        print("{successfull} / {total}".format(successfull = len(students), total = total_students))
+        print("percentage: {percent}".format(percent = 100 * len(students) / total_students))
         if total_students == 0:
             return 0
         return 100 * len(students) / total_students
