@@ -332,7 +332,7 @@ class DeliveryBrowseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         else:
             # Y si es un pdf??? Arreglar esto.
             file_path = os.path.join(extraction_dir, file_to_browse)
-            with open(file_path, encoding='utf-8', 'r') as content_file:
+            with open(file_path, encoding='utf-8', mode = 'r') as content_file:
                 raw_content = content_file.read()
                 file_content = raw_content
                 #file_content = content_file.read().replace('\n', '\\n').encode('utf8')
