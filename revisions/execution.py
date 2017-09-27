@@ -75,8 +75,6 @@ class SafeCodeRunner(object):
         txt = str(r.readline())
         while txt:
             accumulated = accumulated + txt.replace("\n", "\\n").replace('"', r'\"') # FIXME: This should be way more elegant
-            print("Accumulated so far: ")
-            print(accumulated)
             txt = r.readline()
 
         #if the result has been obtained, the is no point on keeping the timer alive
@@ -95,6 +93,20 @@ class SafeCodeRunner(object):
 
         result = ScriptResult()
         result.exit_value = return_code
+
+        print("###########################################################")
+        print("                      ACCUMULATED")
+        print("###########################################################")
+        print(accumulated)
+        print("\n\n")
+
+
+        print("###########################################################")
+        print("                      STRINGYFIED")
+        print("###########################################################")
+        print(str(accumulated))
+        print("\n\n")
+
         result.captured_stdout = str(accumulated)
 
         r.close()
