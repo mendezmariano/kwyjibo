@@ -333,7 +333,9 @@ class DeliveryBrowseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
             # Y si es un pdf??? Arreglar esto.
             file_path = os.path.join(extraction_dir, file_to_browse)
             with open(file_path, 'r') as content_file:
-                file_content = content_file.read().replace('\n', '\\n').encode('utf8')
+                raw_content = content_file.read()
+                file_content = raw_content
+                #file_content = content_file.read().replace('\n', '\\n').encode('utf8')
         return render(request, 'teachers/delivery_browse.html', {
             'current_course' : current_course,
             'courses' : courses,
