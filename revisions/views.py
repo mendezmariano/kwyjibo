@@ -25,7 +25,7 @@ class RevisionView(View):
 
     def post(self, request):
         
-        post_dict = self.json_loader.dict_from_body(request.body.decode('ascii'))
+        post_dict = self.json_loader.dict_from_body(request.body.decode('utf8'))
 
         pk = post_dict["pk"]
         status = post_dict["status"]
