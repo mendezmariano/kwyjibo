@@ -29,5 +29,4 @@ class EnviromentSetupService():
         print(os.listdir(target_directory))
 
         print("Enviroment set.")
-        
 
