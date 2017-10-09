@@ -27,9 +27,11 @@ urlpatterns = [
     url(r'^assignments/(?P<course_id>\d+)/file/(?P<assignment_id>\d+)/$', views.AssignmentsFilesListView.as_view(), name='assignment_files'),
     url(r'^assignments/(?P<course_id>\d+)/file/(?P<assignment_id>\d+)/download/(?P<assignment_file_id>\d+)/$', views.AssignmentsFileDownloadView.as_view(), name = 'assignment_file_download'),
     url(r'^assignments/(?P<course_id>\d+)/file/(?P<assignment_id>\d+)/delete/(?P<assignment_file_id>\d+)/$', views.AssignmentsFileDeleteView.as_view(), name = 'assignment_file_delete'),
+
     # DEPRECATED
     # url(r'^assignments/?$', views..as_view(), name = 'index'),
     # url(r'^assignments/(?P<course_id>\d+)/editfile/(?P<assignment_file_id>\d+)/$', views..as_view(), name = 'edit'),
+    url(r'^(?P<course_id>\d+)/assignments/(?P<assignment_id>\d+)/reports/$', views.AssignmentSummaryView.as_view(), name = 'assignment_summary'),
 
     
     url(r'^students/?$', views.StudentsFullListView.as_view(), name = 'students'),

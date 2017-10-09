@@ -11,16 +11,18 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>{% trans "deliveryDate" %}</th>
-				<th>{% trans "test" %}</th>
-				<th>{% trans "grade" %}</th>
-				<th>{% trans "actions" %}</th>
+				<th>{% trans "Delivery date" %}</th>
+				<th>{% trans "Assignment" %}</th>
+				<th>{% trans "Test" %}</th>
+				<th>{% trans "Grade" %}</th>
+				<th>{% trans "Actions" %}</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for delivery_row in table_deliveries %}
 			<tr>
 				<td>{{ delivery_row.delivery.full_date }}</td>
+				<td>{{ delivery_row.delivery.assignment.uid }}</td>
 				<td>
 					<span class="label {{ delivery_row.delivery.revision.status_badge_style }}">{{ delivery_row.delivery.revision.status_label }}</span>
 				</td>

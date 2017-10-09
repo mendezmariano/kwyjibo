@@ -1,0 +1,47 @@
+<!-- list all the deliveries associated with the specified assignment -->
+{% extends "teachers/teacher_base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container-fluid" >
+    <div class="row-fluid">
+        {% trans "Assignment summary" %} <b>{{ assignment.uid }}</b>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{% trans "uid" %}</th>
+                <th>{% trans "Last name" %}</th>
+                <th>{% trans "First name" %}</th>
+                <th>{% trans "Revision" %}</th>
+                <th>{% trans "Corrector" %}</th>
+                <th>{% trans "Grade" %}</th>
+                <th>{% trans "More info" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table %}
+            <tr>
+                <td>{{ row.uid }}</td>
+                <td>{{ row.last_name }}</td>
+                <td>{{ row.first_name }}</td>
+                <td><span class="label {{ row.revision_status.status_label }}">{{ row.revision_status }}</span></td>
+                <td>{{ row.corrector }}</td>
+                <td>{{ row.grade }}</td>
+                <td>{{ row.comments }}</td>
+
+                <td>
+                    <!--<a title="{% trans 'More info' %}" class="icon-plus" href="{  % url 'teachers:download_delivery' current_course.pk row.delivery.pk %}"></a>
+                    -->
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">{% trans "noDeliveries" %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div><a class="btn btn-small" href="javascript:history.back()"><span class="icon-backward" title="{% trans 'back' %}"></span></a></div>
+</div>
+{% endblock %}

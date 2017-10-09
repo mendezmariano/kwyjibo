@@ -14,6 +14,7 @@ from mailing.models import Mail
 
 from .models import *
 from .forms import *
+from .reports import *
 
 # Create your views here.
 
@@ -1038,5 +1039,27 @@ class ListPendingSuscriptionsView(LoginRequiredMixin, UserHasTeacherAccessLevel,
             'table_suscription_shift': table_suscription_shift,
             'suscriptions': suscriptions,
             'suscriptions_solve': suscriptions_solve
+        })
+
+
+class AssignmentSummaryView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
+
+    def __init__(self):
+        self.report_generator = ReportGenerator()
+
+    def get(self, request, course_id, assignment_id):
+        courses = Course.objects.all()
+        current_course = courses.get(pk=course_id)
+
+        assignment = Assignment.objects.get(pk = assignment_id)
+        if not (int(course_id) == assignment.course.pk):
+            return HttpResponseBadRequest()
+
+        table = self.report_generator.generate_assignment_summary(assignment)
+
+        return render(request, 'teachers/assignment_summary.html', {
+            'current_course' : current_course,
+            'courses' : courses,
+            'table': table,
         })
 

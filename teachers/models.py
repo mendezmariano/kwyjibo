@@ -348,6 +348,14 @@ class RevisionStatus(ChoiceEnum):
     SUCCESSFUL = 'SUCCESSFUL'
     UNKNOWN = 'UNKNOWN'
 
+
+    _BADGES = {
+        'PENDING': 'label-warning',
+        'FAILED': 'label-important',
+        'SUCCESSFUL': 'label-success',
+        'UNKNOWN': 'label-important'
+    }
+
     def __str__(self):
         return self.name
 

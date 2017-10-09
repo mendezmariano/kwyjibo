@@ -70,12 +70,13 @@
 								<h5 class="no-margin">{{ assignment.uid }}</h5>
 							</div>
 							<div class="span2">
-								<a name="edit{{assignment.uid}}" title="{% trans 'edit' %}" class="icon-edit icon-grid" href="{% url 'teachers:edit_assignment' current_course.pk assignment.pk %}"></a>
-								<a name="uploadfile{{assignment.uid}}" title="{% trans 'uploadFiles' %}" class="icon-upload" href="{% url 'teachers:assignment_files' current_course.pk assignment.pk %}"></a>
-								<a name="deliverylist{{assignment.uid}}" title="{% trans 'deliveriesList' %}" class="icon-inbox" href="{% url 'teachers:assignment_deliveries' current_course.pk assignment.pk %}"></a>
-								<a name="uploadscript{{assignment.uid}}" title="{% trans 'uploadCorrectionScript' %}" class="icon-circle-arrow-up" href="{% url 'teachers:assignment_script' current_course.pk assignment.pk %}"></a>
+								<a title="{% trans 'Edit' %}" class="icon-edit icon-grid" href="{% url 'teachers:edit_assignment' current_course.pk assignment.pk %}"></a>
+								<a title="{% trans 'Upload files' %}" class="icon-upload" href="{% url 'teachers:assignment_files' current_course.pk assignment.pk %}"></a>
+								<a title="{% trans 'Deliveries' %}" class="icon-inbox" href="{% url 'teachers:assignment_deliveries' current_course.pk assignment.pk %}"></a>
+								<a title="{% trans 'Summary' %}" class="icon-file" href="{% url 'teachers:assignment_summary' current_course.pk assignment.pk %}"></a>
+								<a title="{% trans 'Upload correction script' %}" class="icon-circle-arrow-up" href="{% url 'teachers:assignment_script' current_course.pk assignment.pk %}"></a>
 								{% if assignment.count_deliveries == 0 %}
-								<a name="delete{{assignment.uid}}" title="{% trans 'delete' %}" class="icon-trash" href="{% url 'teachers:delete_assignment' current_course.pk assignment.pk %}"></a>
+								<a title="{% trans 'Delete' %}" class="icon-trash" href="{% url 'teachers:delete_assignment' current_course.pk assignment.pk %}"></a>
 								{% endif %}
 							</div>
 						</div>
