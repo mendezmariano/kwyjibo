@@ -35,6 +35,7 @@ class ReportGenerator(object):
                                 'comments': '',
                             })
                         has_successful_delivery = True
+                        break;
 
                 if not student_deliveries:
                     table.append({
