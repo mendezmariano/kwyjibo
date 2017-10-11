@@ -184,10 +184,11 @@ class Assignment(models.Model):
         total_students = 0
         for shift in shifts:
             total_students += shift.student_set.all().count()
-        print("{successfull} / {total}".format(successfull = len(students), total = total_students))
-        print("percentage: {percent}".format(percent = 100 * len(students) / total_students))
         if total_students == 0:
             return 0
+        else:
+            print("{successfull} / {total}".format(successfull = len(students), total = total_students))
+            print("percentage: {percent}".format(percent = 100 * len(students) / total_students))
         return 100 * len(students) / total_students
         
     def get_remaining_percentage(self):
