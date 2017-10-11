@@ -27,7 +27,7 @@ class ReportGenerator(object):
                         corrector = correction.corrector if correction else student.corrector
                         table.append({
                                 'uid': student.uid,
-                                'last_name': student.user.first_name,
+                                'last_name': student.user.last_name,
                                 'first_name': student.user.first_name,
                                 'revision_status': revision.status,
                                 'corrector': corrector,
@@ -40,7 +40,7 @@ class ReportGenerator(object):
                 if not student_deliveries:
                     table.append({
                             'uid': student.uid,
-                            'last_name': student.user.first_name,
+                            'last_name': student.user.last_name,
                             'first_name': student.user.first_name,
                             'revision_status': '-',
                             'corrector': student.corrector,
@@ -61,14 +61,14 @@ class ReportGenerator(object):
                         corrector = correction.corrector if correction else student.corrector
                         table.append({
                                 'uid': student.uid,
-                                'last_name': student.user.first_name,
+                                'last_name': student.user.last_name,
                                 'first_name': student.user.first_name,
                                 'revision_status': revision.status,
                                 'corrector': student.corrector,
                                 'grade': correction_grade,
                                 'comments': _('ALL FAILED'),
                             })
-        return table
+        return sorted(table, key=lambda k: k['uid'])
 
 
 
