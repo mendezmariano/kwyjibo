@@ -1060,6 +1060,7 @@ class AssignmentSummaryView(LoginRequiredMixin, UserHasTeacherAccessLevel, View)
         return render(request, 'teachers/assignment_summary.html', {
             'current_course' : current_course,
             'courses' : courses,
+            'assignment': assignment,
             'table': table,
         })
 
