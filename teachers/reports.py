@@ -29,7 +29,7 @@ class ReportGenerator(object):
                                 'uid': student.uid,
                                 'last_name': student.user.last_name,
                                 'first_name': student.user.first_name,
-                                'revision_status': revision.status,
+                                'revision': revision,
                                 'corrector': corrector,
                                 'grade': correction_grade,
                                 'comments': '',
@@ -42,7 +42,7 @@ class ReportGenerator(object):
                             'uid': student.uid,
                             'last_name': student.user.last_name,
                             'first_name': student.user.first_name,
-                            'revision_status': '-',
+                            'revision': '-',
                             'corrector': student.corrector,
                             'grade': '-',
                             'comments': _('NO DELIVERIES'),
@@ -63,12 +63,12 @@ class ReportGenerator(object):
                                 'uid': student.uid,
                                 'last_name': student.user.last_name,
                                 'first_name': student.user.first_name,
-                                'revision_status': revision.status,
+                                'revision': revision,
                                 'corrector': student.corrector,
                                 'grade': correction_grade,
                                 'comments': _('ALL FAILED'),
                             })
-        return sorted(table, key=lambda k: k['uid'])
+        return sorted(table, key=lambda k: k['last_name'])
 
 
 
