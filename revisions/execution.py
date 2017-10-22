@@ -34,6 +34,9 @@ class ProcessTimeout:
         print("pid terminate invoked.")
         self.ran = True
 
+    def has_run(self):
+        return self.ran == True
+
     def start_timer(self):
         print("timer started")
         self.timer.start()
@@ -80,8 +83,8 @@ class SafeCodeRunner(object):
             txt = r.readline()
 
         #if the result has been obtained, the is no point on keeping the timer alive
-        print("process_timer.ran: ", process_timer.ran)
-        if process_timer.ran:
+        #print("process_timer.ran: ", process_timer.ran)
+        if process_timer.has_run():
             if len(accumulated) > 1024:
                 accumulated = accumulated[:1024] + _("\\n[data truncated for being too long]")
             accumulated = _("Execution timed out. The process took too long to run and was terminated. Output Detected:\\n\\n") + accumulated
