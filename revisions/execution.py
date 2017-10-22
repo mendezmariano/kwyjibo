@@ -1,5 +1,7 @@
 import os, psutil, signal, subprocess, sys
 
+from django.utils.translation import ugettext_lazy as _
+
 from threading import Timer
 
 from .local_settings import *
@@ -78,6 +80,7 @@ class SafeCodeRunner(object):
             txt = r.readline()
 
         #if the result has been obtained, the is no point on keeping the timer alive
+        print("process_timer.ran: ", process_timer.ran)
         if process_timer.ran:
             if len(accumulated) > 1024:
                 accumulated = accumulated[:1024] + _("\\n[data truncated for being too long]")
