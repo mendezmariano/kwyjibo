@@ -1,4 +1,4 @@
-import os, psutil, signal, subprocess, sys
+import os, psutil, signal, subprocess, sys, time
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -33,9 +33,6 @@ class ProcessTimeout:
         self.killtree()
         print("pid terminate invoked.")
         self.ran = True
-
-    def has_run(self):
-        return self.ran == True
 
     def start_timer(self):
         print("timer started")
@@ -83,8 +80,11 @@ class SafeCodeRunner(object):
             txt = r.readline()
 
         #if the result has been obtained, the is no point on keeping the timer alive
-        #print("process_timer.ran: ", process_timer.ran)
-        if process_timer.has_run():
+        print("process_timer.ran: ", process_timer.ran)
+        print("Waiting 5 seconds to allow for synchronization")
+        time.sleep(5)
+        print("process_timer.ran: ", process_timer.ran)
+        if process_timer.ran:
             if len(accumulated) > 1024:
                 accumulated = accumulated[:1024] + _("\\n[data truncated for being too long]")
             accumulated = _("Execution timed out. The process took too long to run and was terminated. Output Detected:\\n\\n") + accumulated
