@@ -93,7 +93,7 @@ class SafeCodeRunner(object):
 
 
         if len(accumulated) > 1024:
-            accumulated = accumulated[:1024] + _("\\n[data truncated for being too long]")
+            accumulated = accumulated[:1024] + "\\n[data truncated for being too long]"
 
         return_code = exit_value[1]
         print(" exit_value: {exit_value}".format(exit_value = exit_value))
