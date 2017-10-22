@@ -85,13 +85,15 @@ class SafeCodeRunner(object):
         time.sleep(5)
         print("process_timer.ran: ", process_timer.ran)
         if process_timer.ran:
-            if len(accumulated) > 1024:
-                accumulated = accumulated[:1024] + _("\\n[data truncated for being too long]")
             accumulated = _("Execution timed out. The process took too long to run and was terminated. Output Detected:\\n\\n") + accumulated
             print(" execution has been terminated for exceding the timeout limit.")
         else:
             process_timer.cancel_timer()
             print(" process finished correctly without exceding timeout limit.")
+
+
+        if len(accumulated) > 1024:
+            accumulated = accumulated[:1024] + _("\\n[data truncated for being too long]")
 
         return_code = exit_value[1]
         print(" exit_value: {exit_value}".format(exit_value = exit_value))
