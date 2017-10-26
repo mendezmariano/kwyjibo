@@ -1,4 +1,6 @@
-import os, psutil, signal, subprocess, sys
+import os, psutil, signal, subprocess, sys, time
+
+from django.utils.translation import ugettext_lazy as _
 
 from threading import Timer
 
@@ -73,17 +75,22 @@ class SafeCodeRunner(object):
         
         accumulated = ''
         txt = str(r.readline())
-        while txt:
+        while txt and len(accumulated) <= REVISION_OUTPUT_MAX_LENGTH:
             accumulated = accumulated + txt.replace("\n", "\\n").replace('"', r'\"') # FIXME: This should be way more elegant
             txt = r.readline()
 
-        #if the result has been obtained, the is no point on keeping the timer alive
+        if len(accumulated) > REVISION_OUTPUT_MAX_LENGTH:
+            accumulated = accumulated[:REVISION_OUTPUT_MAX_LENGTH] + _(TRUNCATION_MESSAGE)
+
+        print("process_timer.ran: ", process_timer.ran)
+        print("Waiting 5 seconds to allow for synchronization")
+        time.sleep(5)
+        print("process_timer.ran: ", process_timer.ran)
         if process_timer.ran:
-            if len(accumulated) > REVISION_OUTPUT_MAX_LENGTH:
-                accumulated = accumulated[:REVISION_OUTPUT_MAX_LENGTH] + _(TRUNCATION_MESSAGE)
             accumulated = _("Execution timed out. The process took too long to run and was terminated. Output Detected:\\n\\n") + accumulated
             print(" execution has been terminated for exceding the timeout limit.")
         else:
+            #if the result has been obtained, the is no point on keeping the timer alive
             process_timer.cancel_timer()
             print(" process finished correctly without exceding timeout limit.")
 
