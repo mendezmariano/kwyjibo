@@ -79,8 +79,8 @@ class SafeCodeRunner(object):
 
         #if the result has been obtained, the is no point on keeping the timer alive
         if process_timer.ran:
-            if len(accumulated) > 1024:
-                accumulated = accumulated[:1024] + _("\\n[data truncated for being too long]")
+            if len(accumulated) > REVISION_OUTPUT_MAX_LENGTH:
+                accumulated = accumulated[:REVISION_OUTPUT_MAX_LENGTH] + _(TRUNCATION_MESSAGE)
             accumulated = _("Execution timed out. The process took too long to run and was terminated. Output Detected:\\n\\n") + accumulated
             print(" execution has been terminated for exceding the timeout limit.")
         else:
@@ -98,13 +98,6 @@ class SafeCodeRunner(object):
         print("                      ACCUMULATED")
         print("###########################################################")
         print(accumulated)
-        print("\n\n")
-
-
-        print("###########################################################")
-        print("                      STRINGYFIED")
-        print("###########################################################")
-        print(str(accumulated))
         print("\n\n")
 
         result.captured_stdout = str(accumulated)
@@ -128,6 +121,8 @@ class SafeCodeRunner(object):
         script = os.path.join(EXECUTION_ROOT, script_name)
 
         print(" jailed working path file-list:", os.listdir(script_dir))
+
+        signal.signal(signal.SIGKILL, sys.exit)
 
         process = subprocess.Popen([script], shell=True, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
         exit_value = process.wait()

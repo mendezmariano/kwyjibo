@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block content %}
     <div class="row">
-        {% trans "uploadDeliveryForPractice" %} <b>{{assignment.name}}</b>
+        {% trans "Upload delivery for" %} <b>{{ assignment.uid }}</b>
     </div>
     <form class="form-horizontal" method="post" enctype='multipart/form-data'>
         {% csrf_token %}

@@ -5,10 +5,10 @@
 <form id='formeditpractice' action='' method='post' enctype="multipart/form-data">
 	{% csrf_token %}
 	<table>
-		<h4>{% trans "editPractice" %}</h4>
+		<h4>{% trans "Edit assignment" %}</h4>
 		{{ form.as_table }}
 	</table>
-	<button type='submit' class="btn btn-primary" >{% trans "save" %}</button>
+	<button type='submit' class="btn btn-primary" >{% trans "Save" %}</button>
 </form>	
 <div><a class="btn btn-small" href="javascript:history.back()"><span class="icon-backward" title="{% trans 'back' %}"></span></a></div>
 

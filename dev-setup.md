@@ -13,7 +13,7 @@ $ sudo apt-get install gettext libz-dev libjpeg-dev libfreetype6-dev libmysqlcli
 $ sudo apt-get install apache2 apache2-dev libapache2-mod-wsgi-py3 
 
 NO INSTALAR ESTO
-$ sudo apt-get install psutils
+$ sudo apt-get instal l psutils
 
 # Instalación de Python 3.6.2
 $ mkdir /tmp/py-install

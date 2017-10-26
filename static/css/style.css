@@ -113,3 +113,8 @@ pre.output-container {
 	font-size: 85%;
 	text-align: left;
 }
+
+.login-form {
+	width: 400px;
+	margin: auto;
+}

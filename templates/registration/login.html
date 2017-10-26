@@ -5,47 +5,34 @@ Main page to authenticate users.
 {% endcomment %}
 
 {% block body %}
-<div class="container" >
+<div class="login-form">
 	<form class="form-signin" method="post" action=".">
 		<h2 class="form-signin-heading">{% trans "Login" %}</h2>
 		{% csrf_token %}
 		{% if form.errors %}
 		<p class="error" >
-			{% trans "wrongCredentials" %}
+			{% trans "Wrong credentials" %}
 		</p>
 		{% endif %}
 
-		<div class="row">
-			<div class="span3">
-				<label for="id_username" >{% trans "username" %}</label>{{ form.username }}
-			</div>
-		</div>
-		<div class="row"  >
-			<div class="span0">
-				<label for="id_password">{% trans "password" %}</label>{{ form.password }}
-			</div>
-		</div>
-		<div class="row" >
-			<input type="hidden" name="next" value="{{ next }}" />
-		</div>
-		<div class="row">
-			<div class="span3 text-center">
-				<button  class="btn btn-large btn-primary" type="submit">
-					{% trans "logIn" %}
-				</button>
-			</div>
+		<label for="id_username" >{% trans "Username" %}</label>
+		{{ form.username }}
+
+		<label for="id_password">{% trans "Password" %}</label>
+		{{ form.password }}
+
+		<input type="hidden" name="next" value="{{ next }}" />
+		
+		<div>
+			<button  class="btn btn-large btn-primary" type="submit">
+				{% trans "Log in" %}
+			</button>
 		</div>
 		<hr />
-		<div class="row" >
-			<div class="span3">
-				{% trans "Signup" %} <a href="{% url 'signup' %}">{% trans "registration" %}</a>
-			</div>
-		</div>
-		<div class="row" >
-			<div class="span3">
-				{% trans "Forgot your password?" %} <a href="#"><!-- /recoverypass --> {% trans "passwordRecovery" %}</a>
-			</div>
-		</div>
+		<p>
+			{% trans "Don't have a user yet?" %} <a href="{% url 'signup' %}">{% trans "Sign up" %}</a><br />
+			{% trans "Forgot your password?" %} <a href="#"><!-- /recoverypass --> {% trans "Recover your password" %}</a>
+		</p>
 
 	</form>
 </div>

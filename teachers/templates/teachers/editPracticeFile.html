@@ -4,14 +4,14 @@
 <div class="container-fluid">
 	<form id='form-edit-practice' action='' method='post' >
 		{% csrf_token %}
-			<div class="row-fluid">{% trans "editPracticeFile" %}: <b>{{ file_basename }}</b></div>
+			<div class="row-fluid">{% trans "Edit practice file" %}: <b>{{ file_basename }}</b></div>
 		{% if edited %}
-			<div class="row-fluid"><b>{% trans "editedSuccessfully" %}</b></div>
+			<div class="row-fluid"><b>{% trans "Edited successfully" %}</b></div>
 		{% endif %}
 		<table >
 			{{ form.as_table }}
 		</table>
-		<button class="btn btn-primary" type='submit' >{% trans "save" %}</button>
+		<button class="btn btn-primary" type='submit' >{% trans "Save" %}</button>
 	</form>
 	<div><a class="btn btn-small" href="/teacher/practices/practicefile/{{ practicefile.practice.course.pk }}/{{ practicefile.practice.pk }}/"><span class="icon-backward" title="{% trans 'back' %}"></span></a></div>
 </div>

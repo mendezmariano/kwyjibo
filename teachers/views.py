@@ -1064,3 +1064,29 @@ class AssignmentSummaryView(LoginRequiredMixin, UserHasTeacherAccessLevel, View)
             'table': table,
         })
 
+
+class AssignmentSummaryDownloadView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
+
+    def __init__(self):
+        self.report_generator = ReportGenerator()
+
+    def get(self, request, course_id, assignment_id):
+        courses = Course.objects.all()
+        current_course = courses.get(pk=course_id)
+
+        assignment = Assignment.objects.get(pk = assignment_id)
+        if not (int(course_id) == assignment.course.pk):
+            return HttpResponseBadRequest()
+
+        table = self.report_generator.generate_assignment_summary(assignment)
+
+        filename = '{course}_{assignment}.csv'.format(
+            assignment = assignment,
+            course = course.name,
+            date = delivery.date.isoformat(sep='T')
+        )
+        
+        response = HttpResponse(delivery.file, content_type=DELIVERY_ACCEPTED_MIMETYPE)
+        response['Content-Disposition'] = 'attachment; filename=%s' % filename
+        return response
+

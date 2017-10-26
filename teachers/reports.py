@@ -3,6 +3,51 @@ from django.utils.translation import ugettext_lazy as _
 
 from .models import *
 
+
+class AbstractCsvFlattener(object):
+    """AbstractCsvFlattener"""
+
+    def header(self):
+        pass
+
+    def flatten(self, item):
+        pass
+
+
+class AssignmentSummaryFlattener(AbstractCsvFlattener):
+    """
+    AffiliateAccountStatusFlattener converts an affiliate into a flattened version of the model.
+    It is intended for exporting information and mmaking reports.
+    """
+
+    def __init__(self):
+        super(AffiliateAccountStatusFlattener, self).__init__()
+        self.headers = [
+            "Uid",
+            "Last name",
+            "First name",
+            "Revision status",
+            "Corrector",
+            "Grade",
+            "Comments",
+        ]
+
+
+    def header(self):
+        return self.headers
+
+    def flatten(self, row):
+        return [
+            row.uid,
+            row.last_name,
+            row.first_name,
+            row.revision.status,
+            row.corrector,
+            row.grade,
+            row.comments,
+        ]
+
+
 class ReportGenerator(object):
     """Generates the necesasary reports for a given course."""
 
@@ -69,7 +114,5 @@ class ReportGenerator(object):
                                 'comments': _('ALL FAILED'),
                             })
         return sorted(table, key=lambda k: k['last_name'])
-
-
 
         

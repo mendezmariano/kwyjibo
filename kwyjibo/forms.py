@@ -10,8 +10,8 @@ from kwyjibo.settings import *
 from teachers.models import *
 
 
-ERRORUIDVALIDATION = _("userPasswordNotExist")
-ERRORPASSWDNOTMATCH = _("passwordsNotMatch")
+ERRORUIDVALIDATION = _("User's password doesn't exist")
+ERRORPASSWDNOTMATCH = _("Passwords don't match")
 
 
 class LoginForm(forms.Form):
@@ -45,7 +45,7 @@ class RegistrationForm(forms.Form):
     first_name = forms.CharField(max_length=100, label=_("First Name"))
     last_name = forms.CharField(max_length=100, label=_("Last Name"))
     email = forms.EmailField()
-    shifts = forms.ModelChoiceField(queryset=Shift.objects.all() , empty_label=_("Select Shift"), label=_("shift"))
+    shifts = forms.ModelChoiceField(queryset=Shift.objects.all() , empty_label=_("Select Shift"), label=_("Shift"))
 
     captcha = CaptchaField()
 
@@ -64,7 +64,7 @@ class RegistrationForm(forms.Form):
 
 class ChangePasswordForm(forms.Form):
 
-    uid = forms.CharField(max_length=32, label=_("uidChangePassword"))
+    uid = forms.CharField(max_length=32, label=_("Uid"))
     current_password = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("Current password"))
     password = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("New password"))
     password_again = forms.CharField(widget=forms.PasswordInput(render_value=True), label=_("Repeat password"))
