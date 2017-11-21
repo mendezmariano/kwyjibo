@@ -24,7 +24,7 @@ class ProcessTimeout:
         for child in parent.children(recursive=True):
             print("killing pid %d", child.pid)
             # child.kill()
-            os.kill(child.pid, signal.SIGKILL)
+            os.kill(child.pid, signal.SIGTERM)
         print("killing pid %d", parent.pid)
         parent.kill()
 
@@ -135,7 +135,7 @@ class SafeCodeRunner(object):
 
         print(" jailed working path file-list:", os.listdir(script_dir))
 
-        signal.signal(signal.SIGKILL, SafeCodeRunner.kill_handler)
+        signal.signal(signal.SIGTERM, SafeCodeRunner.kill_handler)
 
         process = subprocess.Popen([script], shell=True, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
         exit_value = process.wait()
