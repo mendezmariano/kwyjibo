@@ -76,6 +76,7 @@ class SafeCodeRunner(object):
         accumulated = ''
         txt = str(r.readline())
         while txt and len(accumulated) <= REVISION_OUTPUT_MAX_LENGTH:
+            print("Accumulating: ", txt)
             accumulated = accumulated + txt.replace("\n", "\\n").replace('"', r'\"') # FIXME: This should be way more elegant
             txt = r.readline()
 
