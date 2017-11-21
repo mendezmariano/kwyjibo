@@ -135,7 +135,7 @@ class SafeCodeRunner(object):
 
         print(" jailed working path file-list:", os.listdir(script_dir))
 
-        signal.signal(signal.SIGKILL, kill_handler)
+        signal.signal(signal.SIGKILL, SafeCodeRunner.kill_handler)
 
         process = subprocess.Popen([script], shell=True, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
         exit_value = process.wait()
