@@ -50,6 +50,11 @@ class SafeCodeRunner(object):
     def __init__(self):
         super(SafeCodeRunner, self).__init__()
         # self.arg = arg
+
+    def kill_handler(signal, frame):
+        print("I've been killed!!!")
+        sys.exit(0)
+
         
     def execute(self, script_name):
         r, w = os.pipe() # these are file descriptors, not file objects
@@ -130,7 +135,7 @@ class SafeCodeRunner(object):
 
         print(" jailed working path file-list:", os.listdir(script_dir))
 
-        signal.signal(signal.SIGKILL, sys.exit)
+        signal.signal(signal.SIGKILL, kill_handler)
 
         process = subprocess.Popen([script], shell=True, stdout = subprocess.PIPE, stderr=subprocess.PIPE)
         exit_value = process.wait()
