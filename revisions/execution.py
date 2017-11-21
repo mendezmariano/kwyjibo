@@ -85,7 +85,7 @@ class SafeCodeRunner(object):
             txt = r.readline()
 
         if len(accumulated) > REVISION_OUTPUT_MAX_LENGTH:
-            accumulated = accumulated[:REVISION_OUTPUT_MAX_LENGTH] + _(TRUNCATION_MESSAGE)
+            accumulated = str(accumulated[:REVISION_OUTPUT_MAX_LENGTH]) + _(TRUNCATION_MESSAGE)
 
         print("process_timer.ran: ", process_timer.ran)
         print("Waiting 5 seconds to allow for synchronization")
