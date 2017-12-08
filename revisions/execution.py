@@ -99,7 +99,7 @@ class SafeCodeRunner(object):
             process_timer.cancel_timer()
             print(" process finished correctly without exceding timeout limit.")
 
-        return_code = exit_value[1] / 256 # I just need the most significant byte
+        return_code = exit_value[1] // 256 # I just need the most significant byte
         print(" exit_value: {exit_value}".format(exit_value = exit_value))
         print(" return code: {ret_code}".format(ret_code = hex(return_code)))
 
