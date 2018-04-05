@@ -23,7 +23,7 @@ class DeliveryAdmin(admin.ModelAdmin):
     list_display = ('id', 'student_uid', 'student_full_name', 'assignment_uid', 'date', 'revision_status')
 
     def student_uid(self, obj):
-        return obj.student.id
+        return obj.student.uid
 
     def student_full_name(self, obj):
         return obj.student.get_full_name()
