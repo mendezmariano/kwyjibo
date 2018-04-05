@@ -13,6 +13,12 @@ class CourseAdmin(admin.ModelAdmin):
     """
     
     ordering = ['-name',]
+
+class StudentAdmin(admin.ModelAdmin):
+
+    list_display = ('uid', 'user', 'get_full_name', )
+
+
     
 admin.site.register(Teacher)
 admin.site.register(Course, CourseAdmin)
