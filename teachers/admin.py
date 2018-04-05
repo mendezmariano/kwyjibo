@@ -20,7 +20,19 @@ class StudentAdmin(admin.ModelAdmin):
 
 class DeliveryAdmin(admin.ModelAdmin):
 
-    list_display = ('id', 'student.uid', 'student.get_full_name', 'assignment.uid', 'date', 'revision.status')
+    list_display = ('id', 'student_uid', 'student_full_name', 'assignment_uid', 'date', 'revision_status')
+
+    def student_uid(self, obj):
+        return obj.student.id
+
+    def student_full_name(self, obj):
+        return obj.student.get_full_name()
+
+    def assignment_uid(self, obj):
+        return obj.assignment.uid
+
+    def revision_status(self, obj):
+        return obj.revision.status
         
     
 admin.site.register(Teacher)
