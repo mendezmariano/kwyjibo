@@ -11,6 +11,7 @@ from .setup import EnviromentSetupService
 from .execution import SafeCodeRunner
 from .publication import *
 
+from zipfile import BadZipFile
 
 class RevisionBatchService(object):
     """
@@ -53,11 +54,18 @@ class RevisionRunnerService(object):
         assignment = revision.delivery.assignment
         script = assignment.script
         
+        result = None
         # Prepare
-        self.env_setup_service.setup(revision, JAIL_ROOT + EXECUTION_ROOT)
+        try:
+            self.env_setup_service.setup(revision, JAIL_ROOT + EXECUTION_ROOT)
 
-        # Run
-        result = self.safe_code_runner.execute(EXECUTION_ROOT + "/" + os.path.basename(script.file.path))
+            # Run
+            result = self.safe_code_runner.execute(EXECUTION_ROOT + "/" + os.path.basename(script.file.path))
+        except BadZipFile as e:
+            result = ScriptResult()
+            result.exit_value = 1
+            result.captured_stdout = "No se pudo extraer el archivo zip. Comprima su entrega nuevamente y suba una nueva entrega. Si el problema persiste, comuníquese con el administrador del sitio."
+
         result.revision = revision
 
         # Share the results
