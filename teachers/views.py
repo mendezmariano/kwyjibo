@@ -1,6 +1,6 @@
 import os, shutil
 
-from zipfile import ZipFile
+from zipfile import ZipFile, BadZipfile
 
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
