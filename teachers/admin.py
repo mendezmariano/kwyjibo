@@ -33,6 +33,19 @@ class DeliveryAdmin(admin.ModelAdmin):
 
     def revision_status(self, obj):
         return obj.revision.status
+
+class RevisionAdmin(admin.ModelAdmin):
+
+    list_display = ('id', 'student', 'assignment', 'date', 'exit_value', 'status')
+
+    def student(self, obj):
+        return obj.delivery.student.uid
+
+    def assignment(self, obj):
+        return obj.delivery.assignment.uid
+
+    def date(self, obj):
+        return obj.delivery.date
         
     
 admin.site.register(Teacher)
@@ -45,4 +58,4 @@ admin.site.register(Student, StudentAdmin)
 admin.site.register(Suscription)
 admin.site.register(Delivery, DeliveryAdmin)
 admin.site.register(Correction)
-admin.site.register(Revision)
+admin.site.register(Revision, RevisionAdmin)
