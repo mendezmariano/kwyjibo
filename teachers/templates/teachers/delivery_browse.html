@@ -24,15 +24,19 @@
 
 	<div class="row">
 		<div class="span12"><!-- col-sm-12 -->
+            {% if unsupported %}
+                <span>{% trans 'Could not extract delivered file.' %}</span><!-- Re-pack it and post a new delivery. -->
+            {% else %}
 			<ul>
 				{% for filepath in files_list %}
 					<li>
 						<a href="{% url 'teachers:browse_delivery' current_course.pk delivery.pk filepath %}" >{{ filepath }}</a>
 					</li>
 				{% empty %}
-					<li>{% trans "noFilesFoundInDelivery" %}</li>
+					<li>{% trans "No files where found in the delivery" %}</li>
 				{% endfor %}
 			</ul>
+            {% endif %}
 		</div>
 	</div>
 

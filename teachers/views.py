@@ -361,16 +361,27 @@ class DeliveryExploreView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
 
         courses = Course.objects.all()
         current_course = courses.get(pk=course_id)
+        file_content = None
         
         extraction_dir = os.path.join(browse_path, str(delivery.pk))
         if (not os.path.exists(extraction_dir)):
-            zipfile = ZipFile(delivery.file)
-            zipfile.extractall(extraction_dir)
+            try:
+                zipfile = ZipFile(delivery.file)
+                zipfile.extractall(extraction_dir)
+            except BadZipFile as e:
+                return render(request, 'teachers/delivery_browse.html', {
+                    'current_course' : current_course,
+                    'courses' : courses,
+                    'assignment': delivery.assignment,
+                    'delivery': delivery,
+                    'delivery_detail': delivery.file.name.split('/')[-1],
+                    'revision': delivery.revision,
+                    'unsupported': True,
+                })
         
         files_list = []
         walk_directory(files_list, extraction_dir, None)
 
-        file_content = None
         return render(request, 'teachers/delivery_browse.html', {
             'current_course' : current_course,
             'courses' : courses,
