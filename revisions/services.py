@@ -10,6 +10,7 @@ from .local_settings import *
 from .setup import EnviromentSetupService
 from .execution import SafeCodeRunner
 from .publication import *
+from .models import ScriptResult
 
 from zipfile import BadZipFile
 

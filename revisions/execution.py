@@ -94,6 +94,7 @@ class SafeCodeRunner(object):
         if process_timer.ran:
             accumulated = _("Execution timed out. The process took too long to run and was terminated. Output Detected:\\n\\n") + accumulated
             print(" execution has been terminated for exceding the timeout limit.")
+            exit_value = [1, 1]
         else:
             #if the result has been obtained, the is no point on keeping the timer alive
             process_timer.cancel_timer()
