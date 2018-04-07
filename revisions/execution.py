@@ -53,7 +53,7 @@ class SafeCodeRunner(object):
 
     def kill_handler(signal, frame):
         print("I've been killed!!!")
-        sys.exit(0)
+        sys.exit(1)
 
         
     def execute(self, script_name):
