@@ -322,9 +322,20 @@ class DeliveryBrowseView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
         extraction_dir = os.path.join(MEDIA_ROOT, BROWSE_DELIVERIES_PATH, str(delivery.pk))
         print("Accessing dir: ", extraction_dir)
         if (not os.path.exists(extraction_dir)):
-            zipfile = ZipFile(delivery.file)
-            zipfile.extractall(extraction_dir)
-        
+            try:
+                zipfile = ZipFile(delivery.file)
+                zipfile.extractall(extraction_dir)
+            except BadZipFile as e:
+                return render(request, 'teachers/delivery_browse.html', {
+                    'current_course' : current_course,
+                    'courses' : courses,
+                    'assignment': delivery.assignment,
+                    'delivery': delivery,
+                    'delivery_detail': delivery.file.name.split('/')[-1],
+                    'revision': delivery.revision,
+                    'unsupported': True,
+                })
+
         files_list = []
         walk_directory(files_list, extraction_dir, None)
         
