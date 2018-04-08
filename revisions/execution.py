@@ -107,8 +107,7 @@ class SafeCodeRunner(object):
         result = ScriptResult()
         result.exit_value = return_code
 
-        print("###########################################################")
-        print("                      ACCUMULATED")
+        print("OUTPUT CAPTURED")
         print("###########################################################")
         print(accumulated)
         print("\n\n")
