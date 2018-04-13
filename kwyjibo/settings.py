@@ -27,7 +27,7 @@ from .private import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'tps.algoritmos7540mendez.tk']
+ALLOWED_HOSTS = ['localhost', 'tps.algoritmos7540mendez.com.ar']
 
 # Application definition
 
