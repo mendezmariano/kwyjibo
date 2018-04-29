@@ -620,8 +620,8 @@ class DeleteAssignmentView(LoginRequiredMixin, UserHasTeacherAccessLevel, View):
     def get(self, request, course_id, assignment_id):
         assignment = Assignment.objects.get(pk=assignment_id)
         delivery_list = Delivery.objects.filter(assignment = assignment)
-        if (delivery_list or course_id != assignment.course.pk):
-            return HttpResponseBadRequest
+        if ((delivery_list) or (int(course_id) != assignment.course.pk)):
+            return HttpResponseBadRequest()
         assignment.delete()
         return redirect('teachers:dashboard', course_id = course_id)
 
