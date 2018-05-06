@@ -81,7 +81,7 @@ class SafeCodeRunner(object):
         accumulated = ''
         txt = str(r.readline())
         while txt and len(accumulated) <= REVISION_OUTPUT_MAX_LENGTH:
-            accumulated = accumulated + txt.replace("\r", "").replace("\n", r'\n').replace('"', r'\"') # FIXME: This should be way more elegant
+            accumulated = accumulated + txt.replace("\r", "").replace("\t", r'\t').replace("\n", r'\n').replace('"', r'\"') # FIXME: This should be way more elegant
             txt = r.readline()
 
         if len(accumulated) > REVISION_OUTPUT_MAX_LENGTH:
