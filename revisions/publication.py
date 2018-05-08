@@ -96,17 +96,17 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
             data_pk = visitable.revision.pk,
             data_status = self.translate_exit_value_to_status(visitable.exit_value),
             data_exit_value = visitable.exit_value,
-            data_captured_stdout = json.dumps(visitable.captured_stdout),
+            data_captured_stdout = visitable.captured_stdout,
 
             start = '{',
             end = '}',
 
-        ).encode("utf8")
+        )#.encode("utf8")
 
 
 
         #visitable.revision.save()
-        r = requests.post(url = POST_REVISION_URL, data = data)
+        r = requests.post(url = POST_REVISION_URL, data = json.dumps(data))
 
         print(" ...results saved to the DB.", r)
     
