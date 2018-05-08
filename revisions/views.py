@@ -28,6 +28,9 @@ class RevisionView(View):
         print(request.body)
         post_dict = self.json_loader.dict_from_body(request.body.decode('ascii', errors='ignore'))
 
+        # print("post received...")
+        # print(post_dict)
+
         pk = post_dict["pk"]
         status = post_dict["status"]
         exit_value = post_dict["exit_value"]

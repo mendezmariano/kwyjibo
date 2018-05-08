@@ -92,11 +92,11 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
         #}
 
         # FIXME: Handmade json is at least, cuestionable
-        data = '{start}"pk": {data_pk}, "status": "{data_status}", "exit_value": {data_exit_value}, "captured_stdout": "{data_captured_stdout}"{end}'.format(
+        data = '{start}"pk": {data_pk}, "status": "{data_status}", "exit_value": {data_exit_value}, "captured_stdout": {data_captured_stdout} {end}'.format(
             data_pk = visitable.revision.pk,
             data_status = self.translate_exit_value_to_status(visitable.exit_value),
             data_exit_value = visitable.exit_value,
-            data_captured_stdout = visitable.captured_stdout,
+            data_captured_stdout = json.dumps(visitable.captured_stdout),
 
             start = '{',
             end = '}',
@@ -106,7 +106,7 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
 
 
         #visitable.revision.save()
-        r = requests.post(url = POST_REVISION_URL, data = json.dumps(data))
+        r = requests.post(url = POST_REVISION_URL, data = data)
 
         print(" ...results saved to the DB.", r)
     
