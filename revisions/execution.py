@@ -49,7 +49,11 @@ class SafeCodeRunner(object):
     """
     def __init__(self):
         super(SafeCodeRunner, self).__init__()
-        self.nukables = dict.fromkeys(range(32))
+        self.nukables = dict.fromkeys(range(32), range(127, 256))
+        self.nukables[' ']  = r' '
+        self.nukables['\n'] = r'\n'
+        self.nukables['\t'] = r'\r'
+        self.nukables['"']  = r'\"'
 
     def kill_handler(signal, frame):
         print("I've been killed!!!")
@@ -81,7 +85,7 @@ class SafeCodeRunner(object):
         accumulated = ''
         txt = str(r.readline())
         while txt and len(accumulated) <= REVISION_OUTPUT_MAX_LENGTH:
-            addition = txt.replace("\r", "").replace("\t", r'\t').replace("\n", r'\n').replace('"', r'\"').translate(self.nukables) # FIXME: This should be way more elegant
+            addition = txt.translate(self.nukables) # FIXME: This should be way more elegant
             accumulated = accumulated + addition
             txt = r.readline()
 
