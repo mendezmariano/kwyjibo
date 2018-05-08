@@ -50,7 +50,7 @@ class SafeCodeRunner(object):
     def __init__(self):
         super(SafeCodeRunner, self).__init__()
         self.nukables = dict.fromkeys(range(32))
-        self.nukables.update(dict.fromkeys(range(127, 1024)))
+        #self.nukables.update(dict.fromkeys(range(127, 1024)))
         self.nukables[' ']  = r' '
         self.nukables['\n'] = r'\n'
         self.nukables['\t'] = r'\r'
@@ -148,5 +148,5 @@ class SafeCodeRunner(object):
 
         output = process.communicate()
         captured_stdout = output[0]
-        print(captured_stdout.decode('ascii'), file = w) # Imprime al pipe que lo comunica con el padre
+        print(captured_stdout.decode('ascii', errors='ignore'), file = w) # Imprime al pipe que lo comunica con el padre
         sys.exit(exit_value)
