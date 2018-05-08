@@ -41,7 +41,7 @@ class PublishResultsVisitorMail(PublishResultsVisitor):
     def visit(self, visitable):
         print("Publishing results for mail...")
         visitable.revision.exit_value = visitable.exit_value
-        visitable.revision.captured_stdout = visitable.captured_stdout
+        visitable.revision.captured_stdout = visitable.captured_stdout.replace('"', r'\"')
         visitable.revision.status = self.translate_exit_value_to_status(visitable.exit_value)
 
         mail = Mail()
