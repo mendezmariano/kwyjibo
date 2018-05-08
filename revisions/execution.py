@@ -49,7 +49,7 @@ class SafeCodeRunner(object):
     """
     def __init__(self):
         super(SafeCodeRunner, self).__init__()
-        self.nukables = dict.fromkeys(range(32), range(127, 256))
+        self.nukables = dict.fromkeys(range(32), range(127, 1024))
         self.nukables[' ']  = r' '
         self.nukables['\n'] = r'\n'
         self.nukables['\t'] = r'\r'
