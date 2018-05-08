@@ -49,12 +49,6 @@ class SafeCodeRunner(object):
     """
     def __init__(self):
         super(SafeCodeRunner, self).__init__()
-        self.nukables = dict.fromkeys(range(32))
-        #self.nukables.update(dict.fromkeys(range(127, 1024)))
-        self.nukables[' ']  = r' '
-        self.nukables['\n'] = r'\n'
-        self.nukables['\t'] = r'\r'
-        self.nukables['"']  = r'\"'
 
     def kill_handler(signal, frame):
         print("I've been killed!!!")
@@ -86,7 +80,7 @@ class SafeCodeRunner(object):
         accumulated = ''
         txt = str(r.readline())
         while txt and len(accumulated) <= REVISION_OUTPUT_MAX_LENGTH:
-            addition = txt.translate(self.nukables) # FIXME: This should be way more elegant
+            addition = txt.replace("\n", r'\n').replace("\t", r'\t').replace('"', r'\"') # FIXME: This should be way more elegant
             accumulated = accumulated + addition
             txt = r.readline()
 
@@ -148,5 +142,5 @@ class SafeCodeRunner(object):
 
         output = process.communicate()
         captured_stdout = output[0]
-        print(captured_stdout.decode('ascii', errors='ignore'), file = w) # Imprime al pipe que lo comunica con el padre
+        print(captured_stdout.decode('utf-8', errors='ignore'), file = w) # Imprime al pipe que lo comunica con el padre
         sys.exit(exit_value)
