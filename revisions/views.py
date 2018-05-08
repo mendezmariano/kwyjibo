@@ -12,7 +12,7 @@ from mailing.models import *
 
 class JSONloader(object):
     def dict_from_body(self, body):
-        print(" -> Request body received: ", body)
+        print(" -> Request body received:", body)
         return json.loads(body)
 
 
@@ -26,7 +26,7 @@ class RevisionView(View):
     def post(self, request):
         
         print(request.body)
-        post_dict = self.json_loader.dict_from_body(request.body.decode('utf8'))
+        post_dict = self.json_loader.dict_from_body(request.body.decode('ascii', errors='ignore'))
 
         pk = post_dict["pk"]
         status = post_dict["status"]
