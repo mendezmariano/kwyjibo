@@ -112,7 +112,7 @@ class SafeCodeRunner(object):
         print(accumulated)
         print("\n\n")
 
-        result.captured_stdout = str(accumulated)
+        result.captured_stdout = accumulated.replace('"', r'\"')
 
         r.close()
 
