@@ -142,5 +142,5 @@ class SafeCodeRunner(object):
 
         output = process.communicate()
         captured_stdout = output[0]
-        print(captured_stdout.decode('utf-8', errors='ignore'), file = w) # Imprime al pipe que lo comunica con el padre
+        print(captured_stdout.decode('ascii', errors='ignore'), file = w) # Imprime al pipe que lo comunica con el padre
         sys.exit(exit_value)
