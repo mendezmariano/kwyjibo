@@ -1,4 +1,4 @@
-import requests
+import json, requests
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -96,7 +96,7 @@ class PublishResultsVisitorWeb(PublishResultsVisitor):
             data_pk = visitable.revision.pk,
             data_status = self.translate_exit_value_to_status(visitable.exit_value),
             data_exit_value = visitable.exit_value,
-            data_captured_stdout = visitable.captured_stdout,
+            data_captured_stdout = json.dumps(visitable.captured_stdout),
 
             start = '{',
             end = '}',
