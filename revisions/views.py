@@ -26,7 +26,7 @@ class RevisionView(View):
     def post(self, request):
         
         print(request.body)
-        post_dict = self.json_loader.dict_from_body(request.body.decode('ascii', errors='ignore'))
+        post_dict = self.json_loader.dict_from_body(request.body.decode('utf-8', errors='ignore'))
 
         # print("post received...")
         # print(post_dict)
@@ -60,7 +60,7 @@ class MailView(View):
         self.json_loader = JSONloader()
 
     def post(self, request):
-        post_dict = self.json_loader.dict_from_body(request.body.decode('ascii'))
+        post_dict = self.json_loader.dict_from_body(request.body.decode('utf-8', errors='ignore'))
 
         recipient = post_dict["recipient"]
         reply_address = post_dict["reply_address"]
